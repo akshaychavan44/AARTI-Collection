@@ -1,6 +1,33 @@
 # 🛍️ Kalyan Kids Clothing E-Commerce (AARTI Collection)
 
-A modern, full-stack luxury kids clothing e-commerce web platform for boys' and girls' clothing up to age 16. Built with **Next.js 16 (App Router)**, **React 19**, **Node.js**, **Express**, **TypeScript**, **PostgreSQL (Neon)**, **Drizzle ORM**, **Razorpay**, and **Tailwind CSS**.
+A modern, full-stack luxury kids clothing e-commerce web platform for boys' and girls' clothing up to age 16. Built with **Next.js 16 (App Router)**, **React 19**, **Node.js**, **Express Serverless**, **TypeScript**, **PostgreSQL (Neon)**, **Drizzle ORM**, **Razorpay**, and **Tailwind CSS**.
+
+---
+
+## 🚀 1-Click Vercel Deployment
+
+This project is unified into a **single full-stack Next.js project**. When imported into Vercel, Vercel automatically detects Next.js at the root and deploys both the frontend pages and the backend API as serverless functions.
+
+### Steps to Deploy on Vercel:
+
+1. Go to [vercel.com](https://vercel.com) and click **"Add New Project"** -> **"Import"**.
+2. Select your repository: `akshaychavan44/AARTI-Collection`.
+3. **Project Settings**:
+   - **Root Directory**: Leave as `./` (default)
+   - **Framework Preset**: Next.js (automatically detected)
+   - **Build Command**: `next build` (default)
+4. **Environment Variables**:
+   Under **Environment Variables**, paste the following keys and values:
+   - `DATABASE_URL`: `postgresql://neondb_owner:npg_YOUR_PASSWORD@ep-cool-cloud-123456.ap-southeast-1.aws.neon.tech/neondb?sslmode=require`
+   - `JWT_SECRET`: `super_secret_jwt_key_kalyan_kids_2026_auth_system_replace_in_prod`
+   - `JWT_EXPIRES_IN`: `7d`
+   - `RAZORPAY_KEY_ID`: Your Razorpay Key ID
+   - `RAZORPAY_KEY_SECRET`: Your Razorpay Key Secret
+   - `RAZORPAY_WEBHOOK_SECRET`: Your Razorpay Webhook Secret (optional)
+   - `RESEND_API_KEY`: Your Resend API key (optional)
+   - `RESEND_FROM_EMAIL`: `orders@kalyankids.com` (optional)
+   - `NEXT_PUBLIC_API_URL`: `/api`
+5. Click **Deploy**. Vercel will build and launch your full-stack store in under 1 minute!
 
 ---
 
@@ -31,113 +58,73 @@ A modern, full-stack luxury kids clothing e-commerce web platform for boys' and 
 
 ---
 
-## 📁 Repository Structure
+## 📁 Repository Structure (Unified Full-Stack)
 
 ```
 AARTI-Collection/
-├── client/                     # Next.js 16 App Router Frontend
-│   ├── src/
-│   │   ├── app/                # App Router routes (/products, /cart, /checkout, /admin, etc.)
-│   │   ├── components/         # Reusable UI components & Navbar
-│   │   ├── context/            # AuthContext, CartContext, WishlistContext
-│   │   └── lib/                # API client helper
-│   ├── package.json
-│   └── .env.example
-│
-├── server/                     # Express.js + TypeScript Backend
-│   ├── src/
-│   │   ├── config/             # Environment variables & runtime config
-│   │   ├── controllers/        # Route controllers (Admin, Product, Order, Payment, Auth, etc.)
-│   │   ├── db/                 # Drizzle schemas, migrations & seed script
-│   │   ├── middleware/         # Auth (requireAuth, requireRole), error handling, validations
-│   │   ├── routes/             # API route definitions
-│   │   ├── services/           # Core business logic services
-│   │   └── validations/        # Zod request validation schemas
-│   ├── package.json
-│   └── .env.example
-│
-└── README.md
+├── src/
+│   ├── app/                    # Next.js 16 App Router UI
+│   │   ├── page.tsx            # Luxury Home Landing Page
+│   │   ├── products/           # Catalog & Product Details
+│   │   ├── cart/               # Cart Page
+│   │   ├── checkout/           # Checkout & Razorpay Modal
+│   │   ├── admin/              # Admin Console (Dashboard, Products, Orders, Categories, Coupons)
+│   │   ├── account/orders/     # Order History & Tracking
+│   │   └── (auth)/             # Login, Register, Forgot Password, Reset Password
+│   ├── components/             # Reusable UI (Navbar, Modals, Badges)
+│   ├── context/                # Client State (Auth, Cart, Wishlist)
+│   ├── lib/                    # API Client (configured for same-origin /api)
+│   ├── pages/api/              # Next.js Serverless API Route Adapter (mounts Express)
+│   │   └── [[...all]].ts       # Handles all /api/* requests seamlessly on Vercel
+│   └── server/                 # Backend Core (Express + Drizzle + Neon)
+│       ├── config/             # Environment validation (Zod)
+│       ├── controllers/        # Product, Order, Auth, Cart, Wishlist, Admin controllers
+│       ├── db/                 # Drizzle Schemas, Migrations & Seed data
+│       ├── middleware/         # Auth (JWT), validation & error handling
+│       ├── routes/             # Modular API routes
+│       └── services/           # Business logic & payment services
+├── public/                     # Static media & assets
+├── drizzle.config.ts           # Drizzle ORM configuration
+├── next.config.ts              # Next.js 16 configuration
+├── package.json                # Single unified package manifest
+├── tsconfig.json               # TypeScript path mappings (@/* -> ./src/*)
+├── vercel.json                 # Vercel deployment specification
+└── README.md                   # Project documentation
 ```
 
 ---
 
-## 🚀 Getting Started Locally
+## 💻 Local Development
 
-### 1. Prerequisites
-* **Node.js**: v18.0.0 or higher
-* **npm**: v9.0.0 or higher
-* **Neon PostgreSQL Database**: Connection string with SSL mode
-
----
-
-### 2. Backend Setup
-1. Open a terminal and navigate to `server/`:
-   ```bash
-   cd server
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure environment variables:
-   Copy `.env.example` to `.env` and fill in your Neon database URL and Razorpay test credentials:
-   ```bash
-   cp .env.example .env
-   ```
-4. Run database migrations & seed initial data:
-   ```bash
-   npm run db:migrate
-   npm run db:seed
-   ```
-5. Start the backend development server:
-   ```bash
-   npm run dev
-   ```
-   *Backend running on `http://localhost:5000`*
-
----
-
-### 3. Frontend Setup
-1. Open a second terminal and navigate to `client/`:
-   ```bash
-   cd client
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure environment variables:
-   Copy `.env.example` to `.env.local`:
-   ```bash
-   cp .env.example .env.local
-   ```
-4. Start the Next.js development server:
-   ```bash
-   npm run dev
-   ```
-   *Storefront running on `http://localhost:3000`*
-
----
-
-## 🔑 Default Accounts for Testing
-
-| Role | Email | Password | Access |
-| :--- | :--- | :--- | :--- |
-| **Admin** | `admin@kalyankids.com` | `Admin@12345` | Storefront & Admin Console (`/admin`) |
-| **Customer** | `customer@example.com` | `Customer@12345` | Storefront, Shopping Cart & Orders |
-
----
-
-## 🧪 Automated Testing
-
-Run the complete test suite across all 6 phases:
+### 1. Install Dependencies
 ```bash
-cd server
+npm install
+```
+
+### 2. Environment Variables
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+Ensure your `DATABASE_URL` contains your Neon PostgreSQL connection string.
+
+### 3. Database Migration & Seed
+```bash
+npm run db:migrate
+npm run db:seed
+```
+
+### 4. Start Unified Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser. Both the frontend UI and the `/api` backend endpoints run simultaneously on port 3000!
+
+---
+
+## 🧪 Testing
+
+Run backend and API validation suites:
+```bash
 npm run test:all
 ```
-*(100 / 100 tests passing)*
-
----
-
-## 📄 License
-ISC

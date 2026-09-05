@@ -9,6 +9,10 @@ dist/
 server/dist/
 build/
 
+# Legacy subdirectories (consolidated into root)
+/client/
+/server/
+
 # Environment Variables (Never commit secrets!)
 .env
 .env.*
