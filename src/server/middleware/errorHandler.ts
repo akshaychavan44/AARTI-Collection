@@ -35,6 +35,9 @@ export const errorHandler = (
     // Invalid input syntax for integer / uuid
     statusCode = 400;
     message = "Invalid input format provided.";
+  } else if (err.message && (err.message.includes("placeholder") || err.message.includes("ENOTFOUND") || err.message.includes("fetch failed") || err.message.includes("connection") || err.message.includes("endpoint"))) {
+    statusCode = 500;
+    message = `Database connection failed: ${err.message}. Please check your DATABASE_URL in Vercel Environment Variables.`;
   }
 
   logger.error(`[${req.method}] ${req.originalUrl} - ${message}`);
@@ -42,7 +45,6 @@ export const errorHandler = (
   res.status(statusCode).json({
     success: false,
     message,
-    // In development mode, include stack trace to aid debugging
-    ...(env.NODE_ENV === "development" && { stack: err.stack }),
+    ...(env.NODE_ENV !== "production" && { stack: err.stack }),
   });
 };

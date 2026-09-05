@@ -31,13 +31,20 @@ export async function fetchApi<T = any>(
     credentials: "include",
   });
 
-  const data = await response.json().catch(() => ({
-    success: false,
-    message: "Failed to parse response from server",
-  }));
+  const rawText = await response.text();
+  let data: any;
+
+  try {
+    data = rawText ? JSON.parse(rawText) : {};
+  } catch {
+    data = {
+      success: false,
+      message: `Server returned HTTP ${response.status} (${response.statusText}): ${rawText.slice(0, 150) || "No response body"}`,
+    };
+  }
 
   if (!response.ok) {
-    throw new Error(data.message || "An error occurred while communicating with the server");
+    throw new Error(data.message || `Server responded with status ${response.status}`);
   }
 
   return data;

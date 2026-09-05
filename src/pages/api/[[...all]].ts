@@ -10,5 +10,9 @@ export const config = {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  return app(req, res);
+  return new Promise<void>((resolve) => {
+    res.on("finish", () => resolve());
+    res.on("close", () => resolve());
+    app(req, res);
+  });
 }
