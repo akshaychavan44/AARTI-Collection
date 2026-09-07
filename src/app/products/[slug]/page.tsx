@@ -6,6 +6,7 @@ import { api } from "@/lib/api";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAuth } from "@/context/AuthContext";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import {
   Heart,
   ShoppingCart,
@@ -376,29 +377,42 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                disabled={isOutOfStock || actionLoading}
-                onClick={handleAddToCart}
-                className="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-rose-600 hover:bg-rose-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-sm shadow-md shadow-rose-600/20 transition-all hover:shadow-lg"
-              >
-                <ShoppingCart className="w-4 h-4" />
-                {actionLoading ? "Adding..." : isOutOfStock ? "Out of Stock" : "Add to Cart"}
-              </button>
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  disabled={isOutOfStock || actionLoading}
+                  onClick={handleAddToCart}
+                  className="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-rose-600 hover:bg-rose-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-sm shadow-md shadow-rose-600/20 transition-all hover:shadow-lg cursor-pointer"
+                >
+                  <ShoppingCart className="w-4 h-4" />
+                  {actionLoading ? "Adding..." : isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                </button>
 
-              <button
-                type="button"
-                onClick={() => toggleWishlist(product.id)}
-                className={`p-3.5 rounded-2xl border transition-all ${
-                  isSavedInWishlist
-                    ? "border-rose-600 bg-rose-50 text-rose-600"
-                    : "border-slate-200 hover:border-slate-300 text-slate-600 hover:text-rose-600 bg-white"
-                }`}
-                title={isSavedInWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
-              >
-                <Heart className={`w-5 h-5 ${isSavedInWishlist ? "fill-rose-600" : ""}`} />
-              </button>
+                <button
+                  type="button"
+                  onClick={() => toggleWishlist(product.id)}
+                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                    isSavedInWishlist
+                      ? "border-rose-600 bg-rose-50 text-rose-600"
+                      : "border-slate-200 hover:border-slate-300 text-slate-600 hover:text-rose-600 bg-white"
+                  }`}
+                  title={isSavedInWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
+                >
+                  <Heart className={`w-5 h-5 ${isSavedInWishlist ? "fill-rose-600" : ""}`} />
+                </button>
+              </div>
+
+              {/* Ask on WhatsApp Button */}
+              <WhatsAppButton
+                productName={product.name}
+                ageGroup={product.ageGroup}
+                price={currentPrice}
+                productCode={matchedVariant?.sku || product.slug}
+                color={selectedColor}
+                size={selectedSize}
+                className="w-full"
+              />
             </div>
 
             {/* Feedback Notice */}

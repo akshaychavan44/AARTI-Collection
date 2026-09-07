@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { useWishlist } from "@/context/WishlistContext";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import {
   Filter,
   SlidersHorizontal,
@@ -529,12 +530,21 @@ function ProductCatalogContent() {
                           </div>
                         </div>
 
-                        <Link
-                          href={`/products/${product.slug}`}
-                          className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-600 hover:text-white text-slate-700 text-xs font-bold transition-all"
-                        >
-                          View Details
-                        </Link>
+                        <div className="flex items-center gap-1.5">
+                          <WhatsAppButton
+                            variant="compact"
+                            productName={product.name}
+                            ageGroup={product.ageGroup}
+                            price={product.priceRange.min}
+                            productCode={product.slug}
+                          />
+                          <Link
+                            href={`/products/${product.slug}`}
+                            className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-600 hover:text-white text-slate-700 text-xs font-bold transition-all"
+                          >
+                            View Details
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
