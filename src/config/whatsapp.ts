@@ -18,8 +18,15 @@ export interface WhatsAppProductDetails {
  * reliable wa.me URL resolution on both desktop browsers and mobile apps.
  */
 export function getShopWhatsAppNumber(): string {
-  const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210";
-  return raw.replace(/[^0-9]/g, "");
+  const envNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+  // Use actual store number, filtering out any old cached placeholder
+  const raw = (envNum && !envNum.includes("9876543210")) ? envNum : "917208830380";
+  const cleaned = raw.replace(/[^0-9]/g, "");
+  // If user provided a 10-digit Indian mobile number without country code, prepend 91
+  if (cleaned.length === 10) {
+    return `91${cleaned}`;
+  }
+  return cleaned;
 }
 
 /**

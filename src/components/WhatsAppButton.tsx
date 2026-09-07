@@ -12,7 +12,7 @@ export interface WhatsAppButtonProps extends WhatsAppProductDetails {
 }
 
 /**
- * Clean SVG WhatsApp Speech Bubble Icon
+ * Clean SVG WhatsApp Speech Bubble Icon (Kalyan Kids Store WhatsApp: +91 7208830380)
  */
 function WhatsAppIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
