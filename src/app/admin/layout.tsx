@@ -27,6 +27,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
+  // Allow public access to the admin login page
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
+
   // 1. Loading state
   if (loading) {
     return (
@@ -53,10 +58,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </p>
           <div className="pt-2">
             <Link
-              href="/login?redirect=/admin"
+              href="/admin/login"
               className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors"
             >
-              Sign In to Admin
+              Sign In to Admin Console
             </Link>
           </div>
         </div>

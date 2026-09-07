@@ -48,7 +48,32 @@ export const createProductSchema = z.object({
 });
 
 /**
- * Validation schema for updating a product (basic info)
+ * Validation schema for updating or adding a product variant
+ */
+export const updateVariantSchema = z.object({
+  id: z.coerce.number().int().positive().optional(),
+  size: z.string().trim().min(1, { message: "Size is required" }).max(50),
+  color: z.string().trim().min(1, { message: "Color is required" }).max(50),
+  price: z.coerce
+    .number()
+    .positive({ message: "Price must be a positive number greater than 0" }),
+  sku: z.string().trim().min(2, { message: "SKU is required" }).max(100),
+  quantity: z.coerce.number().int().min(0, { message: "Quantity cannot be negative" }).default(0),
+  lowStockThreshold: z.coerce.number().int().min(0).default(5),
+});
+
+/**
+ * Validation schema for updating or adding a product image
+ */
+export const updateImageSchema = z.object({
+  id: z.coerce.number().int().positive().optional(),
+  imageUrl: z.string().url({ message: "imageUrl must be a valid URL" }),
+  altText: z.string().trim().max(255).optional(),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
+/**
+ * Validation schema for updating a product (all information including variants and images)
  */
 export const updateProductSchema = z.object({
   categoryId: z.coerce.number().int().positive().optional(),
@@ -61,6 +86,8 @@ export const updateProductSchema = z.object({
   isFeatured: z.boolean().optional(),
   brand: z.string().trim().max(100).optional(),
   isActive: z.boolean().optional(),
+  variants: z.array(updateVariantSchema).optional(),
+  images: z.array(updateImageSchema).optional(),
 });
 
 /**

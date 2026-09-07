@@ -6,6 +6,7 @@ import {
   productImages,
   productVariants,
   inventory,
+  orderItems,
   calculateStockStatus,
   StockStatus,
 } from "../db/schema";
@@ -423,7 +424,7 @@ export class ProductService {
   }
 
   /**
-   * Update basic product details.
+   * Update full product details including basic info, variants, inventory, and images.
    */
   public static async updateProduct(id: number, data: UpdateProductInput): Promise<FormattedProduct | null> {
     const existing = await db.select().from(products).where(eq(products.id, id)).limit(1);
@@ -436,22 +437,147 @@ export class ProductService {
       }
     }
 
+    const { variants, images, ...baseFields } = data;
+
     const updatePayload: any = {
-      ...data,
       updatedAt: new Date(),
     };
 
-    if (data.compareAtPrice !== undefined) {
-      updatePayload.compareAtPrice = data.compareAtPrice ? data.compareAtPrice.toString() : null;
+    if (baseFields.name !== undefined) updatePayload.name = baseFields.name;
+    if (baseFields.description !== undefined) updatePayload.description = baseFields.description;
+    if (baseFields.categoryId !== undefined) updatePayload.categoryId = baseFields.categoryId;
+    if (baseFields.gender !== undefined) updatePayload.gender = baseFields.gender;
+    if (baseFields.ageGroup !== undefined) updatePayload.ageGroup = baseFields.ageGroup;
+    if (baseFields.brand !== undefined) updatePayload.brand = baseFields.brand;
+    if (baseFields.isFeatured !== undefined) updatePayload.isFeatured = baseFields.isFeatured;
+    if (baseFields.isActive !== undefined) updatePayload.isActive = baseFields.isActive;
+    if (baseFields.compareAtPrice !== undefined) {
+      updatePayload.compareAtPrice = baseFields.compareAtPrice ? baseFields.compareAtPrice.toString() : null;
     }
 
-    if (data.slug) {
-      updatePayload.slug = slugify(data.slug);
-    } else if (data.name && !existing[0].slug.startsWith(slugify(data.name))) {
-      updatePayload.slug = slugify(data.name);
+    if (baseFields.slug) {
+      updatePayload.slug = slugify(baseFields.slug);
+    } else if (baseFields.name && !existing[0].slug.startsWith(slugify(baseFields.name))) {
+      updatePayload.slug = slugify(baseFields.name);
     }
 
     await db.update(products).set(updatePayload).where(eq(products.id, id));
+
+    // 1. Synchronize Images if provided
+    if (images !== undefined) {
+      await db.delete(productImages).where(eq(productImages.productId, id));
+      if (images.length > 0) {
+        await db.insert(productImages).values(
+          images.map((img, idx) => ({
+            productId: id,
+            imageUrl: img.imageUrl,
+            altText: img.altText || baseFields.name || existing[0].name,
+            sortOrder: img.sortOrder ?? idx,
+          }))
+        );
+      }
+    }
+
+    // 2. Synchronize Variants & Inventory if provided
+    if (variants !== undefined) {
+      const existingVariants = await db
+        .select()
+        .from(productVariants)
+        .where(eq(productVariants.productId, id));
+
+      const existingVariantIds = new Set(existingVariants.map((v) => v.id));
+      const incomingVariantIds = new Set(
+        variants.filter((v) => v.id !== undefined).map((v) => v.id as number)
+      );
+
+      // Identify variants to delete
+      const toDeleteIds = existingVariants
+        .filter((v) => !incomingVariantIds.has(v.id))
+        .map((v) => v.id);
+
+      if (toDeleteIds.length > 0) {
+        const usedInOrders = await db
+          .select({ variantId: orderItems.variantId })
+          .from(orderItems)
+          .where(inArray(orderItems.variantId, toDeleteIds));
+
+        const usedVariantIdSet = new Set(usedInOrders.map((o) => o.variantId));
+        const safeToDeleteIds = toDeleteIds.filter((vid) => !usedVariantIdSet.has(vid));
+
+        // For variants tied to historical order snapshots, set inventory stock to 0
+        for (const vid of toDeleteIds) {
+          if (usedVariantIdSet.has(vid)) {
+            await db
+              .update(inventory)
+              .set({ quantity: 0, updatedAt: new Date() })
+              .where(eq(inventory.variantId, vid));
+          }
+        }
+
+        if (safeToDeleteIds.length > 0) {
+          await db.delete(productVariants).where(inArray(productVariants.id, safeToDeleteIds));
+        }
+      }
+
+      // Upsert incoming variants
+      for (const v of variants) {
+        if (v.id && existingVariantIds.has(v.id)) {
+          // Update variant attributes
+          await db
+            .update(productVariants)
+            .set({
+              size: v.size,
+              color: v.color,
+              price: v.price.toString(),
+              sku: v.sku,
+              updatedAt: new Date(),
+            })
+            .where(eq(productVariants.id, v.id));
+
+          // Upsert inventory
+          const existingInv = await db
+            .select()
+            .from(inventory)
+            .where(eq(inventory.variantId, v.id))
+            .limit(1);
+
+          if (existingInv.length > 0) {
+            await db
+              .update(inventory)
+              .set({
+                quantity: v.quantity ?? 0,
+                lowStockThreshold: v.lowStockThreshold ?? 5,
+                updatedAt: new Date(),
+              })
+              .where(eq(inventory.variantId, v.id));
+          } else {
+            await db.insert(inventory).values({
+              variantId: v.id,
+              quantity: v.quantity ?? 0,
+              lowStockThreshold: v.lowStockThreshold ?? 5,
+            });
+          }
+        } else {
+          // Insert new variant
+          const [insertedVariant] = await db
+            .insert(productVariants)
+            .values({
+              productId: id,
+              size: v.size,
+              color: v.color,
+              price: v.price.toString(),
+              sku: v.sku,
+            })
+            .returning();
+
+          await db.insert(inventory).values({
+            variantId: insertedVariant.id,
+            quantity: v.quantity ?? 0,
+            lowStockThreshold: v.lowStockThreshold ?? 5,
+          });
+        }
+      }
+    }
 
     return await this.getProductById(id);
   }
