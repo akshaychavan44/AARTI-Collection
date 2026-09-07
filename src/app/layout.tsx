@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kalyan Kids | Kids Clothing Store in Kalyan",
-  description: "Quality boys and girls clothing up to age 16 in Kalyan.",
+  title: "Kalyan Kids Atelier | Premium Kids Fashion Boutique (Ages 0–16)",
+  description: "Exquisite couture and everyday organic cotton clothing for boys and girls up to age 16 in Kalyan, Maharashtra.",
 };
 
 export default function RootLayout({
@@ -31,12 +32,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col bg-[#FAFAF9] text-slate-900 selection:bg-rose-100 selection:text-rose-900">
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
               <Navbar />
               <main className="flex-1">{children}</main>
+              <Footer />
             </WishlistProvider>
           </CartProvider>
         </AuthProvider>

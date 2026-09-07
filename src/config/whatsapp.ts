@@ -12,6 +12,8 @@ export interface WhatsAppProductDetails {
   size?: string;
 }
 
+export const STORE_WHATSAPP_NUMBER = "917208830380";
+
 /**
  * Clean and format the shop owner WhatsApp number.
  * Removes any non-numeric characters (+, spaces, dashes) to ensure
@@ -20,7 +22,7 @@ export interface WhatsAppProductDetails {
 export function getShopWhatsAppNumber(): string {
   const envNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   // Use actual store number, filtering out any old cached placeholder
-  const raw = (envNum && !envNum.includes("9876543210")) ? envNum : "917208830380";
+  const raw = (envNum && !envNum.includes("9876543210")) ? envNum : STORE_WHATSAPP_NUMBER;
   const cleaned = raw.replace(/[^0-9]/g, "");
   // If user provided a 10-digit Indian mobile number without country code, prepend 91
   if (cleaned.length === 10) {

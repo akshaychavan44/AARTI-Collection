@@ -19,6 +19,10 @@ import {
   AlertCircle,
   Plus,
   Minus,
+  MessageCircle,
+  Clock,
+  Sparkle,
+  Home,
 } from "lucide-react";
 
 interface Variant {
@@ -98,24 +102,24 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
+      <div className="max-w-7xl mx-auto px-4 py-24 text-center">
         <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-rose-500 border-t-transparent mb-4" />
-        <p className="text-slate-600 font-medium">Loading product details...</p>
+        <p className="text-slate-600 font-bold text-sm tracking-wide">Retrieving atelier garment details...</p>
       </div>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+      <div className="max-w-3xl mx-auto px-4 py-20 text-center">
         <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-4">
           <AlertCircle className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Product Not Found</h2>
-        <p className="text-slate-500 text-sm mb-6">{error || "The requested clothing item is no longer available."}</p>
+        <h2 className="text-2xl font-black text-slate-950 mb-2">Garment Not Found</h2>
+        <p className="text-slate-500 text-sm mb-6">{error || "The requested clothing item is no longer available in our collection."}</p>
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-rose-600 text-white font-semibold text-sm shadow-md hover:bg-rose-700"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-rose-600 transition-colors"
         >
           Return to Catalog
         </Link>
@@ -153,7 +157,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
       await addToCart(product.id, matchedVariant.id, quantity);
       setFeedback({
         type: "success",
-        message: `Added ${quantity} item(s) to your cart!`,
+        message: `Added ${quantity} item(s) to your shopping bag!`,
       });
     } catch (err: any) {
       setFeedback({
@@ -170,45 +174,70 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     : [{ id: 0, imageUrl: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=800", altText: product.name, sortOrder: 0 }];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-6">
-        <Link href="/" className="hover:text-rose-600 transition-colors">Home</Link>
-        <ChevronRight className="w-3.5 h-3.5" />
-        <Link href="/products" className="hover:text-rose-600 transition-colors">Catalog</Link>
-        <ChevronRight className="w-3.5 h-3.5" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      {/* Luxury Breadcrumb Navigation */}
+      <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-8 overflow-x-auto pb-1">
+        <Link href="/" className="hover:text-rose-600 transition-colors flex items-center gap-1">
+          <Home className="w-3.5 h-3.5" />
+          <span>Home</span>
+        </Link>
+        <ChevronRight className="w-3.5 h-3.5 text-slate-300 shrink-0" />
+        <Link href="/products" className="hover:text-rose-600 transition-colors shrink-0">
+          Atelier Collection
+        </Link>
+        <ChevronRight className="w-3.5 h-3.5 text-slate-300 shrink-0" />
         {product.category && (
           <>
-            <Link href={`/products?category=${product.category.slug}`} className="hover:text-rose-600 transition-colors">
+            <Link
+              href={`/products?category=${product.category.slug}`}
+              className="hover:text-rose-600 transition-colors shrink-0"
+            >
               {product.category.name}
             </Link>
-            <ChevronRight className="w-3.5 h-3.5" />
+            <ChevronRight className="w-3.5 h-3.5 text-slate-300 shrink-0" />
           </>
         )}
-        <span className="text-slate-900 truncate max-w-xs">{product.name}</span>
+        <span className="text-slate-900 font-bold truncate max-w-xs shrink-0">{product.name}</span>
       </nav>
 
-      {/* Product View Container */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        {/* Left: Product Images Gallery */}
-        <div className="space-y-4">
-          <div className="relative aspect-4/5 rounded-3xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm">
+      {/* Product View Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        {/* Left Column: Image Gallery with 3D Depth Card (5 cols on lg) */}
+        <div className="lg:col-span-6 space-y-4">
+          <div className="relative aspect-4/5 rounded-3xl overflow-hidden bg-white border border-slate-200/80 shadow-xl card-3d">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={imagesList[selectedImageIndex]?.imageUrl || imagesList[0].imageUrl}
               alt={imagesList[selectedImageIndex]?.altText || product.name}
               className="w-full h-full object-cover object-top"
             />
-            {product.isFeatured && (
-              <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-white shadow-xs">
-                Featured
-              </span>
-            )}
-            {product.discountPercentage && (
-              <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-rose-600 text-white shadow-xs">
-                {product.discountPercentage}% OFF
-              </span>
-            )}
+
+            {/* Badges */}
+            <div className="absolute top-4 left-4 flex flex-col gap-2">
+              {product.isFeatured && (
+                <span className="px-3.5 py-1 rounded-full text-xs font-black shimmer-gold text-slate-950 shadow-md">
+                  ✨ Featured Atelier
+                </span>
+              )}
+              {product.discountPercentage && (
+                <span className="px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md">
+                  {product.discountPercentage}% OFF
+                </span>
+              )}
+            </div>
+
+            {/* In-Stock Indicator Pill on Image */}
+            <div className="absolute bottom-4 left-4">
+              {isOutOfStock ? (
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-950/90 text-white backdrop-blur-md">
+                  ● Out of Stock in Selected Variant
+                </span>
+              ) : (
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-600/90 text-white backdrop-blur-md shadow-sm">
+                  ● In Stock in Kalyan Store ({availableStock} units)
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Thumbnail Strip */}
@@ -218,8 +247,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 <button
                   key={img.id || idx}
                   onClick={() => setSelectedImageIndex(idx)}
-                  className={`relative w-20 h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
-                    selectedImageIndex === idx ? "border-rose-600 shadow-sm scale-105" : "border-slate-200 opacity-70 hover:opacity-100"
+                  className={`relative w-20 h-24 rounded-2xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                    selectedImageIndex === idx
+                      ? "border-rose-600 shadow-md scale-105"
+                      : "border-slate-200 opacity-60 hover:opacity-100"
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -230,39 +261,44 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           )}
         </div>
 
-        {/* Right: Product Details & Variant Selectors */}
-        <div className="space-y-6">
-          <div>
-            {/* Meta Tags */}
-            <div className="flex items-center gap-2 mb-2">
+        {/* Right Column: Garment Specs, Variant Selectors & Action Buttons (6 cols on lg) */}
+        <div className="lg:col-span-6 space-y-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm">
+          {/* Header & Badges */}
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
               <span
-                className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
-                  product.gender === "BOYS" ? "bg-blue-50 text-blue-700" : "bg-rose-50 text-rose-700"
+                className={`text-xs font-extrabold px-3 py-1 rounded-full ${
+                  product.gender === "BOYS"
+                    ? "bg-blue-50 text-blue-700 border border-blue-200/60"
+                    : "bg-rose-50 text-rose-700 border border-rose-200/60"
                 }`}
               >
-                {product.gender}
+                {product.gender === "BOYS" ? "👦 Boys Wear" : "👧 Girls Wear"}
               </span>
-              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+
+              <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/60">
                 Age {product.ageGroup} Years
               </span>
-              <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs font-semibold text-slate-500">{product.brand || "Kalyan Kids"}</span>
+
+              <span className="text-xs font-semibold text-slate-400">
+                Brand: <strong className="text-slate-700">{product.brand || "Kalyan Kids Atelier"}</strong>
+              </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight leading-tight">
               {product.name}
             </h1>
 
-            {/* Price section */}
-            <div className="mt-4 flex items-baseline gap-3">
-              <span className="text-3xl font-black text-slate-900">₹{currentPrice}</span>
+            {/* Price Section */}
+            <div className="flex items-baseline gap-3 pt-1">
+              <span className="text-3xl sm:text-4xl font-black text-slate-950">₹{currentPrice}</span>
               {product.compareAtPrice && (
-                <span className="text-base text-slate-400 line-through">
+                <span className="text-lg text-slate-400 line-through">
                   ₹{product.compareAtPrice}
                 </span>
               )}
               {product.discountPercentage && (
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-rose-100 text-rose-700">
+                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
                   Save {product.discountPercentage}%
                 </span>
               )}
@@ -277,12 +313,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           )}
 
           {/* Variant Selector: Size */}
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                Select Size
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                Select Child Size
               </label>
-              <span className="text-xs text-slate-500">Kalyan Standard Fit</span>
+              <span className="text-xs text-slate-500 font-medium">Standard Indian Kid Fit</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {availableSizes.map((size) => {
@@ -291,10 +327,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${
+                    className={`px-4 py-2.5 rounded-xl text-xs font-extrabold border transition-all cursor-pointer ${
                       isSelected
-                        ? "border-rose-600 bg-rose-600 text-white shadow-xs"
-                        : "border-slate-200 bg-white text-slate-800 hover:border-slate-300"
+                        ? "border-slate-900 bg-slate-900 text-white shadow-xs"
+                        : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50"
                     }`}
                   >
                     {size}
@@ -305,9 +341,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           </div>
 
           {/* Variant Selector: Color */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-              Select Color
+          <div className="space-y-2">
+            <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-900">
+              Select Colorway
             </label>
             <div className="flex flex-wrap gap-2">
               {availableColors.map((color) => {
@@ -316,9 +352,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
-                    className={`px-4 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                    className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                       isSelected
-                        ? "border-rose-600 bg-rose-50 text-rose-700 ring-1 ring-rose-500"
+                        ? "border-rose-600 bg-rose-50 text-rose-800 ring-2 ring-rose-500/20 shadow-2xs"
                         : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
                     }`}
                   >
@@ -329,72 +365,79 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
 
-          {/* Stock Status Indicator */}
-          <div className="pt-2">
+          {/* Live Stock Indicator Notice */}
+          <div>
             {isOutOfStock ? (
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg">
-                <AlertCircle className="w-4 h-4" /> Out of Stock in this variant
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-red-700 bg-red-50 border border-red-200 px-3.5 py-2 rounded-xl">
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                <span>Selected variant is currently out of stock. Contact us on WhatsApp for backorder.</span>
               </div>
             ) : availableStock <= (matchedVariant?.lowStockThreshold || 5) ? (
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg">
-                <Sparkles className="w-4 h-4" /> Only {availableStock} left in stock - order soon!
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3.5 py-2 rounded-xl">
+                <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>Only {availableStock} garments left in stock in Kalyan boutique — order soon!</span>
               </div>
             ) : (
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-lg">
-                <Check className="w-4 h-4" /> In Stock ({availableStock} units available)
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-xl">
+                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Available for immediate dispatch / local store pickup</span>
               </div>
             )}
           </div>
 
-          {/* Quantity & CTA Area */}
-          <div className="space-y-4 pt-2">
+          {/* Quantity & CTA Section */}
+          <div className="space-y-4 pt-2 border-t border-slate-100">
             {/* Quantity Selector */}
             <div className="flex items-center gap-4">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+              <label className="text-xs font-extrabold uppercase tracking-wider text-slate-700">
                 Quantity:
               </label>
-              <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-white shadow-2xs">
+              <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50 shadow-2xs">
                 <button
                   type="button"
                   disabled={quantity <= 1 || isOutOfStock}
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2.5 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+                  className="p-2.5 text-slate-600 hover:bg-slate-200 disabled:opacity-30 cursor-pointer"
+                  aria-label="Decrease quantity"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="w-12 text-center text-sm font-bold text-slate-800">
+                <span className="w-12 text-center text-sm font-black text-slate-900">
                   {quantity}
                 </span>
                 <button
                   type="button"
                   disabled={quantity >= availableStock || isOutOfStock}
                   onClick={() => setQuantity(Math.min(availableStock, quantity + 1))}
-                  className="p-2.5 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+                  className="p-2.5 text-slate-600 hover:bg-slate-200 disabled:opacity-30 cursor-pointer"
+                  aria-label="Increase quantity"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-2.5">
+            {/* Action Buttons: Add to Cart, Wishlist, WhatsApp */}
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   disabled={isOutOfStock || actionLoading}
                   onClick={handleAddToCart}
-                  className="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-rose-600 hover:bg-rose-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-sm shadow-md shadow-rose-600/20 transition-all hover:shadow-lg cursor-pointer"
+                  className="flex-1 flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-sm shadow-lg shadow-rose-600/25 transition-all hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
                 >
-                  <ShoppingCart className="w-4 h-4" />
-                  {actionLoading ? "Adding..." : isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                  <ShoppingCart className="w-5 h-5" />
+                  <span>
+                    {actionLoading ? "Adding..." : isOutOfStock ? "Out of Stock" : "Add to Shopping Bag"}
+                  </span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => toggleWishlist(product.id)}
-                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                     isSavedInWishlist
-                      ? "border-rose-600 bg-rose-50 text-rose-600"
+                      ? "border-rose-600 bg-rose-50 text-rose-600 shadow-sm"
                       : "border-slate-200 hover:border-slate-300 text-slate-600 hover:text-rose-600 bg-white"
                   }`}
                   title={isSavedInWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
@@ -403,7 +446,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 </button>
               </div>
 
-              {/* Ask on WhatsApp Button */}
+              {/* Direct WhatsApp Concierge Button */}
               <WhatsAppButton
                 productName={product.name}
                 ageGroup={product.ageGroup}
@@ -411,45 +454,45 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 productCode={matchedVariant?.sku || product.slug}
                 color={selectedColor}
                 size={selectedSize}
-                className="w-full"
+                className="w-full py-4 text-sm font-black rounded-2xl shadow-lg shadow-emerald-500/20"
               />
             </div>
 
-            {/* Feedback Notice */}
+            {/* Feedback Message */}
             {feedback && (
               <div
-                className={`p-3 rounded-xl text-sm font-medium flex items-center justify-between ${
+                className={`p-4 rounded-2xl text-xs font-bold flex items-center justify-between ${
                   feedback.type === "success"
-                    ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                    : "bg-red-50 text-red-800 border border-red-200"
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-200"
+                    : "bg-red-50 text-red-900 border border-red-200"
                 }`}
               >
                 <span>{feedback.message}</span>
                 {feedback.type === "success" && (
-                  <Link href="/cart" className="underline font-bold text-emerald-900 ml-2">
-                    View Cart
+                  <Link href="/cart" className="underline font-black text-emerald-950 ml-2">
+                    View Bag →
                   </Link>
                 )}
               </div>
             )}
           </div>
 
-          {/* Store Promises Badges */}
+          {/* Luxury Store Assurance Badges */}
           <div className="grid grid-cols-3 gap-3 pt-6 border-t border-slate-100 text-center">
-            <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-              <ShieldCheck className="w-5 h-5 text-rose-500 mx-auto" />
-              <div className="text-[11px] font-bold text-slate-800">100% Cotton</div>
-              <div className="text-[10px] text-slate-500">Child-safe fabrics</div>
+            <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
+              <ShieldCheck className="w-5 h-5 text-rose-600 mx-auto" />
+              <div className="text-xs font-bold text-slate-900">100% Cotton</div>
+              <div className="text-[10px] text-slate-500">Pure hypoallergenic</div>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-              <Truck className="w-5 h-5 text-amber-500 mx-auto" />
-              <div className="text-[11px] font-bold text-slate-800">Kalyan Pickup</div>
-              <div className="text-[10px] text-slate-500">Quick local delivery</div>
+            <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
+              <Truck className="w-5 h-5 text-amber-600 mx-auto" />
+              <div className="text-xs font-bold text-slate-900">Kalyan Express</div>
+              <div className="text-[10px] text-slate-500">Same-day pickup</div>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-              <RotateCcw className="w-5 h-5 text-blue-500 mx-auto" />
-              <div className="text-[11px] font-bold text-slate-800">7-Day Return</div>
-              <div className="text-[10px] text-slate-500">Easy size exchange</div>
+            <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
+              <RotateCcw className="w-5 h-5 text-emerald-600 mx-auto" />
+              <div className="text-xs font-bold text-slate-900">7-Day Return</div>
+              <div className="text-[10px] text-slate-500">Easy size swap</div>
             </div>
           </div>
         </div>
