@@ -47,8 +47,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const hasCheckedRef = React.useRef(false);
+
   useEffect(() => {
-    refreshUser();
+    if (!hasCheckedRef.current) {
+      hasCheckedRef.current = true;
+      refreshUser();
+    }
   }, []);
 
   const login = async (email: string, password: string): Promise<User> => {

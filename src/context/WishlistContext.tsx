@@ -81,10 +81,16 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, [isAuthenticated]);
 
+  const hasLoadedRef = React.useRef(false);
+
   useEffect(() => {
     if (isAuthenticated) {
-      refreshWishlist();
+      if (!hasLoadedRef.current) {
+        hasLoadedRef.current = true;
+        refreshWishlist();
+      }
     } else {
+      hasLoadedRef.current = false;
       setWishlist(null);
     }
   }, [isAuthenticated, refreshWishlist]);

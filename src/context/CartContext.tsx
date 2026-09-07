@@ -74,10 +74,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [isAuthenticated]);
 
+  const hasLoadedRef = React.useRef(false);
+
   useEffect(() => {
     if (isAuthenticated) {
-      refreshCart();
+      if (!hasLoadedRef.current) {
+        hasLoadedRef.current = true;
+        refreshCart();
+      }
     } else {
+      hasLoadedRef.current = false;
       setCart(null);
     }
   }, [isAuthenticated, refreshCart]);

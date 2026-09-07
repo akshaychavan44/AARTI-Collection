@@ -41,7 +41,7 @@ app.use(express.urlencoded({ extended: true }));
 // Request logging in development
 if (env.NODE_ENV === "development") {
   app.use((req, _res, next) => {
-    logger.info(`${req.method} ${req.path}`);
+    logger.info(`${req.method} ${req.originalUrl || req.url}`);
     next();
   });
 }

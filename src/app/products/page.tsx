@@ -47,6 +47,9 @@ interface ProductItem {
   overallStockStatus: "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
 }
 
+// In-memory category cache to prevent duplicate network calls across page navigations
+let cachedCategories: Category[] | null = null;
+
 function ProductCatalogContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -54,7 +57,7 @@ function ProductCatalogContent() {
 
   // State
   const [products, setProducts] = useState<ProductItem[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(cachedCategories || []);
   const [loading, setLoading] = useState<boolean>(true);
   const [mobileFilterOpen, setMobileFilterOpen] = useState<boolean>(false);
 
@@ -76,12 +79,30 @@ function ProductCatalogContent() {
     totalPages: 1,
   });
 
+  // Sync state whenever URL searchParams change (e.g., clicking an age link from Home)
+  useEffect(() => {
+    setSearch(searchParams?.get("search") || "");
+    setGender(searchParams?.get("gender") || "");
+    setCategory(searchParams?.get("category") || "");
+    setAgeGroup(searchParams?.get("ageGroup") || "");
+    setMinPrice(searchParams?.get("minPrice") || "");
+    setMaxPrice(searchParams?.get("maxPrice") || "");
+    setAvailability(searchParams?.get("availability") || "all");
+    setSortBy(searchParams?.get("sortBy") || "featured");
+    setPage(parseInt(searchParams?.get("page") || "1", 10));
+  }, [searchParams]);
+
   // Fetch categories once
   useEffect(() => {
+    if (cachedCategories && cachedCategories.length > 0) {
+      setCategories(cachedCategories);
+      return;
+    }
     async function loadCategories() {
       try {
         const res = await api.get<Category[]>("/categories");
         if (res.success && res.data) {
+          cachedCategories = res.data;
           setCategories(res.data);
         }
       } catch (err) {
@@ -141,7 +162,6 @@ function ProductCatalogContent() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
-    fetchProducts();
   };
 
   const hasActiveFilters = Boolean(
