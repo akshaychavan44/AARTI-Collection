@@ -7,7 +7,7 @@ import {
   ShoppingBag,
   Users,
   CheckCircle2,
-  Truck,
+  Store,
   MessageCircle,
   Star,
   Layers,
@@ -106,7 +106,7 @@ export default function Home() {
       location: "Wayle Nagar, Kalyan",
       rating: 5,
       review:
-        "Bought a festival kurta set for my 8-year-old son. Soft inner lining, rich look, and delivered to our doorstep the very same evening. 10/10 recommended for Kalyan parents!",
+        "Bought a festival kurta set for my 8-year-old son. Soft inner lining, rich look, and ready for instant pickup at the shop the very same day. 10/10 recommended for Kalyan parents!",
     },
     {
       name: "Anjali Kulkarni",
@@ -195,8 +195,8 @@ export default function Home() {
                   <span className="text-xs font-semibold text-slate-700">100% Skin-Safe</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-amber-600 shrink-0" />
-                  <span className="text-xs font-semibold text-slate-700">Kalyan Express</span>
+                  <Store className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span className="text-xs font-semibold text-slate-700">Store Pickup</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-rose-600 shrink-0" />

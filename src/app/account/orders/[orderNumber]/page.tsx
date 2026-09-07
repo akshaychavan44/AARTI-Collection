@@ -343,7 +343,7 @@ export default function OrderDetailPage() {
             )}
 
             <div className="flex justify-between text-slate-600">
-              <span>Store Pickup / Delivery</span>
+              <span>Kalyan Store Pickup</span>
               <span className="font-semibold text-emerald-600">FREE</span>
             </div>
 

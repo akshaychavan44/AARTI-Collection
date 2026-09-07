@@ -13,7 +13,7 @@ import {
   Check,
   ChevronRight,
   ShieldCheck,
-  Truck,
+  Store,
   RotateCcw,
   Sparkles,
   AlertCircle,
@@ -380,7 +380,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             ) : (
               <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-xl">
                 <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Available for immediate dispatch / local store pickup</span>
+                <span>Available for immediate Kalyan store pickup</span>
               </div>
             )}
           </div>
@@ -485,9 +485,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
               <div className="text-[10px] text-slate-500">Pure hypoallergenic</div>
             </div>
             <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
-              <Truck className="w-5 h-5 text-amber-600 mx-auto" />
-              <div className="text-xs font-bold text-slate-900">Kalyan Express</div>
-              <div className="text-[10px] text-slate-500">Same-day pickup</div>
+              <Store className="w-5 h-5 text-amber-600 mx-auto" />
+              <div className="text-xs font-bold text-slate-900">Store Pickup</div>
+              <div className="text-[10px] text-slate-500">In-store pickup only</div>
             </div>
             <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
               <RotateCcw className="w-5 h-5 text-emerald-600 mx-auto" />

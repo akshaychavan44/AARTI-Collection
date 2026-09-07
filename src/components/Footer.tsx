@@ -9,7 +9,7 @@ import {
   Phone,
   Clock,
   ShieldCheck,
-  Truck,
+  Store,
   RotateCcw,
   Heart,
   MessageCircle,
@@ -43,11 +43,11 @@ export const Footer: React.FC = () => {
 
             <div className="flex items-center gap-4 p-3 rounded-2xl bg-slate-800/30 border border-slate-750/50">
               <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20">
-                <Truck className="w-6 h-6" />
+                <Store className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-white tracking-wide">Kalyan Express Delivery</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Fast local delivery & boutique pickup</p>
+                <h4 className="text-sm font-bold text-white tracking-wide">In-Store Boutique Pickup</h4>
+                <p className="text-xs text-slate-400 mt-0.5">Convenient pickup at Kalyan West shop</p>
               </div>
             </div>
 

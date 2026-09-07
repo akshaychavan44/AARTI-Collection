@@ -51,7 +51,7 @@ export const Navbar: React.FC = () => {
               <Sparkles className="w-3 h-3" /> Kalyan Atelier
             </span>
             <span className="text-slate-300 text-xs hidden sm:inline">
-              ✨ Free Express Delivery in Kalyan & Dombivli | 100% Skin-Safe Organic Fabrics
+              ✨ In-Store Boutique Pickup in Kalyan West | 100% Skin-Safe Organic Fabrics
             </span>
             <span className="text-slate-300 text-xs sm:hidden">
               ✨ Luxury Kids Boutique • Kalyan
