@@ -14,7 +14,6 @@ import {
   ChevronRight,
   ShieldCheck,
   Store,
-  RotateCcw,
   Sparkles,
   AlertCircle,
   Plus,
@@ -490,9 +489,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
               <div className="text-[10px] text-slate-500">In-store pickup only</div>
             </div>
             <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
-              <RotateCcw className="w-5 h-5 text-emerald-600 mx-auto" />
-              <div className="text-xs font-bold text-slate-900">7-Day Return</div>
-              <div className="text-[10px] text-slate-500">Easy size swap</div>
+              <Sparkles className="w-5 h-5 text-emerald-600 mx-auto" />
+              <div className="text-xs font-bold text-slate-900">Quality Verified</div>
+              <div className="text-[10px] text-slate-500">Kalyan inspected</div>
             </div>
           </div>
         </div>

@@ -61,16 +61,30 @@ function ProductCatalogContent() {
   const [loading, setLoading] = useState<boolean>(true);
   const [mobileFilterOpen, setMobileFilterOpen] = useState<boolean>(false);
 
-  // Filter & Pagination state derived from or synced to URL
-  const [search, setSearch] = useState<string>(searchParams?.get("search") || "");
-  const [gender, setGender] = useState<string>(searchParams?.get("gender") || "");
-  const [category, setCategory] = useState<string>(searchParams?.get("category") || "");
-  const [ageGroup, setAgeGroup] = useState<string>(searchParams?.get("ageGroup") || "");
-  const [minPrice, setMinPrice] = useState<string>(searchParams?.get("minPrice") || "");
-  const [maxPrice, setMaxPrice] = useState<string>(searchParams?.get("maxPrice") || "");
-  const [availability, setAvailability] = useState<string>(searchParams?.get("availability") || "all");
-  const [sortBy, setSortBy] = useState<string>(searchParams?.get("sortBy") || "featured");
-  const [page, setPage] = useState<number>(parseInt(searchParams?.get("page") || "1", 10));
+  // Filter & Pagination derived directly from URL as single source of truth
+  const search = searchParams?.get("search") || "";
+  const gender = searchParams?.get("gender") || "";
+  const category = searchParams?.get("category") || "";
+  const ageGroup = searchParams?.get("ageGroup") || "";
+  const minPrice = searchParams?.get("minPrice") || "";
+  const maxPrice = searchParams?.get("maxPrice") || "";
+  const availability = searchParams?.get("availability") || "all";
+  const sortBy = searchParams?.get("sortBy") || "featured";
+  const page = parseInt(searchParams?.get("page") || "1", 10);
+
+  // Local input buffers so typing remains fluid without lagging
+  const [searchInput, setSearchInput] = useState(search);
+  const [minPriceInput, setMinPriceInput] = useState(minPrice);
+  const [maxPriceInput, setMaxPriceInput] = useState(maxPrice);
+
+  useEffect(() => {
+    setSearchInput(search);
+  }, [search]);
+
+  useEffect(() => {
+    setMinPriceInput(minPrice);
+    setMaxPriceInput(maxPrice);
+  }, [minPrice, maxPrice]);
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -79,18 +93,29 @@ function ProductCatalogContent() {
     totalPages: 1,
   });
 
-  // Sync state whenever URL searchParams change (e.g., clicking an age link from Home)
-  useEffect(() => {
-    setSearch(searchParams?.get("search") || "");
-    setGender(searchParams?.get("gender") || "");
-    setCategory(searchParams?.get("category") || "");
-    setAgeGroup(searchParams?.get("ageGroup") || "");
-    setMinPrice(searchParams?.get("minPrice") || "");
-    setMaxPrice(searchParams?.get("maxPrice") || "");
-    setAvailability(searchParams?.get("availability") || "all");
-    setSortBy(searchParams?.get("sortBy") || "featured");
-    setPage(parseInt(searchParams?.get("page") || "1", 10));
-  }, [searchParams]);
+  // Centralized filter updater syncing to the browser URL
+  const updateFilter = useCallback(
+    (updates: Record<string, string | number | undefined | null>) => {
+      const current = new URLSearchParams(searchParams ? searchParams.toString() : "");
+      Object.entries(updates).forEach(([key, val]) => {
+        if (
+          val === undefined ||
+          val === null ||
+          val === "" ||
+          val === "all" ||
+          (key === "page" && Number(val) === 1) ||
+          (key === "sortBy" && val === "featured")
+        ) {
+          current.delete(key);
+        } else {
+          current.set(key, String(val));
+        }
+      });
+      const query = current.toString();
+      router.replace(query ? `/products?${query}` : "/products", { scroll: false });
+    },
+    [router, searchParams]
+  );
 
   // Fetch categories once
   useEffect(() => {
@@ -112,56 +137,55 @@ function ProductCatalogContent() {
     loadCategories();
   }, []);
 
-  // Fetch products
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const query = new URLSearchParams();
-      if (search) query.set("search", search);
-      if (gender) query.set("gender", gender);
-      if (category) query.set("category", category);
-      if (ageGroup) query.set("ageGroup", ageGroup);
-      if (minPrice) query.set("minPrice", minPrice);
-      if (maxPrice) query.set("maxPrice", maxPrice);
-      if (availability && availability !== "all") query.set("availability", availability);
-      if (sortBy) query.set("sortBy", sortBy);
-      query.set("page", page.toString());
-      query.set("limit", "12");
+  // Fetch products cleanly whenever search parameters change
+  useEffect(() => {
+    let isCancelled = false;
+    async function loadProducts() {
+      setLoading(true);
+      try {
+        const query = new URLSearchParams();
+        if (search) query.set("search", search);
+        if (gender) query.set("gender", gender);
+        if (category) query.set("category", category);
+        if (ageGroup) query.set("ageGroup", ageGroup);
+        if (minPrice) query.set("minPrice", minPrice);
+        if (maxPrice) query.set("maxPrice", maxPrice);
+        if (availability && availability !== "all") query.set("availability", availability);
+        if (sortBy) query.set("sortBy", sortBy);
+        query.set("page", page.toString());
+        query.set("limit", "12");
 
-      const res = await api.get<ProductItem[]>(`/products?${query.toString()}`);
-      if (res.success && res.data) {
-        setProducts(res.data);
-        if (res.pagination) {
-          setPagination(res.pagination);
+        const res = await api.get<ProductItem[]>(`/products?${query.toString()}`);
+        if (!isCancelled && res.success && res.data) {
+          setProducts(res.data);
+          if (res.pagination) {
+            setPagination(res.pagination);
+          }
+        }
+      } catch (err) {
+        if (!isCancelled) {
+          console.error("Failed to load products:", err);
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
         }
       }
-    } catch (err) {
-      console.error("Failed to load products:", err);
-    } finally {
-      setLoading(false);
     }
+
+    loadProducts();
+    return () => {
+      isCancelled = true;
+    };
   }, [search, gender, category, ageGroup, minPrice, maxPrice, availability, sortBy, page]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
   const handleResetFilters = () => {
-    setSearch("");
-    setGender("");
-    setCategory("");
-    setAgeGroup("");
-    setMinPrice("");
-    setMaxPrice("");
-    setAvailability("all");
-    setSortBy("featured");
-    setPage(1);
-    router.push("/products");
+    router.replace("/products", { scroll: false });
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setPage(1);
+    updateFilter({ search: searchInput.trim(), page: 1 });
   };
 
   const hasActiveFilters = Boolean(
@@ -170,53 +194,53 @@ function ProductCatalogContent() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Luxury Editorial Header Banner */}
-      <div className="mb-10 bg-gradient-to-r from-slate-950 via-slate-900 to-rose-950 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-slate-800">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Doodle Canvas Header Banner */}
+      <div className="mb-10 bg-[#fffbf2] rounded-3xl p-8 sm:p-10 text-[#1e1e24] shadow-subtle relative overflow-hidden border border-[#1e1e24]/10">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-[#facc15]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-72 h-72 bg-[#a8d8ea]/25 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-300 text-xs font-bold uppercase tracking-widest">
-            <Sparkles className="w-3.5 h-3.5" /> Kalyan Kids Atelier • 2026 Collection
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#1e1e24]/10 text-[#ff7849] text-xs font-bold uppercase tracking-wider shadow-subtle">
+            <Sparkles className="w-3.5 h-3.5" /> Kalyan Kids • Curated Wardrobe
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-            Curated Kids Fashion Catalog
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1e1e24]">
+            Kids Fashion Catalog
           </h1>
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Discover bespoke frocks, gentleman shirts, lehengas, and organic daily wear. All styles tailored with hypoallergenic fabrics and available for same-day boutique pickup in Kalyan.
+          <p className="text-[#1e1e24]/75 text-sm sm:text-base leading-relaxed">
+            Discover twirl-worthy frocks, shirts, celebration sets, and breathable daily organic wear. Sized for ages 0–16 and available for same-day boutique pickup in Kalyan.
           </p>
 
           {/* Quick Active Filter Badges */}
           {hasActiveFilters && (
             <div className="pt-2 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-slate-400 font-semibold">Active filters:</span>
+              <span className="text-xs text-[#1e1e24]/60 font-semibold">Active filters:</span>
               {gender && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-white backdrop-blur-md">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-[#1e1e24] text-white shadow-subtle">
                   {gender === "BOYS" ? "Boys Wear" : "Girls Wear"}
-                  <button onClick={() => setGender("")} className="hover:text-rose-300 cursor-pointer">
+                  <button onClick={() => updateFilter({ gender: "", page: 1 })} className="hover:text-[#ff7849] cursor-pointer">
                     <X className="w-3 h-3" />
                   </button>
                 </span>
               )}
               {ageGroup && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-white backdrop-blur-md">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-[#1e1e24] text-white shadow-subtle">
                   Age {ageGroup} Yrs
-                  <button onClick={() => setAgeGroup("")} className="hover:text-rose-300 cursor-pointer">
+                  <button onClick={() => updateFilter({ ageGroup: "", page: 1 })} className="hover:text-[#ff7849] cursor-pointer">
                     <X className="w-3 h-3" />
                   </button>
                 </span>
               )}
               {search && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-white backdrop-blur-md">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-[#1e1e24] text-white shadow-subtle">
                   &ldquo;{search}&rdquo;
-                  <button onClick={() => setSearch("")} className="hover:text-rose-300 cursor-pointer">
+                  <button onClick={() => updateFilter({ search: "", page: 1 })} className="hover:text-[#ff7849] cursor-pointer">
                     <X className="w-3 h-3" />
                   </button>
                 </span>
               )}
               <button
                 onClick={handleResetFilters}
-                className="text-xs text-amber-300 hover:text-amber-200 underline underline-offset-2 ml-1 cursor-pointer"
+                className="text-xs text-[#ff7849] hover:underline font-bold ml-1 cursor-pointer"
               >
                 Clear all
               </button>
@@ -237,25 +261,25 @@ function ProductCatalogContent() {
             {mobileFilterOpen ? "Hide Filter Options" : "Filter & Refine Collection"}
           </button>
 
-          <span className="text-xs font-bold text-slate-500">
-            {pagination.total} Garments Found
+          <span className="text-xs font-bold text-[#1e1e24]/60">
+            {pagination.total} Products
           </span>
         </div>
 
-        {/* Sidebar Filters with Glassmorphic Card */}
+        {/* Sidebar Filters */}
         <aside
           className={`${
             mobileFilterOpen ? "block" : "hidden"
-          } lg:block col-span-1 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm mb-8 lg:mb-0 space-y-6 sticky top-24`}
+          } lg:block col-span-1 bg-white p-6 rounded-3xl border border-[#1e1e24]/10 shadow-subtle mb-8 lg:mb-0 space-y-6 sticky top-28`}
         >
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-            <h2 className="font-extrabold text-slate-900 flex items-center gap-2 text-sm uppercase tracking-wider">
-              <Filter className="w-4 h-4 text-rose-600" /> Refine Wardrobe
+          <div className="flex items-center justify-between border-b border-[#1e1e24]/10 pb-4">
+            <h2 className="font-extrabold text-[#1e1e24] flex items-center gap-2 text-sm uppercase tracking-wider">
+              <Filter className="w-4 h-4 text-[#ff7849]" /> Filters
             </h2>
             {hasActiveFilters && (
               <button
                 onClick={handleResetFilters}
-                className="text-xs font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#ff7849] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <RotateCcw className="w-3 h-3" /> Reset
               </button>
@@ -264,25 +288,25 @@ function ProductCatalogContent() {
 
           {/* Search Input */}
           <div>
-            <label className="block text-xs font-extrabold uppercase text-slate-500 mb-2 tracking-wider">
-              Search by Style
+            <label className="block text-xs font-extrabold uppercase text-[#1e1e24]/60 mb-2 tracking-wider">
+              Search Products
             </label>
             <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Frock, shirt, lehenga..."
-                className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-slate-50/50"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Search shirts, frocks, jeans..."
+                className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-[#1e1e24]/15 focus:outline-none focus:ring-2 focus:ring-[#ff7849]/20 focus:border-[#ff7849] bg-[#f6efe2]/30"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-[#1e1e24]/40 absolute left-3 top-3" />
             </form>
           </div>
 
           {/* Gender Filter */}
           <div>
-            <label className="block text-xs font-extrabold uppercase text-slate-500 mb-2 tracking-wider">
-              Child Department
+            <label className="block text-xs font-extrabold uppercase text-[#1e1e24]/60 mb-2 tracking-wider">
+              Department
             </label>
             <div className="grid grid-cols-3 gap-1.5">
               {[
@@ -292,14 +316,11 @@ function ProductCatalogContent() {
               ].map((g) => (
                 <button
                   key={g.label}
-                  onClick={() => {
-                    setGender(g.val);
-                    setPage(1);
-                  }}
-                  className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  onClick={() => updateFilter({ gender: g.val, page: 1 })}
+                  className={`py-2 px-3 rounded-full text-xs font-bold transition-all cursor-pointer ${
                     gender === g.val
-                      ? "bg-slate-900 text-white shadow-xs"
-                      : "bg-slate-100/80 text-slate-700 hover:bg-slate-200/70"
+                      ? "bg-[#1e1e24] text-white shadow-subtle"
+                      : "bg-[#f6efe2] text-[#1e1e24] hover:bg-[#1e1e24]/10"
                   }`}
                 >
                   {g.label}
@@ -310,7 +331,7 @@ function ProductCatalogContent() {
 
           {/* Age Group Filter */}
           <div>
-            <label className="block text-xs font-extrabold uppercase text-slate-500 mb-2 tracking-wider">
+            <label className="block text-xs font-extrabold uppercase text-[#1e1e24]/60 mb-2 tracking-wider">
               Age Group (Years)
             </label>
             <div className="grid grid-cols-2 gap-1.5">
@@ -323,14 +344,11 @@ function ProductCatalogContent() {
               ].map((age) => (
                 <button
                   key={age.val}
-                  onClick={() => {
-                    setAgeGroup(ageGroup === age.val ? "" : age.val);
-                    setPage(1);
-                  }}
+                  onClick={() => updateFilter({ ageGroup: ageGroup === age.val ? "" : age.val, page: 1 })}
                   className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                     ageGroup === age.val
-                      ? "bg-rose-50 border-rose-500 text-rose-700 shadow-2xs"
-                      : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300"
+                      ? "bg-[#ff7849] border-[#ff7849] text-[#1e1e24] shadow-subtle"
+                      : "bg-white border-[#1e1e24]/15 text-[#1e1e24] hover:bg-[#f6efe2]"
                   }`}
                 >
                   {age.label}
@@ -347,10 +365,7 @@ function ProductCatalogContent() {
               </label>
               <select
                 value={category}
-                onChange={(e) => {
-                  setCategory(e.target.value);
-                  setPage(1);
-                }}
+                onChange={(e) => updateFilter({ category: e.target.value, page: 1 })}
                 className="w-full text-xs rounded-xl border border-slate-200 px-3 py-2.5 bg-slate-50/50 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 cursor-pointer"
               >
                 <option value="">All Categories</option>
@@ -372,20 +387,22 @@ function ProductCatalogContent() {
               <input
                 type="number"
                 placeholder="Min ₹"
-                value={minPrice}
-                onChange={(e) => {
-                  setMinPrice(e.target.value);
-                  setPage(1);
+                value={minPriceInput}
+                onChange={(e) => setMinPriceInput(e.target.value)}
+                onBlur={() => updateFilter({ minPrice: minPriceInput, page: 1 })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") updateFilter({ minPrice: minPriceInput, page: 1 });
                 }}
                 className="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-slate-50/50"
               />
               <input
                 type="number"
                 placeholder="Max ₹"
-                value={maxPrice}
-                onChange={(e) => {
-                  setMaxPrice(e.target.value);
-                  setPage(1);
+                value={maxPriceInput}
+                onChange={(e) => setMaxPriceInput(e.target.value)}
+                onBlur={() => updateFilter({ maxPrice: maxPriceInput, page: 1 })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") updateFilter({ maxPrice: maxPriceInput, page: 1 });
                 }}
                 className="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-slate-50/50"
               />
@@ -403,10 +420,7 @@ function ProductCatalogContent() {
                   type="radio"
                   name="availability"
                   checked={availability === "all"}
-                  onChange={() => {
-                    setAvailability("all");
-                    setPage(1);
-                  }}
+                  onChange={() => updateFilter({ availability: "all", page: 1 })}
                   className="text-rose-600 focus:ring-rose-500"
                 />
                 All Collection Items
@@ -416,10 +430,7 @@ function ProductCatalogContent() {
                   type="radio"
                   name="availability"
                   checked={availability === "in_stock"}
-                  onChange={() => {
-                    setAvailability("in_stock");
-                    setPage(1);
-                  }}
+                  onChange={() => updateFilter({ availability: "in_stock", page: 1 })}
                   className="text-rose-600 focus:ring-rose-500"
                 />
                 In Stock in Kalyan Only
@@ -431,32 +442,29 @@ function ProductCatalogContent() {
         {/* Catalog Grid Area */}
         <section className="col-span-3 space-y-6">
           {/* Top Sort & Count Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 sm:px-6 rounded-2xl border border-slate-200/80 shadow-xs">
-            <div className="text-xs text-slate-600 font-semibold">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 sm:px-6 rounded-2xl border border-[#1e1e24]/10 shadow-subtle">
+            <div className="text-xs text-[#1e1e24]/70 font-semibold">
               Showing{" "}
-              <span className="font-extrabold text-slate-900">
+              <span className="font-extrabold text-[#1e1e24]">
                 {products.length}
               </span>{" "}
-              of <span className="font-extrabold text-slate-900">{pagination.total}</span> handcrafted designs
+              of <span className="font-extrabold text-[#1e1e24]">{pagination.total}</span> products
             </div>
 
             <div className="flex items-center gap-2">
-              <label className="text-xs font-extrabold uppercase text-slate-500 whitespace-nowrap">
-                Sort Order:
+              <label className="text-xs font-extrabold uppercase text-[#1e1e24]/60 whitespace-nowrap">
+                Sort By:
               </label>
               <select
                 value={sortBy}
-                onChange={(e) => {
-                  setSortBy(e.target.value);
-                  setPage(1);
-                }}
-                className="text-xs rounded-xl border border-slate-200 px-3 py-2 bg-white text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 cursor-pointer"
+                onChange={(e) => updateFilter({ sortBy: e.target.value, page: 1 })}
+                className="text-xs rounded-xl border border-[#1e1e24]/15 px-3 py-2 bg-white text-[#1e1e24] font-bold focus:outline-none focus:ring-2 focus:ring-[#ff7849]/20 focus:border-[#ff7849] cursor-pointer"
               >
-                <option value="featured">Featured Atelier First</option>
+                <option value="featured">Featured</option>
                 <option value="newest">Newest Arrivals</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="price_desc">Price: High to Low</option>
-                <option value="name_asc">Alphabetical: A to Z</option>
+                <option value="name_asc">Name: A to Z</option>
               </select>
             </div>
           </div>
@@ -503,26 +511,26 @@ function ProductCatalogContent() {
                 return (
                   <div
                     key={product.id}
-                    className="group bg-white rounded-3xl border border-slate-200/80 hover:border-rose-300 shadow-xs hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden relative card-3d"
+                    className="group bg-white rounded-3xl border border-[#1e1e24]/10 hover:border-[#ff7849] shadow-subtle hover:shadow-card transition-all duration-300 flex flex-col overflow-hidden relative doodle-sticker"
                   >
                     {/* Image Area with Badges & Wishlist Button */}
-                    <div className="relative aspect-4/5 bg-slate-100 overflow-hidden">
+                    <div className="relative aspect-4/5 bg-[#f6efe2] overflow-hidden">
                       <Link href={`/products/${product.slug}`}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={primaryImage}
                           alt={product.name}
-                          className="w-full h-full object-cover object-top group-hover:scale-108 transition-transform duration-700 ease-out"
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
                         />
                       </Link>
 
                       {/* Wishlist Button */}
                       <button
                         onClick={() => toggleWishlist(product.id)}
-                        className={`absolute top-3 right-3 p-2.5 rounded-full backdrop-blur-md transition-all shadow-md cursor-pointer ${
+                        className={`absolute top-3 right-3 p-2.5 rounded-full backdrop-blur-md transition-all shadow-subtle cursor-pointer ${
                           isSaved
-                            ? "bg-rose-600 text-white shadow-rose-600/30"
-                            : "bg-white/85 text-slate-700 hover:text-rose-600 hover:bg-white"
+                            ? "bg-[#ff7849] text-white shadow-[#ff7849]/30"
+                            : "bg-white/90 text-[#1e1e24] hover:text-[#ff7849] hover:bg-white"
                         }`}
                         title={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
                       >
@@ -532,12 +540,12 @@ function ProductCatalogContent() {
                       {/* Badges: Featured & Discount */}
                       <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
                         {product.isFeatured && (
-                          <span className="px-3 py-0.5 rounded-full text-[10px] font-extrabold shimmer-gold text-slate-950 shadow-md">
+                          <span className="px-3 py-0.5 rounded-full text-[10px] font-extrabold bg-[#facc15] text-[#1e1e24] shadow-subtle">
                             Featured
                           </span>
                         )}
                         {hasDiscount && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#22c55e] text-white shadow-subtle">
                             {product.discountPercentage}% OFF
                           </span>
                         )}
@@ -546,7 +554,7 @@ function ProductCatalogContent() {
                       {/* Stock Status Badge */}
                       <div className="absolute bottom-3 left-3">
                         {product.overallStockStatus === "OUT_OF_STOCK" ? (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-slate-900/90 text-white backdrop-blur-md">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#1e1e24]/90 text-white backdrop-blur-md">
                             ● Out of Stock
                           </span>
                         ) : product.overallStockStatus === "LOW_STOCK" ? (
@@ -569,14 +577,14 @@ function ProductCatalogContent() {
                           <span
                             className={
                               product.gender === "BOYS"
-                                ? "text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md"
-                                : "text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md"
+                                ? "text-sky-800 bg-[#a8d8ea]/40 px-2.5 py-0.5 rounded-full"
+                                : "text-pink-800 bg-[#f4a7b9]/40 px-2.5 py-0.5 rounded-full"
                             }
                           >
                             {product.gender}
                           </span>
-                          <span className="text-slate-300">•</span>
-                          <span className="text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
+                          <span className="text-[#1e1e24]/20">•</span>
+                          <span className="text-[#1e1e24]/70 bg-[#f6efe2] px-2.5 py-0.5 rounded-full">
                             Age {product.ageGroup} Yrs
                           </span>
                         </div>
@@ -584,28 +592,28 @@ function ProductCatalogContent() {
                         {/* Product Title */}
                         <Link
                           href={`/products/${product.slug}`}
-                          className="font-extrabold text-slate-950 hover:text-rose-600 transition-colors line-clamp-1 text-base tracking-tight"
+                          className="font-extrabold text-[#1e1e24] hover:text-[#ff7849] transition-colors line-clamp-1 text-base tracking-tight"
                         >
                           {product.name}
                         </Link>
 
-                        <p className="text-[11px] font-semibold text-slate-400 mt-0.5 uppercase tracking-wider">
-                          {product.brand || "Kalyan Kids Atelier"}
+                        <p className="text-[11px] font-semibold text-[#1e1e24]/50 mt-0.5 uppercase tracking-wider">
+                          {product.brand || "Kalyan Kids Boutique"}
                         </p>
                       </div>
 
                       {/* Price & Action Section */}
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                      <div className="pt-3 border-t border-[#1e1e24]/10 flex items-center justify-between gap-2">
                         <div>
                           <div className="flex items-baseline gap-1.5">
-                            <span className="text-lg font-black text-slate-950">
+                            <span className="text-lg font-black text-[#1e1e24]">
                               ₹
                               {product.priceRange.min === product.priceRange.max
                                 ? product.priceRange.min
                                 : `${product.priceRange.min} - ₹${product.priceRange.max}`}
                             </span>
                             {product.compareAtPrice && (
-                              <span className="text-xs text-slate-400 line-through">
+                              <span className="text-xs text-[#1e1e24]/40 line-through">
                                 ₹{product.compareAtPrice}
                               </span>
                             )}
@@ -624,7 +632,7 @@ function ProductCatalogContent() {
 
                           <Link
                             href={`/products/${product.slug}`}
-                            className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-rose-600 text-white text-xs font-bold transition-all shadow-2xs hover:shadow-sm"
+                            className="btn-bouncy px-4 py-2 rounded-full bg-[#1e1e24] hover:bg-[#ff7849] hover:text-[#1e1e24] text-white text-xs font-bold transition-all shadow-subtle"
                           >
                             View
                           </Link>
@@ -642,7 +650,7 @@ function ProductCatalogContent() {
             <div className="flex items-center justify-center gap-2 pt-8 pb-4">
               <button
                 disabled={page <= 1}
-                onClick={() => setPage(page - 1)}
+                onClick={() => updateFilter({ page: page - 1 })}
                 className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors cursor-pointer"
                 aria-label="Previous Page"
               >
@@ -653,7 +661,7 @@ function ProductCatalogContent() {
               </div>
               <button
                 disabled={page >= pagination.totalPages}
-                onClick={() => setPage(page + 1)}
+                onClick={() => updateFilter({ page: page + 1 })}
                 className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors cursor-pointer"
                 aria-label="Next Page"
               >
@@ -669,7 +677,7 @@ function ProductCatalogContent() {
 
 export default function ProductCatalogPage() {
   return (
-    <Suspense fallback={<div className="p-16 text-center text-slate-500 font-medium">Loading Atelier catalog...</div>}>
+    <Suspense fallback={<div className="p-16 text-center text-[#1e1e24]/60 font-medium">Loading products...</div>}>
       <ProductCatalogContent />
     </Suspense>
   );

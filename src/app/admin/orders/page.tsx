@@ -55,12 +55,20 @@ export default function AdminOrdersPage() {
       if (orderStatus !== "all") params.append("status", orderStatus);
       if (paymentStatus !== "all") params.append("paymentStatus", paymentStatus);
 
-      const res = await api.get<AdminOrderItem[]>(`/admin/orders?${params.toString()}`);
+      const res = await api.get<any>(`/admin/orders?${params.toString()}`);
       if (res.success && res.data) {
-        setOrders(res.data);
+        const ordList = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray((res.data as any).orders)
+          ? (res.data as any).orders
+          : [];
+        setOrders(ordList);
+      } else {
+        setOrders([]);
       }
     } catch (err: any) {
       setError(err.message || "Failed to load customer orders");
+      setOrders([]);
     } finally {
       setLoading(false);
     }
@@ -203,39 +211,49 @@ export default function AdminOrdersPage() {
       )}
 
       {/* Orders Table */}
-      <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs">
-        {loading && orders.length === 0 ? (
-          <div className="py-20 text-center">
-            <Loader2 className="w-8 h-8 animate-spin text-rose-500 mx-auto mb-4" />
-            <p className="text-xs text-slate-400">Loading order receipts...</p>
-          </div>
-        ) : orders.length === 0 ? (
-          <div className="py-16 text-center space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
-              <PackageCheck className="w-6 h-6" />
+      {(() => {
+        const safeOrders = Array.isArray(orders) ? orders : [];
+        if (loading && safeOrders.length === 0) {
+          return (
+            <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs py-20 text-center">
+              <Loader2 className="w-8 h-8 animate-spin text-rose-500 mx-auto mb-4" />
+              <p className="text-xs text-slate-400">Loading order receipts...</p>
             </div>
-            <h2 className="text-sm font-bold text-slate-900">No Orders Found</h2>
-            <p className="text-xs text-slate-400 max-w-sm mx-auto">
-              No orders matched your selected filters or search parameters.
-            </p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="bg-slate-50/70 border-b border-slate-100 text-slate-400 uppercase tracking-wider text-[10px]">
-                  <th className="py-3.5 px-4 font-semibold">Order #</th>
-                  <th className="py-3.5 px-4 font-semibold">Customer</th>
-                  <th className="py-3.5 px-4 font-semibold">Date</th>
-                  <th className="py-3.5 px-4 font-semibold">Items</th>
-                  <th className="py-3.5 px-4 font-semibold">Total</th>
-                  <th className="py-3.5 px-4 font-semibold">Order Status</th>
-                  <th className="py-3.5 px-4 font-semibold">Payment</th>
-                  <th className="py-3.5 px-4 font-semibold text-right">Details</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-700">
-                {orders.map((ord) => {
+          );
+        }
+
+        if (safeOrders.length === 0) {
+          return (
+            <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs py-16 text-center space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                <PackageCheck className="w-6 h-6" />
+              </div>
+              <h2 className="text-sm font-bold text-slate-900">No Orders Found</h2>
+              <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                No orders matched your selected filters or search parameters.
+              </p>
+            </div>
+          );
+        }
+
+        return (
+          <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="bg-slate-50/70 border-b border-slate-100 text-slate-400 uppercase tracking-wider text-[10px]">
+                    <th className="py-3.5 px-4 font-semibold">Order #</th>
+                    <th className="py-3.5 px-4 font-semibold">Customer</th>
+                    <th className="py-3.5 px-4 font-semibold">Date</th>
+                    <th className="py-3.5 px-4 font-semibold">Items</th>
+                    <th className="py-3.5 px-4 font-semibold">Total</th>
+                    <th className="py-3.5 px-4 font-semibold">Order Status</th>
+                    <th className="py-3.5 px-4 font-semibold">Payment</th>
+                    <th className="py-3.5 px-4 font-semibold text-right">Details</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-700">
+                  {safeOrders.map((ord) => {
                   const dateFormatted = new Date(ord.createdAt).toLocaleDateString("en-IN", {
                     day: "numeric",
                     month: "short",
@@ -293,8 +311,9 @@ export default function AdminOrdersPage() {
               </tbody>
             </table>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      );
+    })()}
+  </div>
   );
 }

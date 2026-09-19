@@ -18,7 +18,19 @@ export const createVariantSchema = z.object({
  * Validation schema for a single product image
  */
 export const createImageSchema = z.object({
-  imageUrl: z.string().url({ message: "imageUrl must be a valid URL" }),
+  imageUrl: z
+    .string()
+    .trim()
+    .min(1, { message: "imageUrl is required" })
+    .refine(
+      (val) =>
+        val.startsWith("http://") ||
+        val.startsWith("https://") ||
+        val.startsWith("/") ||
+        val.startsWith("./") ||
+        val.startsWith("data:"),
+      { message: "Image must be a valid URL (http/https) or path starting with /" }
+    ),
   altText: z.string().trim().max(255).optional(),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
@@ -67,7 +79,19 @@ export const updateVariantSchema = z.object({
  */
 export const updateImageSchema = z.object({
   id: z.coerce.number().int().positive().optional(),
-  imageUrl: z.string().url({ message: "imageUrl must be a valid URL" }),
+  imageUrl: z
+    .string()
+    .trim()
+    .min(1, { message: "imageUrl is required" })
+    .refine(
+      (val) =>
+        val.startsWith("http://") ||
+        val.startsWith("https://") ||
+        val.startsWith("/") ||
+        val.startsWith("./") ||
+        val.startsWith("data:"),
+      { message: "Image must be a valid URL (http/https) or path starting with /" }
+    ),
   altText: z.string().trim().max(255).optional(),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });

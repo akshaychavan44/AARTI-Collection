@@ -62,12 +62,20 @@ export default function OrderHistoryPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await api.get<{ orders: OrderSummary[] }>("/orders");
+      const res = await api.get<OrderSummary[] | { orders: OrderSummary[] }>("/orders");
       if (res.success && res.data) {
-        setOrders(res.data.orders);
+        const orderList = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray((res.data as any).orders)
+          ? (res.data as any).orders
+          : [];
+        setOrders(orderList);
+      } else {
+        setOrders([]);
       }
     } catch (err: any) {
       setError(err.message || "Failed to load orders");
+      setOrders([]);
     } finally {
       setLoading(false);
     }
@@ -130,7 +138,9 @@ export default function OrderHistoryPage() {
     }
   };
 
-  if (authLoading || (loading && orders.length === 0)) {
+  const safeOrders = Array.isArray(orders) ? orders : [];
+
+  if (authLoading || (loading && safeOrders.length === 0)) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-20 text-center">
         <Loader2 className="w-8 h-8 animate-spin text-rose-500 mx-auto mb-4" />
@@ -189,7 +199,7 @@ export default function OrderHistoryPage() {
         </div>
       )}
 
-      {orders.length === 0 ? (
+      {safeOrders.length === 0 ? (
         <div className="bg-white rounded-3xl border border-slate-200/80 p-12 text-center space-y-4 shadow-xs">
           <div className="w-20 h-20 rounded-3xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto shadow-inner">
             <Package className="w-10 h-10" />
@@ -209,7 +219,7 @@ export default function OrderHistoryPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {orders.map((order) => {
+          {safeOrders.map((order) => {
             const formattedDate = new Date(order.createdAt).toLocaleDateString("en-IN", {
               day: "numeric",
               month: "short",
@@ -250,7 +260,7 @@ export default function OrderHistoryPage() {
                 <div className="py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   {/* Thumbnails of items */}
                   <div className="flex items-center gap-3 overflow-x-auto max-w-full pb-1">
-                    {order.items.slice(0, 4).map((item) => (
+                    {(order.items || []).slice(0, 4).map((item) => (
                       <div
                         key={item.id}
                         className="relative w-14 h-16 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden shrink-0"
@@ -272,7 +282,7 @@ export default function OrderHistoryPage() {
                         )}
                       </div>
                     ))}
-                    {order.items.length > 4 && (
+                    {(order.items || []).length > 4 && (
                       <div className="w-14 h-16 rounded-lg bg-slate-50 border border-dashed border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-500 shrink-0">
                         +{order.items.length - 4} more
                       </div>

@@ -183,7 +183,7 @@ async function seed() {
         isFeatured: true,
         description: "Graceful festive lehenga choli set adorned with gold foil ethnic motifs and matching net dupatta with lace borders.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800", altText: "Festive Lehenga Choli front", sortOrder: 0 },
+          { imageUrl: "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=800", altText: "Festive Lehenga Choli front", sortOrder: 0 },
         ],
         variants: [
           { size: "6-7Y", color: "Magenta", price: "1699.00", sku: "GRL-ETH-LHN-MG-67", stock: 9, threshold: 3 },
@@ -204,7 +204,7 @@ async function seed() {
         isFeatured: false,
         description: "Charming casual A-line sleeveless summer dress with classic polka dots, flutter sleeves, and breathable cotton fabric.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800", altText: "Polka dot dress model", sortOrder: 0 },
+          { imageUrl: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800", altText: "Polka dot dress model", sortOrder: 0 },
         ],
         variants: [
           { size: "10-11Y", color: "Red", price: "799.00", sku: "GRL-DRS-POLK-RD-1011", stock: 15, threshold: 4 },
@@ -225,7 +225,7 @@ async function seed() {
         isFeatured: true,
         description: "Warm and trendy insulated puffer jacket with detachable fleece-lined hood, wind-resistant shell, and dual zipper pockets.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1548883354-7622d03aca27?w=800", altText: "Boys puffer jacket", sortOrder: 0 },
+          { imageUrl: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800", altText: "Boys puffer jacket", sortOrder: 0 },
         ],
         variants: [
           { size: "14-15Y", color: "Black/Grey", price: "1899.00", sku: "BOY-JCK-PUFF-BG-1415", stock: 7, threshold: 2 },
@@ -244,12 +244,69 @@ async function seed() {
         isFeatured: false,
         description: "Ultra-soft certified organic cotton one-piece romper with nickel-free snaps for effortless diaper changes.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800", altText: "Baby cotton romper", sortOrder: 0 },
+          { imageUrl: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800", altText: "Baby cotton romper suit", sortOrder: 0 },
         ],
         variants: [
           { size: "0-6M", color: "Sky Blue", price: "399.00", sku: "BOY-RMP-ORG-SB-06M", stock: 25, threshold: 5 },
           { size: "6-12M", color: "Sky Blue", price: "449.00", sku: "BOY-RMP-ORG-SB-612M", stock: 16, threshold: 5 },
           { size: "12-18M", color: "Sky Blue", price: "449.00", sku: "BOY-RMP-ORG-SB-1218M", stock: 1, threshold: 5 }, // LOW_STOCK
+        ],
+      },
+      // Product 9: Teen Boys Plaid Flannel Overshirt & Denim Jeans Set (14-16 age group)
+      {
+        name: "Teen Boys Plaid Flannel Overshirt & Denim Set",
+        slug: "teen-boys-plaid-flannel-overshirt-denim-set",
+        categoryKey: "BOYS_Shirts",
+        gender: "BOYS" as const,
+        ageGroup: "14-16" as const,
+        brand: "Urban Kids",
+        compareAtPrice: "1899.00",
+        isFeatured: true,
+        description: "Premium brushed cotton plaid flannel button-down overshirt paired with an inner white cotton crewneck tee and tailored stretch denim. Designed specifically for teenage boys aged 14 to 16.",
+        images: [
+          { imageUrl: "/images/products/teen-boy-flannel-shirt-jeans.jpg", altText: "Teen boys plaid flannel overshirt and denim set", sortOrder: 0 },
+        ],
+        variants: [
+          { size: "14-15Y", color: "Olive Green/Navy", price: "1299.00", sku: "BOY-SET-FLAN-OL-1415", stock: 12, threshold: 3 },
+          { size: "15-16Y", color: "Olive Green/Navy", price: "1399.00", sku: "BOY-SET-FLAN-OL-1516", stock: 8, threshold: 3 },
+        ],
+      },
+      // Product 10: Teen Girls Floral Smocked Tiered Midi Dress (14-16 age group)
+      {
+        name: "Teen Girls Floral Smocked Tiered Midi Dress",
+        slug: "teen-girls-floral-smocked-tiered-midi-dress",
+        categoryKey: "GIRLS_Dresses",
+        gender: "GIRLS" as const,
+        ageGroup: "14-16" as const,
+        brand: "Princess Bloom",
+        compareAtPrice: "1999.00",
+        isFeatured: true,
+        description: "Chic pastel lilac floral print tiered midi dress featuring an elasticated smocked bodice, flutter cap sleeves, and cropped washed denim jacket pairing. Styled for teenage girls aged 14 to 16.",
+        images: [
+          { imageUrl: "/images/products/teen-girl-floral-smocked-dress.jpg", altText: "Teen girls floral smocked tiered midi dress", sortOrder: 0 },
+        ],
+        variants: [
+          { size: "14-15Y", color: "Lavender Lilac", price: "1499.00", sku: "GRL-DRS-FLOR-LV-1415", stock: 15, threshold: 4 },
+          { size: "15-16Y", color: "Lavender Lilac", price: "1599.00", sku: "GRL-DRS-FLOR-LV-1516", stock: 10, threshold: 4 },
+        ],
+      },
+      // Product 11: Teen Girls Ribbed Polo Top & Linen Wide-Leg Trouser Set (14-16 age group)
+      {
+        name: "Teen Girls Ribbed Polo & Linen Trouser Set",
+        slug: "teen-girls-ribbed-polo-linen-trouser-set",
+        categoryKey: "GIRLS_Tops",
+        gender: "GIRLS" as const,
+        ageGroup: "14-16" as const,
+        brand: "Urban Kids",
+        compareAtPrice: "1799.00",
+        isFeatured: false,
+        description: "Casual chic aesthetic featuring a sage green ribbed polo shirt with embroidered floral accent and relaxed-fit beige linen-blend utility trousers with drawstring waist. Designed for girls aged 14 to 16.",
+        images: [
+          { imageUrl: "/images/products/teen-girl-ribbed-polo-trouser-set.jpg", altText: "Teen girls ribbed polo and linen trouser set", sortOrder: 0 },
+        ],
+        variants: [
+          { size: "14-15Y", color: "Sage Green/Beige", price: "1199.00", sku: "GRL-SET-POLO-SG-1415", stock: 14, threshold: 3 },
+          { size: "15-16Y", color: "Sage Green/Beige", price: "1299.00", sku: "GRL-SET-POLO-SG-1516", stock: 6, threshold: 3 },
         ],
       },
     ];

@@ -85,7 +85,7 @@ export default function ProfilePage() {
           My Account Profile
         </h1>
         <p className="text-sm text-slate-500 mt-1">
-          Manage your personal details, role privileges, and Kalyan Kids account settings.
+          Manage your personal details and account settings.
         </p>
       </div>
 
@@ -111,33 +111,12 @@ export default function ProfilePage() {
             {user.name.charAt(0).toUpperCase()}
           </div>
           <h2 className="text-lg font-bold text-slate-900">{user.name}</h2>
-          <p className="text-xs text-slate-500 mb-4">{user.email}</p>
+          <p className="text-xs text-slate-500 mb-6">{user.email}</p>
 
-          <div className="w-full flex items-center justify-center gap-2 mb-6">
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
-                user.role === "ADMIN"
-                  ? "bg-amber-100 text-amber-800 border border-amber-200"
-                  : "bg-rose-50 text-rose-700 border border-rose-200"
-              }`}
-            >
-              <Shield className="w-3.5 h-3.5" />
-              {user.role} ACCOUNT
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-              Active
-            </span>
-          </div>
-
-          <div className="w-full pt-6 border-t border-slate-100 text-left text-xs space-y-2 text-slate-600">
+          <div className="w-full pt-4 border-t border-slate-100 text-left text-xs text-slate-600">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-slate-400" />
               <span>Joined: {joinDate}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-slate-400" />
-              <span>User ID: #{user.id}</span>
             </div>
           </div>
 
@@ -236,25 +215,6 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Role & Privileges */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                Role & Access Privileges
-              </label>
-              <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/50 space-y-2 text-xs">
-                <div className="flex items-center gap-2 text-slate-700 font-semibold">
-                  <span>Role:</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800">
-                    {user.role}
-                  </span>
-                </div>
-                <p className="text-slate-500 leading-relaxed">
-                  {user.role === "ADMIN"
-                    ? "You have full administrator privileges to create, update, and delete categories and products, and manage inventory."
-                    : "You are a customer. You can browse all kids categories, filter products, and manage your account details."}
-                </p>
-              </div>
-            </div>
 
             {isEditing && (
               <div className="pt-2">

@@ -325,7 +325,7 @@ export default function CartPage() {
               </div>
               <div className="text-xs">
                 <div className="font-extrabold text-slate-900">Pure Organic Cottons</div>
-                <div className="text-slate-500">100% gentle on kids skin with zero harsh dyes</div>
+                <div className="text-slate-500">100% breathable quality cotton fabrics</div>
               </div>
             </div>
           </div>

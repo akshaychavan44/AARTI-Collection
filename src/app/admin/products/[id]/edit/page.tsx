@@ -49,7 +49,7 @@ const SAMPLE_IMAGES = [
   { label: "Girl Summer Dress", url: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800" },
   { label: "Denim / Casual", url: "https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=800" },
   { label: "Winter Jacket", url: "https://images.unsplash.com/photo-1548883354-7622d03aca27?w=800" },
-  { label: "Baby Romper", url: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800" },
+  { label: "Baby Romper", url: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800" },
 ];
 
 export default function EditProductPage() {

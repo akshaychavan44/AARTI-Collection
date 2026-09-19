@@ -81,9 +81,10 @@ export default function OrderDetailPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await api.get<{ order: OrderDetail }>(`/orders/${orderNumber}`);
+      const res = await api.get<any>(`/orders/${orderNumber}`);
       if (res.success && res.data) {
-        setOrder(res.data.order);
+        const orderData = res.data.order || res.data;
+        setOrder(orderData);
       }
     } catch (err: any) {
       setError(err.message || "Failed to load order details");
@@ -97,9 +98,10 @@ export default function OrderDetailPage() {
     try {
       setCancelling(true);
       setError(null);
-      const res = await api.post<{ order: OrderDetail }>(`/orders/${order.orderNumber}/cancel`);
+      const res = await api.post<any>(`/orders/${order.orderNumber}/cancel`);
       if (res.success && res.data) {
-        setOrder(res.data.order);
+        const orderData = res.data.order || res.data;
+        setOrder(orderData);
         setShowCancelModal(false);
         setCancelSuccessMsg("Your order has been successfully cancelled. Any reserved stock has been restored.");
       }

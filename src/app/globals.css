@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafaf9;
-  --foreground: #0f172a;
+  --background: #fffdfa;
+  --foreground: #1e1e24;
+  --doodle-canvas: #fffbf2;
+  --doodle-stitch: #f6efe2;
+  --doodle-ink: #1e1e24;
+  --doodle-orange: #ff7849;
+  --doodle-pink: #f4a7b9;
+  --doodle-blue: #a8d8ea;
+  --doodle-yellow: #facc15;
+  --doodle-purple: #c084fc;
+  --doodle-red: #f43f5e;
+  --doodle-green: #22c55e;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
@@ -21,114 +31,133 @@ html {
 }
 
 body {
-  background-color: #fafaf9;
-  color: #0f172a;
+  background-color: #fffdfa;
+  color: #1e1e24;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   overflow-x: hidden;
 }
 
-/* Custom Luxury Scrollbar */
+/* Custom Friendly Doodle Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f6efe2;
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #ff7849;
 }
 
 /* Selection Highlight */
 ::selection {
-  background-color: #ffe4e6;
-  color: #be123c;
+  background-color: #fef08a;
+  color: #1e1e24;
 }
 
-/* Luxury Glassmorphism & Depth Utilities */
-.luxury-glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05);
+/* Doodle Card Shadows & Borders */
+.shadow-card {
+  box-shadow: 0 4px 14px -2px rgba(30, 30, 36, 0.07), 0 2px 6px -1px rgba(30, 30, 36, 0.04);
 }
 
-.luxury-glass-dark {
-  background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+.shadow-card-hover {
+  box-shadow: 0 12px 28px -4px rgba(30, 30, 36, 0.12), 0 4px 10px -2px rgba(30, 30, 36, 0.06);
 }
 
-.perspective-1000 {
-  perspective: 1000px;
+.shadow-subtle {
+  box-shadow: 0 1px 3px 0 rgba(30, 30, 36, 0.05);
 }
 
-/* 3D Interactive Card Lift */
-.card-3d {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-style: preserve-3d;
-  will-change: transform, box-shadow;
+.border-stitch {
+  border: 1.5px dashed rgba(30, 30, 36, 0.16);
 }
 
-.card-3d:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 25px 35px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(244, 63, 94, 0.1);
+/* Clean Floating Navigation with Solid Canvas Background */
+.doodle-nav {
+  background: #fffdfa;
+  border-bottom: 1px solid rgba(30, 30, 36, 0.08);
+  box-shadow: 0 2px 10px -2px rgba(30, 30, 36, 0.05);
 }
 
-/* Subtle Shimmer & Metallic Glow */
-@keyframes shimmerGold {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.shimmer-gold {
-  background: linear-gradient(
-    90deg,
-    rgba(217, 119, 6, 0.9) 0%,
-    rgba(251, 191, 36, 1) 50%,
-    rgba(217, 119, 6, 0.9) 100%
-  );
-  background-size: 200% auto;
-  animation: shimmerGold 4s linear infinite;
-}
-
-@keyframes pulseSubtle {
+/* Subtle Micro-Animations & Wiggles */
+@keyframes doodleFloat {
   0%, 100% {
-    opacity: 1;
-    transform: scale(1);
+    transform: translateY(0px) rotate(0deg);
   }
   50% {
-    opacity: 0.85;
-    transform: scale(1.02);
+    transform: translateY(-6px) rotate(1deg);
   }
 }
 
-.animate-pulse-subtle {
-  animation: pulseSubtle 3s ease-in-out infinite;
+.animate-doodle-float {
+  animation: doodleFloat 5s ease-in-out infinite;
 }
 
-/* Ambient Radial Mesh Backgrounds */
-.bg-radial-luxury {
-  background-image: 
-    radial-gradient(at 10% 15%, rgba(254, 205, 211, 0.35) 0px, transparent 50%),
-    radial-gradient(at 90% 10%, rgba(254, 240, 138, 0.25) 0px, transparent 50%),
-    radial-gradient(at 50% 80%, rgba(241, 245, 249, 0.6) 0px, transparent 50%);
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
-.bg-radial-hero {
-  background-image:
-    radial-gradient(at 0% 0%, rgba(254, 205, 211, 0.4) 0px, transparent 60%),
-    radial-gradient(at 100% 0%, rgba(253, 230, 138, 0.3) 0px, transparent 60%),
-    radial-gradient(at 50% 100%, rgba(243, 232, 255, 0.3) 0px, transparent 60%);
+.animate-gentle-bounce {
+  animation: gentleBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes pulsePill {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.92;
+  }
+}
+
+.animate-pulse-pill {
+  animation: pulsePill 3s ease-in-out infinite;
+}
+
+/* Doodle Grid Texture */
+.bg-doodle-grid {
+  background-image: radial-gradient(rgba(30, 30, 36, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Doodle Sticker Card */
+.doodle-sticker {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+.doodle-sticker:hover {
+  transform: translateY(-4px) rotate(-1deg) scale(1.01);
+  box-shadow: 0 14px 30px -6px rgba(30, 30, 36, 0.12);
+}
+
+/* Button Tap Feedback */
+.btn-bouncy {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-bouncy:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-bouncy:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
