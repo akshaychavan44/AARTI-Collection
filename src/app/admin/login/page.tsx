@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
+  KeyRound,
 } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -34,6 +35,28 @@ export default function AdminLoginPage() {
       router.push("/admin");
     }
   }, [isAuthenticated, isAdmin, authLoading, router]);
+
+  const handleInstantDemoLogin = async () => {
+    setEmail("admin@kalyankids.com");
+    setPassword("Admin@12345");
+    setError(null);
+    try {
+      setSubmitting(true);
+      const user = await login("admin@kalyankids.com", "Admin@12345");
+      if (user.role !== "ADMIN") {
+        setError("Access denied. This account does not possess administrator privileges.");
+        return;
+      }
+      setSuccessMsg("Signed in as Demo Admin. Opening admin panel...");
+      setTimeout(() => {
+        router.push("/admin");
+      }, 400);
+    } catch (err: any) {
+      setError(err.message || "Failed to log in as demo admin.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,8 +182,8 @@ export default function AdminLoginPage() {
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="pt-2">
+          {/* Action Buttons */}
+          <div className="pt-2 space-y-2.5">
             <button
               type="submit"
               disabled={submitting}
@@ -177,6 +200,18 @@ export default function AdminLoginPage() {
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
+            </button>
+
+            {/* 1-Click Demo Admin Access for Seniors / Reviewers */}
+            <button
+              type="button"
+              disabled={submitting}
+              onClick={handleInstantDemoLogin}
+              className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 text-amber-400 hover:text-amber-300 text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+              title="Instantly sign in with demo admin credentials"
+            >
+              <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+              <span>1-Click Demo Admin Access</span>
             </button>
           </div>
         </form>
