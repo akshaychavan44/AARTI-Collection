@@ -107,27 +107,27 @@ export default function Home() {
   )}`;
 
   return (
-    <div className="bg-[#fffdfa] text-[#1e1e24] overflow-hidden">
-      {/* 1. HERO SECTION - Inspired by Doodle by Canvas */}
-      <section className="relative overflow-hidden border-b border-[#1e1e24]/10 bg-[#fffbf2]">
-        {/* Subtle Doodle Grid Background */}
+    <div className="bg-[#FAF9F6] text-stone-900 overflow-hidden">
+      {/* 1. HERO SECTION - Prototype Alabaster Soft Cream */}
+      <section className="relative overflow-hidden border-b border-stone-200 bg-[#F5F4F0]">
+        {/* Subtle Warm Grid Background */}
         <div className="absolute inset-0 bg-doodle-grid opacity-60 pointer-events-none" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f6efe2] border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
-                <span className="h-2 w-2 rounded-full bg-[#ff7849] animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-stone-200 text-xs font-semibold text-stone-900 shadow-subtle">
+                <span className="h-2 w-2 rounded-full bg-stone-900 animate-pulse" />
                 <span>Aarti Collection</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#1e1e24] leading-[1.05]">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-stone-900 leading-[1.05]">
                 Comfortable Clothes for <br />
-                <span className="relative inline-block text-[#ff7849]">
+                <span className="relative inline-block text-stone-900">
                   Everyday Play & Parties.
                   <svg
-                    className="absolute -bottom-2 left-0 w-full h-3 text-[#facc15]"
+                    className="absolute -bottom-2 left-0 w-full h-3 text-amber-400"
                     viewBox="0 0 200 12"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +142,7 @@ export default function Home() {
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-[#1e1e24]/75 max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg text-stone-600 max-w-xl leading-relaxed">
                 Durable, soft cotton clothes crafted for growing boys and girls. Perfect for school, playground fun, family gatherings, and festivals.
               </p>
 
@@ -151,7 +151,7 @@ export default function Home() {
                 <Link
                   href="/products"
                   prefetch={true}
-                  className="btn-bouncy inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#ff7849] hover:bg-[#ff7849]/90 text-[#1e1e24] font-bold text-sm shadow-card hover:shadow-card-hover"
+                  className="btn-bouncy inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-stone-900 hover:bg-stone-800 text-white font-bold text-sm shadow-card hover:shadow-card-hover"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>Shop All Clothes</span>
@@ -162,7 +162,7 @@ export default function Home() {
                   href={conciergeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-bouncy inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#f6efe2] border border-[#1e1e24]/15 text-[#1e1e24] font-bold text-sm shadow-subtle"
+                  className="btn-bouncy inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#EFECE6] border border-stone-300 text-stone-900 font-bold text-sm shadow-subtle"
                 >
                   <MessageCircle className="w-4 h-4 text-emerald-600" />
                   <span>WhatsApp Inquiries</span>
@@ -171,27 +171,27 @@ export default function Home() {
 
               {/* Trust Pill Chips */}
               <div className="flex flex-wrap items-center gap-2 pt-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-stone-200 text-xs font-semibold text-stone-800 shadow-subtle">
                   <Check className="w-3.5 h-3.5 text-emerald-600" /> Pure Breathable Cotton
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-stone-200 text-xs font-semibold text-stone-800 shadow-subtle">
                   <Smile className="w-3.5 h-3.5 text-amber-500" /> Sized for Ages 0–16
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-stone-200 text-xs font-semibold text-stone-800 shadow-subtle">
                   <MapPin className="w-3.5 h-3.5 text-rose-500" /> Store Pickup & Fast Delivery
                 </span>
               </div>
             </div>
 
-            {/* Right Outfit Showcase Card with Doodle Badges */}
+            {/* Right Outfit Showcase Card */}
             <div className="lg:col-span-5 relative">
-              {/* Decorative pastel background blobs */}
-              <div className="absolute -top-4 -right-4 w-48 h-48 rounded-3xl bg-[#facc15]/30 -rotate-6 pointer-events-none" />
-              <div className="absolute -bottom-4 -left-4 w-44 h-44 rounded-3xl bg-[#a8d8ea]/30 rotate-6 pointer-events-none" />
+              {/* Decorative warm background accents */}
+              <div className="absolute -top-4 -right-4 w-48 h-48 rounded-3xl bg-stone-200/50 -rotate-6 pointer-events-none" />
+              <div className="absolute -bottom-4 -left-4 w-44 h-44 rounded-3xl bg-[#EFECE6] rotate-6 pointer-events-none" />
 
               {/* Main Showcase Frame */}
-              <div className="relative rounded-3xl bg-white p-4 sm:p-5 border border-[#1e1e24]/10 shadow-card">
-                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#f6efe2]">
+              <div className="relative rounded-3xl bg-white p-4 sm:p-5 border border-stone-200 shadow-card">
+                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#EFECE6]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&q=90&w=1100"
@@ -200,19 +200,19 @@ export default function Home() {
                   />
 
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e24]/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-                  {/* Floating Doodle Badge Top Right */}
+                  {/* Floating Badge Top Right */}
                   <div className="absolute top-4 right-4 animate-doodle-float">
-                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#facc15] text-[#1e1e24] text-xs font-extrabold shadow-card rotate-3">
-                      <Sparkles className="w-3.5 h-3.5" /> 100% Kid Approved
+                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-900 text-white text-xs font-bold shadow-card rotate-3">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400" /> 100% Kid Approved
                     </span>
                   </div>
 
                   {/* Floating Badge Bottom Left */}
                   <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-white">
                     <div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#facc15]">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300">
                         The Festive Edit
                       </span>
                       <h3 className="text-xl font-extrabold leading-tight">
@@ -225,7 +225,7 @@ export default function Home() {
 
                     <Link
                       href="/products?gender=GIRLS"
-                      className="px-3.5 py-2 rounded-full bg-white text-[#1e1e24] text-xs font-bold shadow-card hover:bg-[#ff7849] hover:text-[#1e1e24] transition-colors shrink-0"
+                      className="px-3.5 py-2 rounded-full bg-white text-stone-900 text-xs font-bold shadow-card hover:bg-stone-900 hover:text-white transition-colors shrink-0"
                     >
                       Explore
                     </Link>
@@ -238,21 +238,21 @@ export default function Home() {
       </section>
 
       {/* 2. SHOP BY DEPARTMENT / CATEGORY LANES */}
-      <section className="py-16 sm:py-20 bg-[#fffdfa]">
+      <section className="py-16 sm:py-20 bg-[#FAF9F6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-[#ff7849]">
+              <span className="text-xs font-bold uppercase tracking-wider text-stone-500">
                 Collections
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e1e24] tracking-tight mt-1">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight mt-1">
                 Shop by Category
               </h2>
             </div>
             <Link
               href="/products"
               prefetch={true}
-              className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1e1e24] hover:text-[#ff7849] transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-800 hover:text-stone-950 transition-colors"
             >
               <span>View all collections</span>
               <ChevronRight className="w-4 h-4" />
@@ -265,9 +265,9 @@ export default function Home() {
                 key={cat.title}
                 href={cat.href}
                 prefetch={true}
-                className="doodle-sticker group rounded-3xl bg-white border border-[#1e1e24]/10 overflow-hidden shadow-subtle flex flex-col justify-between"
+                className="doodle-sticker group rounded-3xl bg-white border border-stone-200 overflow-hidden shadow-subtle flex flex-col justify-between"
               >
-                <div className="relative aspect-[4/3] overflow-hidden bg-[#f6efe2]">
+                <div className="relative aspect-[4/3] overflow-hidden bg-[#EFECE6]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={cat.image}
@@ -275,7 +275,7 @@ export default function Home() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute top-3 left-3">
-                    <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[11px] font-extrabold text-[#1e1e24] shadow-subtle">
+                    <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[11px] font-extrabold text-stone-900 shadow-subtle">
                       {cat.badge}
                     </span>
                   </div>
@@ -283,17 +283,17 @@ export default function Home() {
 
                 <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-lg font-extrabold text-[#1e1e24] group-hover:text-[#ff7849] transition-colors">
+                    <h3 className="text-lg font-extrabold text-stone-900 group-hover:text-stone-700 transition-colors">
                       {cat.title}
                     </h3>
-                    <p className="text-xs text-[#1e1e24]/65 mt-1 leading-relaxed">
+                    <p className="text-xs text-stone-500 mt-1 leading-relaxed">
                       {cat.subtitle}
                     </p>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#1e1e24]/5">
-                    <span className="text-xs font-bold text-[#ff7849]">Browse Outfits</span>
-                    <span className="w-8 h-8 rounded-full bg-[#f6efe2] group-hover:bg-[#ff7849] group-hover:text-[#1e1e24] flex items-center justify-center transition-colors">
+                  <div className="mt-4 flex items-center justify-between pt-3 border-t border-stone-100">
+                    <span className="text-xs font-bold text-stone-800">Browse Outfits</span>
+                    <span className="w-8 h-8 rounded-full bg-[#EFECE6] group-hover:bg-stone-900 group-hover:text-white flex items-center justify-center transition-colors">
                       <ArrowUpRight className="w-4 h-4" />
                     </span>
                   </div>
@@ -304,17 +304,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. SHOP BY AGE */}
-      <section className="py-14 bg-[#fffbf2] border-y border-[#1e1e24]/10">
+      {/* 4. SHOP BY AGE - Warm Linen Contrast Section */}
+      <section className="py-14 bg-[#EFECE6] border-y border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff7849]">
+            <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
               Age Filter
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1e1e24] tracking-tight mt-1">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight mt-1">
               Shop by Age Group
             </h2>
-            <p className="text-xs sm:text-sm text-[#1e1e24]/70 mt-1">
+            <p className="text-xs sm:text-sm text-stone-600 mt-1">
               Perfect fitting clothes for every age from newborn to teenagers.
             </p>
           </div>
@@ -331,15 +331,15 @@ export default function Home() {
                 key={slot.age}
                 href={`/products?ageGroup=${slot.query}`}
                 prefetch={true}
-                className="doodle-sticker p-4 rounded-2xl bg-white border border-[#1e1e24]/10 text-center shadow-subtle group hover:border-[#ff7849]"
+                className="doodle-sticker p-4 rounded-2xl bg-white border border-stone-200 text-center shadow-subtle group hover:border-stone-900 transition-all"
               >
-                <div className="text-2xl font-black text-[#1e1e24] group-hover:text-[#ff7849] transition-colors">
+                <div className="text-2xl font-black text-stone-900 group-hover:text-stone-700 transition-colors">
                   {slot.age}
                 </div>
-                <div className="text-[11px] font-bold uppercase text-[#1e1e24]/50 mt-0.5">
+                <div className="text-[11px] font-bold uppercase text-stone-400 mt-0.5">
                   Years
                 </div>
-                <div className="text-xs text-[#1e1e24]/70 mt-1 font-medium">
+                <div className="text-xs text-stone-600 mt-1 font-medium">
                   {slot.label}
                 </div>
               </Link>
@@ -349,21 +349,21 @@ export default function Home() {
       </section>
 
       {/* 5. BESTSELLERS GRID */}
-      <section className="py-16 sm:py-20 bg-[#fffdfa]">
+      <section className="py-16 sm:py-20 bg-[#FAF9F6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-[#ff7849]">
+              <span className="text-xs font-bold uppercase tracking-wider text-stone-500">
                 Parent Favorites
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e1e24] tracking-tight mt-1">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight mt-1">
                 Bestselling Picks
               </h2>
             </div>
             <Link
               href="/products"
               prefetch={true}
-              className="btn-bouncy inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f6efe2] hover:bg-[#ff7849] hover:text-[#1e1e24] text-xs font-bold transition-all shadow-subtle"
+              className="btn-bouncy inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white hover:bg-[#EFECE6] border border-stone-200 text-stone-900 text-xs font-bold transition-all shadow-subtle"
             >
               <span>Explore All Garments</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -379,9 +379,9 @@ export default function Home() {
               return (
                 <div
                   key={item.id}
-                  className="doodle-sticker rounded-3xl bg-white border border-[#1e1e24]/10 overflow-hidden shadow-subtle flex flex-col justify-between"
+                  className="doodle-sticker rounded-3xl bg-white border border-stone-200 overflow-hidden shadow-subtle flex flex-col justify-between"
                 >
-                  <div className="relative aspect-square overflow-hidden bg-[#f6efe2]">
+                  <div className="relative aspect-square overflow-hidden bg-stone-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.image}
@@ -391,14 +391,14 @@ export default function Home() {
 
                     {/* Badge */}
                     <div className="absolute top-3 left-3">
-                      <span className="px-2.5 py-1 rounded-full bg-[#ff7849] text-[#1e1e24] text-[10px] font-black uppercase tracking-wider shadow-subtle">
+                      <span className="px-2.5 py-1 rounded-full bg-stone-900 text-white text-[10px] font-bold uppercase tracking-wider shadow-subtle">
                         {item.tag}
                       </span>
                     </div>
 
                     {/* Discount Pill */}
                     <div className="absolute top-3 right-3">
-                      <span className="px-2 py-0.5 rounded-full bg-[#22c55e] text-white text-[10px] font-extrabold">
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-700 text-white text-[10px] font-extrabold">
                         {item.discount}
                       </span>
                     </div>
@@ -412,21 +412,21 @@ export default function Home() {
                         ))}
                       </div>
 
-                      <span className="text-[11px] font-bold uppercase text-[#1e1e24]/50">
+                      <span className="text-[11px] font-bold uppercase text-stone-400">
                         {item.category}
                       </span>
 
-                      <h3 className="text-sm font-extrabold text-[#1e1e24] mt-0.5 line-clamp-2">
+                      <h3 className="text-sm font-extrabold text-stone-900 mt-0.5 line-clamp-2">
                         {item.name}
                       </h3>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-[#1e1e24]/5 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-base font-extrabold text-[#1e1e24]">
+                        <span className="text-base font-extrabold text-stone-900">
                           ₹{item.price}
                         </span>
-                        <span className="text-xs text-[#1e1e24]/40 line-through">
+                        <span className="text-xs text-stone-400 line-through">
                           ₹{item.compareAtPrice}
                         </span>
                       </div>
@@ -436,7 +436,7 @@ export default function Home() {
                         target="_blank"
                         rel="noopener noreferrer"
                         title="Inquire on WhatsApp"
-                        className="p-2 rounded-full bg-[#22c55e]/15 hover:bg-[#22c55e]/25 text-emerald-700 transition-colors"
+                        className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors"
                       >
                         <MessageCircle className="w-4 h-4" />
                       </a>
@@ -450,16 +450,16 @@ export default function Home() {
       </section>
 
       {/* 6. REAL REVIEWS FROM HAPPY PARENTS */}
-      <section className="py-16 sm:py-20 bg-[#fffbf2] border-t border-[#1e1e24]/10">
+      <section className="py-16 sm:py-20 bg-[#F5F4F0] border-t border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-xl mx-auto mb-12">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff7849]">
+            <span className="text-xs font-bold uppercase tracking-wider text-stone-500">
               Verified Feedback
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e1e24] tracking-tight mt-1">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight mt-1">
               Loved by Families
             </h2>
-            <p className="text-xs sm:text-sm text-[#1e1e24]/70 mt-1">
+            <p className="text-xs sm:text-sm text-stone-600 mt-1">
               Real reviews from moms and dads in Kalyan and across India who trust us with their little ones’ outfits.
             </p>
           </div>
@@ -490,7 +490,7 @@ export default function Home() {
             ].map((review) => (
               <div
                 key={review.author}
-                className="doodle-sticker p-6 rounded-3xl bg-white border border-[#1e1e24]/10 shadow-subtle flex flex-col justify-between"
+                className="doodle-sticker p-6 rounded-3xl bg-white border border-stone-200 shadow-subtle flex flex-col justify-between"
               >
                 <div>
                   <div className="flex gap-1 text-amber-500 mb-3">
@@ -498,14 +498,14 @@ export default function Home() {
                       <Star key={i} className="w-4 h-4 fill-current" />
                     ))}
                   </div>
-                  <p className="text-sm text-[#1e1e24]/85 leading-relaxed">
+                  <p className="text-sm text-stone-700 leading-relaxed">
                     “{review.quote}”
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#1e1e24]/10 flex items-center justify-between text-xs">
-                  <span className="font-extrabold text-[#1e1e24]">{review.author}</span>
-                  <span className="text-[#1e1e24]/50">{review.location}</span>
+                <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs">
+                  <span className="font-extrabold text-stone-900">{review.author}</span>
+                  <span className="text-stone-500">{review.location}</span>
                 </div>
               </div>
             ))}
@@ -514,15 +514,15 @@ export default function Home() {
       </section>
 
       {/* 7. BOUTIQUE CONCIERGE CALLOUT BANNER */}
-      <section className="py-14 bg-[#1e1e24] text-white">
+      <section className="py-14 bg-stone-950 text-white border-t border-stone-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#facc15]/20 text-[#facc15] text-xs font-bold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" /> Need Sizing Advice?
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-900 border border-stone-800 text-stone-200 text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Need Sizing Advice?
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
             Chat Directly with Aarti Collection Stylist
           </h2>
-          <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+          <p className="text-sm sm:text-base text-stone-400 max-w-xl mx-auto">
             Not sure about the size or fabric? Message us directly on WhatsApp for personalized styling and sizing advice.
           </p>
           <div className="pt-2">
@@ -530,9 +530,9 @@ export default function Home() {
               href={conciergeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-bouncy inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#22c55e] hover:bg-[#22c55e]/90 text-white font-bold text-sm shadow-card"
+              className="btn-bouncy inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-stone-100 text-stone-900 font-bold text-sm shadow-card"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 text-emerald-600" />
               <span>Message on WhatsApp (+91 72088 30380)</span>
             </a>
           </div>

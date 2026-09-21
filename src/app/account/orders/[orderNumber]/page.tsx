@@ -172,8 +172,8 @@ export default function OrderDetailPage() {
   if (authLoading || loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <Loader2 className="w-8 h-8 animate-spin text-rose-500 mx-auto mb-4" />
-        <p className="text-slate-500 text-sm">Retrieving order details...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-stone-900 mx-auto mb-4" />
+        <p className="text-stone-600 text-sm">Retrieving order details...</p>
       </div>
     );
   }
@@ -184,14 +184,14 @@ export default function OrderDetailPage() {
         <div className="w-16 h-16 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto">
           <AlertCircle className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900">Order Not Found</h1>
-        <p className="text-slate-500 text-sm max-w-md mx-auto">
+        <h1 className="text-2xl font-bold text-stone-900">Order Not Found</h1>
+        <p className="text-stone-600 text-sm max-w-md mx-auto">
           {error || "We couldn't locate this order under your account."}
         </p>
         <div className="pt-2">
           <Link
             href="/account/orders"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-md"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-sm shadow-card"
           >
             <ArrowLeft className="w-4 h-4" /> Back to My Orders
           </Link>
@@ -217,7 +217,7 @@ export default function OrderDetailPage() {
       <div className="mb-6">
         <Link
           href="/account/orders"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 hover:text-stone-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Order History
         </Link>
@@ -231,24 +231,24 @@ export default function OrderDetailPage() {
       )}
 
       {order.status === "CANCELLED" && (
-        <div className="mb-6 p-4 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 text-sm flex items-center gap-3">
-          <XCircle className="w-5 h-5 text-slate-500 shrink-0" />
+        <div className="mb-6 p-4 rounded-2xl bg-[#EFECE6] border border-stone-200 text-stone-700 text-sm flex items-center gap-3">
+          <XCircle className="w-5 h-5 text-stone-500 shrink-0" />
           <span>This order was cancelled. Any reserved items have been restored to catalog inventory.</span>
         </div>
       )}
 
       {/* Main Order Header Card */}
-      <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xs mb-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+      <div className="bg-white rounded-3xl border border-stone-200 p-6 sm:p-8 shadow-sm mb-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-stone-100">
           <div>
-            <div className="text-xs uppercase font-semibold text-slate-400 tracking-wider">
+            <div className="text-xs uppercase font-semibold text-stone-400 tracking-wider">
               Order Receipt
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight mt-1">
+            <h1 className="text-2xl sm:text-3xl font-black text-stone-900 font-mono tracking-tight mt-1">
               {order.orderNumber}
             </h1>
-            <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            <div className="flex items-center gap-1.5 text-xs text-stone-500 mt-1">
+              <Calendar className="w-3.5 h-3.5 text-stone-400" />
               <span>Placed on {formattedDate}</span>
             </div>
           </div>
@@ -261,15 +261,15 @@ export default function OrderDetailPage() {
 
         {/* Itemized Products Table */}
         <div className="space-y-4">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider">
             Ordered Items ({order.items.length})
           </h2>
 
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-stone-100">
             {order.items.map((item) => (
               <div key={item.id} className="py-4 flex items-center gap-4">
                 {/* Image */}
-                <div className="w-16 h-20 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0">
+                <div className="w-16 h-20 rounded-xl bg-[#EFECE6] border border-stone-200 overflow-hidden shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={
@@ -283,20 +283,20 @@ export default function OrderDetailPage() {
 
                 {/* Details */}
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-slate-900 text-sm sm:text-base truncate">
+                  <div className="font-bold text-stone-900 text-sm sm:text-base truncate">
                     {item.productName}
                   </div>
-                  <div className="text-xs text-slate-500 mt-0.5">
+                  <div className="text-xs text-stone-500 mt-0.5">
                     {item.variantInfo}
                   </div>
-                  <div className="text-xs text-slate-400 mt-1">
+                  <div className="text-xs text-stone-400 mt-1">
                     ₹{item.price} × {item.quantity} {item.quantity === 1 ? "unit" : "units"}
                   </div>
                 </div>
 
                 {/* Line Total */}
                 <div className="text-right">
-                  <div className="font-extrabold text-slate-900 text-sm sm:text-base">
+                  <div className="font-extrabold text-stone-900 text-sm sm:text-base">
                     ₹{item.total}
                   </div>
                 </div>
@@ -306,33 +306,33 @@ export default function OrderDetailPage() {
         </div>
 
         {/* Financial Breakdown */}
-        <div className="pt-6 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="space-y-3 text-xs text-slate-600 bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
-            <div className="font-bold text-slate-800 text-sm flex items-center gap-1.5">
-              <CreditCard className="w-4 h-4 text-slate-500" /> Payment & Fulfillment
+        <div className="pt-6 border-t border-stone-100 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="space-y-3 text-xs text-stone-600 bg-[#FAF9F6] p-4 rounded-2xl border border-stone-200">
+            <div className="font-bold text-stone-800 text-sm flex items-center gap-1.5">
+              <CreditCard className="w-4 h-4 text-stone-500" /> Payment & Fulfillment
             </div>
             <div className="space-y-1.5">
               <div className="flex justify-between">
                 <span>Method:</span>
-                <span className="font-medium text-slate-900">Razorpay Secure Online</span>
+                <span className="font-medium text-stone-900">Razorpay Secure Online</span>
               </div>
               {order.paymentId && (
                 <div className="flex justify-between">
                   <span>Payment ID:</span>
-                  <span className="font-mono text-slate-900">{order.paymentId}</span>
+                  <span className="font-mono text-stone-900">{order.paymentId}</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span>Fulfillment:</span>
-                <span className="font-medium text-slate-900">Store Pickup (Free)</span>
+                <span className="font-medium text-stone-900">Store Pickup (Free)</span>
               </div>
             </div>
           </div>
 
           <div className="space-y-2.5 text-sm">
-            <div className="flex justify-between text-slate-600">
+            <div className="flex justify-between text-stone-600">
               <span>Items Subtotal</span>
-              <span className="font-semibold text-slate-900">₹{order.subtotal}</span>
+              <span className="font-semibold text-stone-900">₹{order.subtotal}</span>
             </div>
 
             {order.discount > 0 && (
@@ -344,22 +344,22 @@ export default function OrderDetailPage() {
               </div>
             )}
 
-            <div className="flex justify-between text-slate-600">
+            <div className="flex justify-between text-stone-600">
               <span>Store Pickup</span>
               <span className="font-semibold text-emerald-600">FREE</span>
             </div>
 
-            <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline">
-              <span className="text-base font-bold text-slate-900">Grand Total</span>
-              <span className="text-2xl font-black text-rose-600">₹{order.total}</span>
+            <div className="pt-3 border-t border-stone-200 flex justify-between items-baseline">
+              <span className="text-base font-bold text-stone-900">Grand Total</span>
+              <span className="text-2xl font-black text-stone-900">₹{order.total}</span>
             </div>
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-slate-400" />
+        <div className="pt-6 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-xs text-stone-500">
+            <ShieldCheck className="w-4 h-4 text-stone-400" />
             <span>Aarti Collection Store Guarantee • Quality Fabrics & Kids Comfort</span>
           </div>
 
@@ -376,7 +376,7 @@ export default function OrderDetailPage() {
 
             <Link
               href="/products"
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold text-center transition-colors"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold text-center transition-colors shadow-card"
             >
               Order Again
             </Link>
@@ -404,7 +404,7 @@ export default function OrderDetailPage() {
                 type="button"
                 disabled={cancelling}
                 onClick={() => setShowCancelModal(false)}
-                className="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 cursor-pointer disabled:opacity-50"
+                className="flex-1 py-2.5 px-4 rounded-xl border border-stone-200 text-stone-700 text-xs font-semibold hover:bg-[#EFECE6] cursor-pointer disabled:opacity-50"
               >
                 Keep Order
               </button>

@@ -64,15 +64,15 @@ function ResetPasswordContent() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 sm:p-10">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-stone-200 p-8 sm:p-10">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3">
+          <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] text-stone-800 flex items-center justify-center mx-auto mb-3 border border-stone-200">
             <KeyRound className="w-6 h-6" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
             Set New Password
           </h1>
-          <p className="text-sm text-slate-500 mt-2">
+          <p className="text-sm text-stone-600 mt-2">
             Create a secure password for your Aarti Collection account.
           </p>
         </div>
@@ -94,7 +94,7 @@ function ResetPasswordContent() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Reset Token */}
           <div>
-            <label htmlFor="token" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="token" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               Reset Token
             </label>
             <input
@@ -104,17 +104,17 @@ function ResetPasswordContent() {
               onChange={(e) => setToken(e.target.value)}
               placeholder="Paste your reset token here"
               required
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm font-mono text-slate-900 placeholder:text-slate-400 transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm font-mono text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
             />
           </div>
 
           {/* New Password */}
           <div>
-            <label htmlFor="newPassword" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="newPassword" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               New Password (min. 6 chars)
             </label>
             <div className="relative">
-              <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="newPassword"
                 type={showPassword ? "text" : "password"}
@@ -122,12 +122,12 @@ function ResetPasswordContent() {
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+                className="w-full pl-11 pr-11 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1 cursor-pointer"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -136,11 +136,11 @@ function ResetPasswordContent() {
 
           {/* Confirm New Password */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="confirmPassword" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               Confirm New Password
             </label>
             <div className="relative">
-              <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="confirmPassword"
                 type={showPassword ? "text" : "password"}
@@ -148,7 +148,7 @@ function ResetPasswordContent() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
               />
             </div>
           </div>
@@ -157,7 +157,7 @@ function ResetPasswordContent() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium text-sm shadow-md shadow-rose-600/25 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <>
@@ -172,7 +172,7 @@ function ResetPasswordContent() {
         </form>
 
         <div className="text-center mt-6 text-sm">
-          <Link href="/login" className="font-semibold text-rose-600 hover:text-rose-700 hover:underline">
+          <Link href="/login" className="font-semibold text-stone-900 hover:text-stone-700 hover:underline">
             Back to Sign In
           </Link>
         </div>

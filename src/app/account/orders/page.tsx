@@ -155,8 +155,8 @@ export default function OrderHistoryPage() {
   if (authLoading || (loading && safeOrders.length === 0)) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-20 text-center">
-        <Loader2 className="w-8 h-8 animate-spin text-rose-500 mx-auto mb-4" />
-        <p className="text-slate-500 text-sm">Loading your orders...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-stone-900 mx-auto mb-4" />
+        <p className="text-stone-600 text-sm">Loading your orders...</p>
       </div>
     );
   }
@@ -164,17 +164,17 @@ export default function OrderHistoryPage() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center space-y-4">
-        <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] text-stone-800 flex items-center justify-center mx-auto border border-stone-200">
           <Package className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900">Sign in to View Your Orders</h1>
-        <p className="text-slate-500 text-sm max-w-md mx-auto">
+        <h1 className="text-2xl font-bold text-stone-900">Sign in to View Your Orders</h1>
+        <p className="text-stone-600 text-sm max-w-md mx-auto">
           Please sign in to your Aarti Collection account to view past orders, item receipts, and track order statuses.
         </p>
         <div className="pt-2">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm shadow-md"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-sm shadow-card"
           >
             Sign In Now
           </Link>
@@ -188,19 +188,19 @@ export default function OrderHistoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-3xl font-extrabold text-stone-900 tracking-tight">
             Order History
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-stone-600 mt-1">
             Manage your purchases, download receipts, and check order statuses.
           </p>
         </div>
 
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold self-start sm:self-auto transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-stone-300 text-stone-800 hover:bg-[#EFECE6] text-xs font-semibold self-start sm:self-auto transition-colors"
         >
-          <ShoppingBag className="w-4 h-4 text-rose-500" /> Continue Shopping
+          <ShoppingBag className="w-4 h-4 text-stone-700" /> Continue Shopping
         </Link>
       </div>
 
@@ -212,18 +212,18 @@ export default function OrderHistoryPage() {
       )}
 
       {safeOrders.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-slate-200/80 p-12 text-center space-y-4 shadow-xs">
-          <div className="w-20 h-20 rounded-3xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto shadow-inner">
+        <div className="bg-white rounded-3xl border border-stone-200 p-12 text-center space-y-4 shadow-sm">
+          <div className="w-20 h-20 rounded-3xl bg-[#EFECE6] text-stone-700 flex items-center justify-center mx-auto border border-stone-200">
             <Package className="w-10 h-10" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900">No Orders Found</h2>
-          <p className="text-slate-500 text-sm max-w-md mx-auto">
+          <h2 className="text-xl font-bold text-stone-900">No Orders Found</h2>
+          <p className="text-stone-600 text-sm max-w-md mx-auto">
             You haven&apos;t placed any orders yet. Discover our latest designer collections for boys and girls up to age 16!
           </p>
           <div className="pt-2">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-md shadow-rose-600/25 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-sm shadow-card transition-all"
             >
               Browse Products <ArrowRight className="w-4 h-4" />
             </Link>
@@ -243,21 +243,21 @@ export default function OrderHistoryPage() {
             return (
               <div
                 key={order.id}
-                className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs hover:border-slate-300 transition-all"
+                className="bg-white rounded-2xl border border-stone-200 p-5 sm:p-6 shadow-sm hover:border-stone-400 transition-all"
               >
                 {/* Order Top Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-stone-100">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs uppercase tracking-wider font-semibold text-slate-400">
+                      <span className="text-xs uppercase tracking-wider font-semibold text-stone-400">
                         Order #
                       </span>
-                      <span className="font-bold text-slate-900 text-sm sm:text-base font-mono">
+                      <span className="font-bold text-stone-900 text-sm sm:text-base font-mono">
                         {order.orderNumber}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                    <div className="flex items-center gap-1.5 text-xs text-stone-500">
+                      <Calendar className="w-3.5 h-3.5 text-stone-400" />
                       <span>{formattedDate}</span>
                     </div>
                   </div>
@@ -275,7 +275,7 @@ export default function OrderHistoryPage() {
                     {(order.items || []).slice(0, 4).map((item) => (
                       <div
                         key={item.id}
-                        className="relative w-14 h-16 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden shrink-0"
+                        className="relative w-14 h-16 rounded-lg bg-[#EFECE6] border border-stone-200 overflow-hidden shrink-0"
                         title={`${item.productName} (${item.variantInfo})`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -288,32 +288,32 @@ export default function OrderHistoryPage() {
                           className="w-full h-full object-cover object-top"
                         />
                         {item.quantity > 1 && (
-                          <span className="absolute bottom-0.5 right-0.5 bg-slate-900/80 text-white text-[10px] font-bold px-1 rounded">
+                          <span className="absolute bottom-0.5 right-0.5 bg-stone-900/80 text-white text-[10px] font-bold px-1 rounded">
                             x{item.quantity}
                           </span>
                         )}
                       </div>
                     ))}
                     {(order.items || []).length > 4 && (
-                      <div className="w-14 h-16 rounded-lg bg-slate-50 border border-dashed border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-500 shrink-0">
+                      <div className="w-14 h-16 rounded-lg bg-[#FAF9F6] border border-dashed border-stone-300 flex items-center justify-center text-xs font-semibold text-stone-500 shrink-0">
                         +{order.items.length - 4} more
                       </div>
                     )}
                     <div className="pl-1">
-                      <div className="text-xs font-semibold text-slate-800">
+                      <div className="text-xs font-semibold text-stone-900">
                         {order.items.length} {order.items.length === 1 ? "item" : "items"}
                       </div>
-                      <div className="text-[11px] text-slate-400 truncate max-w-[200px]">
+                      <div className="text-[11px] text-stone-500 truncate max-w-[200px]">
                         {order.items.map((i) => i.productName).join(", ")}
                       </div>
                     </div>
                   </div>
 
                   {/* Price & Action */}
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100">
                     <div className="text-left sm:text-right">
-                      <div className="text-xs text-slate-400">Total Amount</div>
-                      <div className="text-lg font-extrabold text-slate-900">
+                      <div className="text-xs text-stone-400">Total Amount</div>
+                      <div className="text-lg font-extrabold text-stone-900">
                         ₹{order.total}
                       </div>
                       {order.discount > 0 && (
@@ -325,7 +325,7 @@ export default function OrderHistoryPage() {
 
                     <Link
                       href={`/account/orders/${order.orderNumber}`}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all shadow-xs"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition-all shadow-card"
                     >
                       View Details <ChevronRight className="w-3.5 h-3.5" />
                     </Link>

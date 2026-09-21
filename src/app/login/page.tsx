@@ -83,15 +83,15 @@ function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 sm:p-10">
+    <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-stone-200 p-8 sm:p-10">
       <div className="text-center mb-8">
-        <span className="inline-block px-3 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-semibold mb-3">
+        <span className="inline-block px-3 py-1 rounded-full bg-[#EFECE6] text-stone-800 text-xs font-semibold mb-3 border border-stone-200">
           Welcome Back
         </span>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
           Sign In to Aarti Collection
         </h1>
-        <p className="text-sm text-slate-500 mt-2">
+        <p className="text-sm text-stone-600 mt-2">
           Access your account, orders, or store administrator console.
         </p>
       </div>
@@ -115,11 +115,11 @@ function LoginForm() {
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+          <label htmlFor="email" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Mail className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id="email"
               type="email"
@@ -128,7 +128,7 @@ function LoginForm() {
               placeholder="name@example.com"
               required
               autoComplete="email"
-              className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+              className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
             />
           </div>
         </div>
@@ -136,18 +136,18 @@ function LoginForm() {
         {/* Password Field */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="password" className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            <label htmlFor="password" className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
               Password
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs font-medium text-rose-600 hover:text-rose-700 hover:underline transition-colors"
+              className="text-xs font-medium text-stone-900 hover:text-stone-700 hover:underline transition-colors"
             >
               Forgot password?
             </Link>
           </div>
           <div className="relative">
-            <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Lock className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id="password"
               type={showPassword ? "text" : "password"}
@@ -156,12 +156,12 @@ function LoginForm() {
               placeholder="••••••••"
               required
               autoComplete="current-password"
-              className="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+              className="w-full pl-11 pr-11 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1 cursor-pointer"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -173,7 +173,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium text-sm shadow-md shadow-rose-600/25 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <>
@@ -190,9 +190,9 @@ function LoginForm() {
       </form>
 
       {/* Demo Credentials Quick Fill */}
-      <div className="mt-8 pt-6 border-t border-slate-100 text-xs text-slate-600 bg-slate-50 p-4 rounded-2xl space-y-3">
-        <div className="font-semibold text-slate-800 flex items-center gap-1.5">
-          <KeyRound className="w-3.5 h-3.5 text-slate-500" />
+      <div className="mt-8 pt-6 border-t border-stone-200 text-xs text-stone-600 bg-[#FAF9F6] p-4 rounded-2xl space-y-3">
+        <div className="font-semibold text-stone-800 flex items-center gap-1.5">
+          <KeyRound className="w-3.5 h-3.5 text-stone-500" />
           <span>Quick 1-Click Demo Accounts:</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -204,16 +204,16 @@ function LoginForm() {
             <span className="flex items-center gap-1 text-[11px] text-amber-700 font-extrabold uppercase">
               <Shield className="w-3 h-3" /> Admin Login
             </span>
-            <span className="text-[10px] text-slate-500 font-normal truncate">admin@aarticollection.com</span>
+            <span className="text-[10px] text-stone-500 font-normal truncate">admin@aarticollection.com</span>
           </button>
 
           <button
             type="button"
             onClick={fillCustomerCredentials}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-800 font-semibold text-left transition-all cursor-pointer flex flex-col gap-0.5"
+            className="p-2 rounded-xl bg-white hover:bg-[#EFECE6] border border-stone-200 text-stone-800 font-semibold text-left transition-all cursor-pointer flex flex-col gap-0.5"
           >
-            <span className="text-[11px] text-slate-700 font-bold uppercase">Customer Login</span>
-            <span className="text-[10px] text-slate-500 font-normal truncate">customer@example.com</span>
+            <span className="text-[11px] text-stone-700 font-bold uppercase">Customer Login</span>
+            <span className="text-[10px] text-stone-500 font-normal truncate">customer@example.com</span>
           </button>
         </div>
       </div>
@@ -222,7 +222,7 @@ function LoginForm() {
       <div className="mt-4 text-center">
         <Link
           href="/admin/login"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600 hover:text-amber-700 hover:underline"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-stone-700 hover:text-stone-900 hover:underline"
         >
           <Shield className="w-3.5 h-3.5" />
           <span>Switch to Dedicated Admin Portal</span>
@@ -230,9 +230,9 @@ function LoginForm() {
       </div>
 
       {/* Switch to Register */}
-      <div className="text-center mt-5 text-sm text-slate-600">
+      <div className="text-center mt-5 text-sm text-stone-600">
         Don&apos;t have an account yet?{" "}
-        <Link href="/register" className="font-semibold text-rose-600 hover:text-rose-700 hover:underline">
+        <Link href="/register" className="font-semibold text-stone-900 hover:text-stone-700 hover:underline">
           Create Account
         </Link>
       </div>
@@ -246,7 +246,7 @@ export default function LoginPage() {
       <Suspense
         fallback={
           <div className="flex items-center justify-center p-12">
-            <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-stone-900" />
           </div>
         }
       >

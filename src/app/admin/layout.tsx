@@ -48,9 +48,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // 1. Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3 text-slate-500">
-          <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+      <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3 text-stone-500">
+          <Loader2 className="w-8 h-8 animate-spin text-stone-900" />
           <span className="text-sm font-medium">Verifying administrator access...</span>
         </div>
       </div>
@@ -60,19 +60,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // 2. Unauthenticated state
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-slate-200 shadow-sm text-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
+      <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-4">
+        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-stone-200 shadow-sm text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] text-stone-800 flex items-center justify-center mx-auto border border-stone-200">
             <Shield className="w-8 h-8" />
           </div>
-          <h1 className="text-xl font-bold text-slate-900">Admin Sign In Required</h1>
-          <p className="text-xs text-slate-500">
+          <h1 className="text-xl font-bold text-stone-900">Admin Sign In Required</h1>
+          <p className="text-xs text-stone-500">
             Please sign in with an authorized store administrator account to access this section.
           </p>
           <div className="pt-2">
             <Link
               href="/admin/login"
-              className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors"
+              className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-colors shadow-card"
             >
               Sign In to Admin Console
             </Link>
@@ -85,29 +85,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // 3. Authenticated customer without ADMIN role
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-100 shadow-sm text-center space-y-4">
+      <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-4">
+        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200 shadow-sm text-center space-y-4">
           <div className="w-16 h-16 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mx-auto">
             <ShieldAlert className="w-8 h-8" />
           </div>
-          <h1 className="text-xl font-bold text-slate-900">Access Denied</h1>
-          <p className="text-xs text-slate-500 leading-relaxed">
+          <h1 className="text-xl font-bold text-stone-900">Access Denied</h1>
+          <p className="text-xs text-stone-500 leading-relaxed">
             Your account ({user?.email}) does not have store administrator privileges. Admin pages are restricted to Aarti Collection managers.
           </p>
-          <div className="pt-2 flex gap-3">
-            <Link
-              href="/"
-              className="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors text-center"
-            >
-              Return to Store
-            </Link>
+          <div className="pt-2 flex gap-2">
             <button
               type="button"
               onClick={() => logout()}
-              className="py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold"
+              className="flex-1 py-2.5 px-4 rounded-xl border border-stone-200 text-stone-700 hover:bg-[#EFECE6] text-xs font-semibold"
             >
               Sign Out
             </button>
+            <Link
+              href="/"
+              className="flex-1 py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold text-center shadow-card"
+            >
+              Back to Store
+            </Link>
           </div>
         </div>
       </div>
@@ -130,20 +130,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/80 flex flex-col md:flex-row text-slate-900">
+    <div className="min-h-screen bg-[#FAF9F6] flex flex-col md:flex-row text-stone-900">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200/80 shrink-0 sticky top-0 h-screen">
+      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-stone-200 shrink-0 sticky top-0 h-screen">
         {/* Brand Header */}
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+        <div className="p-6 border-b border-stone-100 flex items-center justify-between">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-white shadow-xs font-bold text-base">
+            <div className="w-9 h-9 rounded-xl bg-stone-900 flex items-center justify-center text-white shadow-card font-bold text-base">
               A
             </div>
             <div>
-              <div className="font-extrabold text-sm tracking-tight text-slate-900 leading-tight">
+              <div className="font-extrabold text-sm tracking-tight text-stone-900 leading-tight">
                 Aarti Collection
               </div>
-              <div className="text-[10px] uppercase font-bold text-rose-600 tracking-wider">
+              <div className="text-[10px] uppercase font-bold text-stone-500 tracking-wider">
                 Admin Console
               </div>
             </div>
@@ -162,11 +162,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 prefetch={true}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   active
-                    ? "bg-slate-900 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
+                    ? "bg-stone-900 text-white shadow-card"
+                    : "text-stone-600 hover:text-stone-900 hover:bg-[#EFECE6]"
                 }`}
               >
-                <Icon className={`w-4 h-4 ${active ? "text-rose-400" : "text-slate-400"}`} />
+                <Icon className={`w-4 h-4 ${active ? "text-stone-300" : "text-stone-400"}`} />
                 <span>{item.label}</span>
               </Link>
             );
@@ -174,11 +174,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Footer Actions */}
-        <div className="p-4 border-t border-slate-100 space-y-3">
+        <div className="p-4 border-t border-stone-100 space-y-3">
           <Link
             href="/"
             prefetch={true}
-            className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+            className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-[#EFECE6] transition-colors"
           >
             <span className="flex items-center gap-2">
               <Store className="w-4 h-4 text-slate-400" />

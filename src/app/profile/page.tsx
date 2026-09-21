@@ -62,8 +62,8 @@ export default function ProfilePage() {
   if (loading || !user) {
     return (
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-8">
-        <div className="flex flex-col items-center gap-3 text-slate-500">
-          <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
+        <div className="flex flex-col items-center gap-3 text-stone-500">
+          <Loader2 className="w-8 h-8 animate-spin text-stone-900" />
           <span className="text-sm font-medium">Loading your profile...</span>
         </div>
       </div>
@@ -81,10 +81,10 @@ export default function ProfilePage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
           My Account Profile
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-sm text-stone-600 mt-1">
           Manage your personal details and account settings.
         </p>
       </div>
@@ -106,16 +106,16 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left Profile Card */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm flex flex-col items-center text-center">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-rose-500/20 mb-4">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col items-center text-center">
+          <div className="w-24 h-24 rounded-full bg-stone-900 flex items-center justify-center text-white text-3xl font-bold shadow-card mb-4">
             {user.name.charAt(0).toUpperCase()}
           </div>
-          <h2 className="text-lg font-bold text-slate-900">{user.name}</h2>
-          <p className="text-xs text-slate-500 mb-6">{user.email}</p>
+          <h2 className="text-lg font-bold text-stone-900">{user.name}</h2>
+          <p className="text-xs text-stone-500 mb-6">{user.email}</p>
 
-          <div className="w-full pt-4 border-t border-slate-100 text-left text-xs text-slate-600">
+          <div className="w-full pt-4 border-t border-stone-100 text-left text-xs text-stone-600">
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-slate-400" />
+              <Calendar className="w-4 h-4 text-stone-400" />
               <span>Joined: {joinDate}</span>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function ProfilePage() {
             {user.role === "ADMIN" && (
               <Link
                 href="/admin"
-                className="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-xs"
+                className="w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
               >
                 <Shield className="w-4 h-4" />
                 Open Admin Console
@@ -133,15 +133,15 @@ export default function ProfilePage() {
 
             <Link
               href="/account/orders"
-              className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-card"
             >
-              <Package className="w-4 h-4 text-rose-400" />
+              <Package className="w-4 h-4 text-stone-300" />
               View My Orders
             </Link>
 
             <button
               onClick={() => logout()}
-              className="w-full py-2.5 px-4 rounded-xl border border-slate-200 text-rose-600 hover:bg-rose-50 hover:border-rose-200 font-medium text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl border border-stone-200 text-stone-700 hover:bg-stone-100 font-medium text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               Sign Out
@@ -150,18 +150,18 @@ export default function ProfilePage() {
         </div>
 
         {/* Right Details & Edit Form */}
-        <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-          <div className="flex items-center justify-between pb-6 border-b border-slate-100 mb-6">
+        <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+          <div className="flex items-center justify-between pb-6 border-b border-stone-100 mb-6">
             <div>
-              <h3 className="font-bold text-slate-900 text-base">Account Information</h3>
-              <p className="text-xs text-slate-500">View and update your personal details.</p>
+              <h3 className="font-bold text-stone-900 text-base">Account Information</h3>
+              <p className="text-xs text-stone-500">View and update your personal details.</p>
             </div>
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-200 hover:bg-[#EFECE6] text-stone-700 text-xs font-semibold transition-colors cursor-pointer"
               >
-                <Edit2 className="w-3.5 h-3.5 text-slate-500" />
+                <Edit2 className="w-3.5 h-3.5 text-stone-500" />
                 Edit Name
               </button>
             ) : (
@@ -170,7 +170,7 @@ export default function ProfilePage() {
                   setIsEditing(false);
                   setName(user.name);
                 }}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-700 cursor-pointer"
+                className="text-xs font-semibold text-stone-500 hover:text-stone-700 cursor-pointer"
               >
                 Cancel
               </button>
@@ -180,22 +180,22 @@ export default function ProfilePage() {
           <form onSubmit={handleUpdate} className="space-y-6">
             {/* Name Input */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
                 Display Name
               </label>
               {isEditing ? (
                 <div className="relative">
-                  <UserIcon className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <UserIcon className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 transition-all"
+                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 transition-all bg-[#FAF9F6]"
                   />
                 </div>
               ) : (
-                <div className="p-3.5 rounded-xl bg-slate-50 text-slate-900 text-sm font-medium border border-slate-100">
+                <div className="p-3.5 rounded-xl bg-[#FAF9F6] text-stone-900 text-sm font-medium border border-stone-200">
                   {user.name}
                 </div>
               )}
@@ -203,15 +203,15 @@ export default function ProfilePage() {
 
             {/* Email (Read only) */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
                 Email Address (Primary)
               </label>
-              <div className="p-3.5 rounded-xl bg-slate-50 text-slate-500 text-sm font-medium border border-slate-100 flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-[#FAF9F6] text-stone-600 text-sm font-medium border border-stone-200 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Mail className="w-4 h-4 text-slate-400" />
+                  <Mail className="w-4 h-4 text-stone-400" />
                   <span>{user.email}</span>
                 </div>
-                <span className="text-[11px] font-semibold text-slate-400">Verified</span>
+                <span className="text-[11px] font-semibold text-stone-400">Verified</span>
               </div>
             </div>
 
@@ -221,7 +221,7 @@ export default function ProfilePage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="py-3 px-6 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium text-sm shadow-md shadow-rose-600/25 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="py-3 px-6 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all flex items-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   {saving ? (
                     <>

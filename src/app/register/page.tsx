@@ -67,15 +67,15 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 sm:p-10">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-stone-200 p-8 sm:p-10">
         <div className="text-center mb-8">
-          <span className="inline-block px-3 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-semibold mb-3">
+          <span className="inline-block px-3 py-1 rounded-full bg-[#EFECE6] text-stone-800 text-xs font-semibold mb-3 border border-stone-200">
             Join Aarti Collection
           </span>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
             Create Your Account
           </h1>
-          <p className="text-sm text-slate-500 mt-2">
+          <p className="text-sm text-stone-600 mt-2">
             Enjoy seamless shopping for boys & girls clothing up to age 16.
           </p>
         </div>
@@ -99,11 +99,11 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name */}
           <div>
-            <label htmlFor="name" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="name" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               Full Name
             </label>
             <div className="relative">
-              <UserIcon className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <UserIcon className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="name"
                 type="text"
@@ -111,18 +111,18 @@ export default function RegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ramesh Patel"
                 required
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
               />
             </div>
           </div>
 
           {/* Email Address */}
           <div>
-            <label htmlFor="email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="email" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Mail className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="email"
                 type="email"
@@ -131,18 +131,18 @@ export default function RegisterPage() {
                 placeholder="name@example.com"
                 required
                 autoComplete="email"
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
               />
             </div>
           </div>
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="password" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               Password (min. 6 chars)
             </label>
             <div className="relative">
-              <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -150,12 +150,12 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+                className="w-full pl-11 pr-11 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1 cursor-pointer"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -165,11 +165,11 @@ export default function RegisterPage() {
 
           {/* Confirm Password */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            <label htmlFor="confirmPassword" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-5 h-5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="confirmPassword"
                 type={showPassword ? "text" : "password"}
@@ -177,7 +177,7 @@ export default function RegisterPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-sm text-slate-900 placeholder:text-slate-400 transition-all"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
               />
             </div>
           </div>
@@ -187,7 +187,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium text-sm shadow-md shadow-rose-600/25 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <>
@@ -205,9 +205,9 @@ export default function RegisterPage() {
         </form>
 
         {/* Switch to Login */}
-        <div className="text-center mt-6 text-sm text-slate-600">
+        <div className="text-center mt-6 text-sm text-stone-600">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-rose-600 hover:text-rose-700 hover:underline">
+          <Link href="/login" className="font-semibold text-stone-900 hover:text-stone-700 hover:underline">
             Sign In
           </Link>
         </div>

@@ -48,8 +48,8 @@ function DesktopNavLinks({
             prefetch={true}
             className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
               isActive
-                ? "bg-[#1e1e24] text-white shadow-card font-bold"
-                : "text-[#1e1e24]/75 hover:text-[#1e1e24] hover:bg-[#f6efe2]"
+                ? "bg-stone-900 text-white shadow-card font-bold"
+                : "text-stone-700 hover:text-stone-900 hover:bg-[#EFECE6]"
             }`}
           >
             {link.name}
@@ -93,9 +93,9 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <div className="sticky top-0 z-50 w-full bg-[#fffdfa] shadow-xs">
+    <div className="sticky top-0 z-50 w-full bg-[#FAF9F6] shadow-xs">
       {/* Main Solid Navbar - Pushed fully to Left */}
-      <header className="doodle-nav bg-[#fffdfa] w-full">
+      <header className="doodle-nav bg-[#FAF9F6] border-b border-stone-200 w-full">
         <div className="w-full px-4 sm:px-6 lg:px-10">
           <div className="flex justify-between h-20 items-center">
             {/* Left Group: Company Logo & Nav Links firmly on the Left */}
@@ -115,7 +115,7 @@ export const Navbar: React.FC = () => {
                     {navLinks.map((link) => (
                       <span
                         key={link.name}
-                        className="px-4 py-2 text-sm font-semibold text-[#1e1e24]"
+                        className="px-4 py-2 text-sm font-semibold text-stone-900"
                       >
                         {link.name}
                       </span>
@@ -133,12 +133,12 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/wishlist"
                 prefetch={true}
-                className="relative p-2.5 text-[#1e1e24] hover:text-[#ff7849] hover:bg-[#f6efe2] rounded-full transition-all"
+                className="relative p-2.5 text-stone-900 hover:text-stone-700 hover:bg-[#EFECE6] rounded-full transition-all"
                 title="Wishlist"
               >
                 <Heart className="w-5 h-5" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#ff7849] text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-subtle">
+                  <span className="absolute -top-1 -right-1 bg-stone-900 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-subtle">
                     {wishlistCount}
                   </span>
                 )}
@@ -148,18 +148,18 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/cart"
                 prefetch={true}
-                className="relative p-2.5 text-[#1e1e24] hover:text-[#ff7849] hover:bg-[#f6efe2] rounded-full transition-all"
+                className="relative p-2.5 text-stone-900 hover:text-stone-700 hover:bg-[#EFECE6] rounded-full transition-all"
                 title="Shopping Cart"
               >
                 <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#ff7849] text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-card animate-bounce">
+                  <span className="absolute -top-1 -right-1 bg-stone-900 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-card">
                     {cartCount}
                   </span>
                 )}
               </Link>
 
-              <div className="h-5 w-px bg-[#1e1e24]/15 mx-1" />
+              <div className="h-5 w-px bg-stone-300 mx-1" />
 
               {/* Auth / Profile Area */}
               {isAuthenticated && user ? (
@@ -167,10 +167,10 @@ export const Navbar: React.FC = () => {
                   <Link
                     href="/account/orders"
                     prefetch={true}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-[#1e1e24] hover:text-[#ff7849] hover:bg-[#f6efe2] transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-stone-900 hover:text-stone-700 hover:bg-[#EFECE6] transition-colors"
                     title="My Orders"
                   >
-                    <Package className="w-4 h-4 text-[#ff7849]" />
+                    <Package className="w-4 h-4 text-stone-700" />
                     <span>Orders</span>
                   </Link>
 
@@ -179,33 +179,33 @@ export const Navbar: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setUserMenuOpen(!userMenuOpen)}
-                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-white hover:bg-[#f6efe2] border border-[#1e1e24]/10 text-[#1e1e24] text-xs font-semibold shadow-subtle transition-all cursor-pointer group"
+                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-white hover:bg-[#EFECE6] border border-stone-200 text-stone-900 text-xs font-semibold shadow-subtle transition-all cursor-pointer group"
                       aria-expanded={userMenuOpen}
                       aria-label="User Account Menu"
                     >
                       {/* Circular logo/avatar of user */}
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#ff7849] via-[#f4a7b9] to-[#facc15] text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                      <div className="w-7 h-7 rounded-full bg-stone-900 text-white flex items-center justify-center text-xs font-bold shadow-xs">
                         {user.name.charAt(0).toUpperCase()}
                       </div>
                       <span className="max-w-[85px] truncate font-bold">
                         {user.role === "ADMIN" ? "Admin" : user.name.split(" ")[0]}
                       </span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#1e1e24]/50 transition-transform duration-200 ${
+                        className={`w-3.5 h-3.5 text-stone-500 transition-transform duration-200 ${
                           userMenuOpen ? "rotate-180" : ""
                         }`}
                       />
                     </button>
 
                     {userMenuOpen && (
-                      <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-[#1e1e24]/10 shadow-card py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                      <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-stone-200 shadow-card py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
                         {/* User Header Details */}
-                        <div className="px-4 py-2.5 border-b border-[#1e1e24]/5">
-                          <p className="text-xs font-bold text-[#1e1e24] truncate">{user.name}</p>
-                          <p className="text-[11px] text-[#1e1e24]/60 truncate">{user.email}</p>
+                        <div className="px-4 py-2.5 border-b border-stone-100">
+                          <p className="text-xs font-bold text-stone-900 truncate">{user.name}</p>
+                          <p className="text-[11px] text-stone-500 truncate">{user.email}</p>
                           {user.role === "ADMIN" && (
-                            <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[10px] font-bold border border-amber-200">
-                              <Shield className="w-3 h-3 text-amber-600" />
+                            <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md bg-stone-100 text-stone-800 text-[10px] font-bold border border-stone-200">
+                              <Shield className="w-3 h-3 text-stone-700" />
                               Store Administrator
                             </span>
                           )}
@@ -217,9 +217,9 @@ export const Navbar: React.FC = () => {
                             href="/profile"
                             prefetch={true}
                             onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-[#1e1e24] hover:bg-[#f6efe2] hover:text-[#ff7849] transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-stone-900 hover:bg-[#EFECE6] transition-colors"
                           >
-                            <UserIcon className="w-4 h-4 text-[#ff7849]" />
+                            <UserIcon className="w-4 h-4 text-stone-700" />
                             <span>My Profile</span>
                           </Link>
 
@@ -227,9 +227,9 @@ export const Navbar: React.FC = () => {
                             href="/account/orders"
                             prefetch={true}
                             onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-[#1e1e24] hover:bg-[#f6efe2] hover:text-[#ff7849] transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-stone-900 hover:bg-[#EFECE6] transition-colors"
                           >
-                            <Package className="w-4 h-4 text-[#ff7849]" />
+                            <Package className="w-4 h-4 text-stone-700" />
                             <span>My Orders</span>
                           </Link>
 
@@ -238,16 +238,16 @@ export const Navbar: React.FC = () => {
                               href="/admin"
                               prefetch={true}
                               onClick={() => setUserMenuOpen(false)}
-                              className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-[#1e1e24] hover:bg-[#f6efe2] hover:text-[#ff7849] transition-colors"
+                              className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-stone-900 hover:bg-[#EFECE6] transition-colors"
                             >
-                              <Shield className="w-4 h-4 text-rose-500" />
+                              <Shield className="w-4 h-4 text-stone-700" />
                               <span>Admin Console</span>
                             </Link>
                           )}
                         </div>
 
                         {/* Logout Option */}
-                        <div className="pt-1 border-t border-[#1e1e24]/5">
+                        <div className="pt-1 border-t border-stone-100">
                           <button
                             type="button"
                             onClick={() => {
@@ -269,14 +269,14 @@ export const Navbar: React.FC = () => {
                   <Link
                     href="/login"
                     prefetch={true}
-                    className="text-xs font-bold text-[#1e1e24] hover:text-[#ff7849] px-3 py-2 rounded-full hover:bg-[#f6efe2] transition-colors"
+                    className="text-xs font-bold text-stone-900 hover:text-stone-700 px-3 py-2 rounded-full hover:bg-[#EFECE6] transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/register"
                     prefetch={true}
-                    className="text-xs font-bold text-[#1e1e24] hover:text-white hover:bg-[#1e1e24] border border-[#1e1e24]/20 px-4 py-2 rounded-full transition-all"
+                    className="text-xs font-bold text-white bg-stone-900 hover:bg-stone-800 border border-stone-900 px-4 py-2 rounded-full transition-all shadow-subtle"
                   >
                     Create Account
                   </Link>
@@ -288,12 +288,12 @@ export const Navbar: React.FC = () => {
             <div className="flex md:hidden items-center gap-2">
               <Link
                 href="/wishlist"
-                className="relative p-2 text-[#1e1e24]"
+                className="relative p-2 text-stone-900"
                 title="Wishlist"
               >
                 <Heart className="w-5 h-5" />
                 {wishlistCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-[#ff7849] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  <span className="absolute top-0 right-0 bg-stone-900 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                     {wishlistCount}
                   </span>
                 )}
@@ -301,12 +301,12 @@ export const Navbar: React.FC = () => {
 
               <Link
                 href="/cart"
-                className="relative p-2 text-[#1e1e24]"
+                className="relative p-2 text-stone-900"
                 title="Cart"
               >
                 <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-[#ff7849] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  <span className="absolute top-0 right-0 bg-stone-900 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
@@ -314,7 +314,7 @@ export const Navbar: React.FC = () => {
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-[#1e1e24] hover:bg-[#f6efe2] rounded-full cursor-pointer ml-1"
+                className="p-2 text-stone-900 hover:bg-[#EFECE6] rounded-full cursor-pointer ml-1"
                 aria-label="Toggle Navigation Menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -325,13 +325,13 @@ export const Navbar: React.FC = () => {
 
         {/* Mobile Menu Dropdown */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-[#1e1e24]/10 bg-[#fffdfa] px-4 pt-4 pb-6 space-y-4 shadow-xl">
-            <div className="grid grid-cols-2 gap-2 pt-1 pb-3 border-b border-[#1e1e24]/10">
+          <div className="md:hidden border-t border-stone-200 bg-[#FAF9F6] px-4 pt-4 pb-6 space-y-4 shadow-xl">
+            <div className="grid grid-cols-2 gap-2 pt-1 pb-3 border-b border-stone-200">
               <Link
                 href="/"
                 prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#f6efe2] hover:bg-[#ff7849]/10 rounded-xl"
+                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl"
               >
                 🏠 Home
               </Link>
@@ -339,7 +339,7 @@ export const Navbar: React.FC = () => {
                 href="/products"
                 prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#f6efe2] hover:bg-[#ff7849]/10 rounded-xl"
+                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl"
               >
                 👕 Shop All
               </Link>
@@ -347,7 +347,7 @@ export const Navbar: React.FC = () => {
                 href="/products?gender=BOYS"
                 prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#a8d8ea]/30 hover:bg-[#a8d8ea]/50 rounded-xl text-center"
+                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl text-center"
               >
                 Boys
               </Link>
@@ -355,7 +355,7 @@ export const Navbar: React.FC = () => {
                 href="/products?gender=GIRLS"
                 prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#f4a7b9]/30 hover:bg-[#f4a7b9]/50 rounded-xl text-center"
+                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl text-center"
               >
                 Girls
               </Link>
@@ -363,7 +363,7 @@ export const Navbar: React.FC = () => {
                 href="/products?ageGroup=0-2"
                 prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className="col-span-2 px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#facc15]/30 hover:bg-[#facc15]/50 rounded-xl text-center"
+                className="col-span-2 px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl text-center"
               >
                 Infants (0–2 Yrs)
               </Link>
@@ -371,14 +371,14 @@ export const Navbar: React.FC = () => {
 
             {isAuthenticated && user ? (
               <div className="space-y-2">
-                <div className="p-3 bg-[#f6efe2] rounded-2xl flex items-center justify-between border border-[#1e1e24]/10">
+                <div className="p-3 bg-[#EFECE6] rounded-2xl flex items-center justify-between border border-stone-200">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#ff7849] to-[#f4a7b9] text-white flex items-center justify-center font-bold">
+                    <div className="w-9 h-9 rounded-xl bg-stone-900 text-white flex items-center justify-center font-bold">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <div className="font-bold text-[#1e1e24] text-sm">{user.name}</div>
-                      <div className="text-xs text-[#1e1e24]/60 truncate max-w-[180px]">{user.email}</div>
+                      <div className="font-bold text-stone-900 text-sm">{user.name}</div>
+                      <div className="text-xs text-stone-500 truncate max-w-[180px]">{user.email}</div>
                     </div>
                   </div>
                 </div>
@@ -388,18 +388,18 @@ export const Navbar: React.FC = () => {
                     href="/account/orders"
                     prefetch={true}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 text-[#1e1e24] font-bold py-2.5 px-3 bg-[#f6efe2] hover:bg-white rounded-xl text-xs"
+                    className="flex items-center justify-center gap-2 text-stone-900 font-bold py-2.5 px-3 bg-[#EFECE6] hover:bg-white rounded-xl text-xs"
                   >
-                    <Package className="w-4 h-4 text-[#ff7849]" />
+                    <Package className="w-4 h-4 text-stone-700" />
                     <span>My Orders</span>
                   </Link>
                   <Link
                     href="/profile"
                     prefetch={true}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 text-[#1e1e24] font-bold py-2.5 px-3 bg-[#f6efe2] hover:bg-white rounded-xl text-xs"
+                    className="flex items-center justify-center gap-2 text-stone-900 font-bold py-2.5 px-3 bg-[#EFECE6] hover:bg-white rounded-xl text-xs"
                   >
-                    <UserIcon className="w-4 h-4 text-[#1e1e24]/60" />
+                    <UserIcon className="w-4 h-4 text-stone-500" />
                     <span>Profile</span>
                   </Link>
                 </div>
@@ -421,7 +421,7 @@ export const Navbar: React.FC = () => {
                   href="/login"
                   prefetch={true}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 px-4 rounded-xl border border-[#1e1e24]/20 text-[#1e1e24] font-bold text-xs hover:bg-[#f6efe2]"
+                  className="text-center py-2.5 px-4 rounded-xl border border-stone-300 text-stone-900 font-bold text-xs hover:bg-[#EFECE6]"
                 >
                   Sign In
                 </Link>
@@ -429,7 +429,7 @@ export const Navbar: React.FC = () => {
                   href="/register"
                   prefetch={true}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 px-4 rounded-xl border border-[#1e1e24]/30 text-[#1e1e24] font-bold text-xs hover:bg-[#1e1e24] hover:text-white transition-colors"
+                  className="text-center py-2.5 px-4 rounded-xl bg-stone-900 text-white font-bold text-xs hover:bg-stone-800 transition-colors"
                 >
                   Create Account
                 </Link>

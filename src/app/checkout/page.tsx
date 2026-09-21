@@ -54,8 +54,8 @@ export default function CheckoutPage() {
   if (authLoading || cartLoading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-rose-500 border-t-transparent mb-4" />
-        <p className="text-slate-500 font-medium">Securing your checkout...</p>
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-stone-900 border-t-transparent mb-4" />
+        <p className="text-stone-600 font-medium">Securing your checkout...</p>
       </div>
     );
   }
@@ -64,15 +64,15 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4">
-        <div className="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] text-stone-700 flex items-center justify-center mx-auto border border-stone-200">
           <ShoppingBag className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900">Your Cart is Empty</h1>
-        <p className="text-slate-500 text-sm">Please add items to your basket before checking out.</p>
+        <h1 className="text-2xl font-bold text-stone-900">Your Cart is Empty</h1>
+        <p className="text-stone-600 text-sm">Please add items to your basket before checking out.</p>
         <div className="pt-2">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-rose-600 text-white font-semibold text-sm shadow-md hover:bg-rose-700"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-stone-900 text-white font-semibold text-sm shadow-card hover:bg-stone-800"
           >
             Explore Collection
           </Link>
@@ -181,7 +181,7 @@ export default function CheckoutPage() {
             email: user?.email,
           },
           theme: {
-            color: "#e11d48", // Rose primary theme
+            color: "#1c1917", // Stone primary theme
           },
           handler: async function (response: any) {
             try {
@@ -248,13 +248,13 @@ export default function CheckoutPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Header */}
         <div className="text-center max-w-lg mx-auto mb-8">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-600 mb-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EFECE6] text-stone-800 border border-stone-200 mb-2">
             <Lock className="w-3.5 h-3.5" /> 256-Bit SSL Encrypted Checkout
           </span>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">
+          <h1 className="text-3xl font-black tracking-tight text-stone-900">
             Complete Your Order
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-stone-600 mt-1">
             Review your clothing items and complete payment securely via Razorpay.
           </p>
         </div>
@@ -269,25 +269,25 @@ export default function CheckoutPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           {/* Left: Cart Items Review */}
-          <div className="md:col-span-7 bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="font-bold text-slate-900 text-base">
+          <div className="md:col-span-7 bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-4">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <h2 className="font-bold text-stone-900 text-base">
                 Order Items ({items.length})
               </h2>
               <Link
                 href="/cart"
-                className="text-xs font-semibold text-rose-600 hover:text-rose-700"
+                className="text-xs font-semibold text-stone-900 hover:text-stone-700"
               >
                 Edit Cart
               </Link>
             </div>
 
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-stone-100">
               {items.map((item) => {
                 const img = item.product.image || "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=300";
                 return (
                   <div key={item.id} className="py-3.5 flex items-center gap-4">
-                    <div className="w-16 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
+                    <div className="w-16 h-20 rounded-xl overflow-hidden bg-[#EFECE6] shrink-0 border border-stone-200">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img}
@@ -296,21 +296,21 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[10px] uppercase font-bold text-slate-400">
+                      <div className="text-[10px] uppercase font-bold text-stone-400">
                         {item.product.brand || "Aarti Collection"}
                       </div>
-                      <div className="font-bold text-slate-900 text-sm truncate">
+                      <div className="font-bold text-stone-900 text-sm truncate">
                         {item.product.name}
                       </div>
-                      <div className="text-xs text-slate-500 mt-0.5">
+                      <div className="text-xs text-stone-500 mt-0.5">
                         {item.variant.size} • {item.variant.color} • Qty: {item.quantity}
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-extrabold text-slate-900 text-sm">
+                      <div className="font-extrabold text-stone-900 text-sm">
                         ₹{item.totalPrice}
                       </div>
-                      <div className="text-[11px] text-slate-400">
+                      <div className="text-[11px] text-stone-400">
                         ₹{item.unitPrice} ea
                       </div>
                     </div>
@@ -323,24 +323,24 @@ export default function CheckoutPage() {
           {/* Right: Coupon & Payment Summary */}
           <div className="md:col-span-5 space-y-4">
             {/* Coupon Box */}
-            <div className="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+            <div className="bg-white rounded-3xl border border-stone-200 p-5 shadow-sm">
+              <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">
                 Promotional Coupon
               </label>
 
               {appliedCoupon ? (
-                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between">
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-2xl flex items-center justify-between">
                   <div>
-                    <div className="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
-                      <Tag className="w-3.5 h-3.5" /> Coupon &apos;{appliedCoupon.code}&apos; Active
+                    <div className="text-xs font-bold text-stone-900 flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5 text-emerald-600" /> Coupon &apos;{appliedCoupon.code}&apos; Active
                     </div>
-                    <div className="text-[11px] text-emerald-600">
+                    <div className="text-[11px] text-emerald-600 font-semibold">
                       You saved ₹{appliedCoupon.discountAmount}!
                     </div>
                   </div>
                   <button
                     onClick={handleRemoveCoupon}
-                    className="p-1 rounded-lg text-emerald-700 hover:bg-emerald-100"
+                    className="p-1 rounded-lg text-stone-500 hover:bg-stone-200"
                     title="Remove coupon"
                   >
                     <X className="w-4 h-4" />
@@ -353,12 +353,12 @@ export default function CheckoutPage() {
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                     placeholder="e.g. WELCOME10"
-                    className="flex-1 px-3 py-2 text-sm rounded-xl border border-slate-200 uppercase focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
+                    className="flex-1 px-3 py-2 text-sm rounded-xl border border-stone-200 uppercase focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900"
                   />
                   <button
                     type="submit"
                     disabled={couponLoading || !couponInput.trim()}
-                    className="px-4 py-2 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-colors"
+                    className="px-4 py-2 bg-stone-900 hover:bg-stone-800 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
                   >
                     {couponLoading ? "..." : "Apply"}
                   </button>
@@ -378,15 +378,15 @@ export default function CheckoutPage() {
             </div>
 
             {/* Total Summary Card */}
-            <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs space-y-4">
-              <h2 className="font-bold text-slate-900 text-base border-b border-slate-100 pb-3">
+            <div className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-4">
+              <h2 className="font-bold text-stone-900 text-base border-b border-stone-100 pb-3">
                 Order Summary
               </h2>
 
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-stone-600">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-slate-900">₹{subtotal}</span>
+                  <span className="font-semibold text-stone-900">₹{subtotal}</span>
                 </div>
 
                 {appliedCoupon && (
@@ -396,18 +396,18 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-stone-600">
                   <span>Taxes (GST)</span>
-                  <span className="font-semibold text-slate-900">Included</span>
+                  <span className="font-semibold text-stone-900">Included</span>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex justify-between items-baseline">
+              <div className="pt-3 border-t border-stone-100 flex justify-between items-baseline">
                 <div>
-                  <div className="text-base font-bold text-slate-900">Total Amount</div>
-                  <div className="text-[11px] text-slate-400">Server validated price</div>
+                  <div className="text-base font-bold text-stone-900">Total Amount</div>
+                  <div className="text-[11px] text-stone-400">Server validated price</div>
                 </div>
-                <div className="text-2xl font-black text-rose-600">
+                <div className="text-2xl font-black text-stone-900">
                   ₹{finalTotal}
                 </div>
               </div>
@@ -417,14 +417,14 @@ export default function CheckoutPage() {
                 type="button"
                 disabled={paymentLoading}
                 onClick={handlePayment}
-                className="w-full py-4 px-6 rounded-2xl bg-rose-600 hover:bg-rose-700 disabled:bg-slate-300 text-white font-bold text-base shadow-lg shadow-rose-600/25 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-4 px-6 rounded-2xl bg-stone-900 hover:bg-stone-800 disabled:bg-stone-200 disabled:text-stone-400 text-white font-bold text-base shadow-card hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <CreditCard className="w-5 h-5" />
                 {paymentLoading ? "Processing Payment..." : `Pay ₹${finalTotal}`}
               </button>
 
-              <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400 pt-1">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              <div className="flex items-center justify-center gap-2 text-[11px] text-stone-500 pt-1">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 <span>Powered by Razorpay Secure Payments</span>
               </div>
             </div>

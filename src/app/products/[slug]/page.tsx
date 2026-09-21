@@ -201,9 +201,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
       {/* Product View Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        {/* Left Column: Image Gallery with 3D Depth Card (5 cols on lg) */}
+        {/* Left Column: Image Gallery with Card (5 cols on lg) */}
         <div className="lg:col-span-6 space-y-4">
-          <div className="relative aspect-4/5 rounded-3xl overflow-hidden bg-white border border-slate-200/80 shadow-xl card-3d">
+          <div className="relative aspect-4/5 rounded-3xl overflow-hidden bg-white border border-stone-200 shadow-sm">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={imagesList[selectedImageIndex]?.imageUrl || imagesList[0].imageUrl}
@@ -214,12 +214,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-col gap-2">
               {product.isFeatured && (
-                <span className="px-3.5 py-1 rounded-full text-xs font-black shimmer-gold text-slate-950 shadow-md">
-                  ✨ Featured Atelier
+                <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-stone-900 text-white shadow-sm">
+                  ✨ Featured
                 </span>
               )}
               {product.discountPercentage && (
-                <span className="px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-700 text-white shadow-sm">
                   {product.discountPercentage}% OFF
                 </span>
               )}
@@ -228,11 +228,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             {/* In-Stock Indicator Pill on Image */}
             <div className="absolute bottom-4 left-4">
               {isOutOfStock ? (
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-950/90 text-white backdrop-blur-md">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-stone-900/90 text-white backdrop-blur-md">
                   ● Out of Stock in Selected Variant
                 </span>
               ) : (
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-600/90 text-white backdrop-blur-md shadow-sm">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-700/90 text-white backdrop-blur-md shadow-sm">
                   ● In Stock ({availableStock} units available)
                 </span>
               )}
@@ -248,8 +248,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   onClick={() => setSelectedImageIndex(idx)}
                   className={`relative w-20 h-24 rounded-2xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
                     selectedImageIndex === idx
-                      ? "border-rose-600 shadow-md scale-105"
-                      : "border-slate-200 opacity-60 hover:opacity-100"
+                      ? "border-stone-900 shadow-sm scale-105"
+                      : "border-stone-200 opacity-60 hover:opacity-100"
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -261,43 +261,37 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
         </div>
 
         {/* Right Column: Garment Specs, Variant Selectors & Action Buttons (6 cols on lg) */}
-        <div className="lg:col-span-6 space-y-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm">
+        <div className="lg:col-span-6 space-y-7 bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm">
           {/* Header & Badges */}
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={`text-xs font-extrabold px-3 py-1 rounded-full ${
-                  product.gender === "BOYS"
-                    ? "bg-blue-50 text-blue-700 border border-blue-200/60"
-                    : "bg-rose-50 text-rose-700 border border-rose-200/60"
-                }`}
-              >
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-stone-100 text-stone-800 border border-stone-200">
                 {product.gender === "BOYS" ? "Boys" : "Girls"}
               </span>
 
-              <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/60">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#EFECE6] text-stone-800 border border-stone-200">
                 {product.ageGroup} Years
               </span>
 
-              <span className="text-xs font-semibold text-slate-400">
-                Brand: <strong className="text-slate-700">{product.brand || "Aarti Collection"}</strong>
+              <span className="text-xs font-semibold text-stone-400">
+                Brand: <strong className="text-stone-700">{product.brand || "Aarti Collection"}</strong>
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-stone-900 tracking-tight leading-tight">
               {product.name}
             </h1>
 
             {/* Price Section */}
             <div className="flex items-baseline gap-3 pt-1">
-              <span className="text-3xl sm:text-4xl font-black text-slate-950">₹{currentPrice}</span>
+              <span className="text-3xl sm:text-4xl font-black text-stone-900">₹{currentPrice}</span>
               {product.compareAtPrice && (
-                <span className="text-lg text-slate-400 line-through">
+                <span className="text-lg text-stone-400 line-through">
                   ₹{product.compareAtPrice}
                 </span>
               )}
               {product.discountPercentage && (
-                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
                   Save {product.discountPercentage}%
                 </span>
               )}
@@ -306,7 +300,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
           {/* Description */}
           {product.description && (
-            <div className="text-sm text-slate-600 leading-relaxed border-t border-b border-slate-100 py-4">
+            <div className="text-sm text-stone-600 leading-relaxed border-t border-b border-stone-100 py-4">
               {product.description}
             </div>
           )}
@@ -314,10 +308,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           {/* Variant Selector: Size */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+              <label className="text-xs font-extrabold uppercase tracking-wider text-stone-900">
                 Select Child Size
               </label>
-              <span className="text-xs text-slate-500 font-medium">Standard Indian Kid Fit</span>
+              <span className="text-xs text-stone-500 font-medium">Standard Indian Kid Fit</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {availableSizes.map((size) => {
@@ -328,8 +322,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                     onClick={() => setSelectedSize(size)}
                     className={`px-4 py-2.5 rounded-xl text-xs font-extrabold border transition-all cursor-pointer ${
                       isSelected
-                        ? "border-slate-900 bg-slate-900 text-white shadow-xs"
-                        : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50"
+                        ? "border-stone-900 bg-stone-900 text-white shadow-xs"
+                        : "border-stone-200 bg-white text-stone-800 hover:border-stone-400 hover:bg-[#FAF9F6]"
                     }`}
                   >
                     {size}
@@ -341,7 +335,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
           {/* Variant Selector: Color */}
           <div className="space-y-2">
-            <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-900">
+            <label className="block text-xs font-extrabold uppercase tracking-wider text-stone-900">
               Select Colorway
             </label>
             <div className="flex flex-wrap gap-2">
@@ -353,8 +347,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                     onClick={() => setSelectedColor(color)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                       isSelected
-                        ? "border-rose-600 bg-rose-50 text-rose-800 ring-2 ring-rose-500/20 shadow-2xs"
-                        : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                        ? "border-stone-900 bg-stone-900 text-white shadow-xs"
+                        : "border-stone-200 bg-white text-stone-700 hover:border-stone-400"
                     }`}
                   >
                     {color}
@@ -385,30 +379,30 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           </div>
 
           {/* Quantity & CTA Section */}
-          <div className="space-y-4 pt-2 border-t border-slate-100">
+          <div className="space-y-4 pt-2 border-t border-stone-100">
             {/* Quantity Selector */}
             <div className="flex items-center gap-4">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-slate-700">
+              <label className="text-xs font-extrabold uppercase tracking-wider text-stone-700">
                 Quantity:
               </label>
-              <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50 shadow-2xs">
+              <div className="flex items-center border border-stone-200 rounded-xl overflow-hidden bg-[#FAF9F6] shadow-2xs">
                 <button
                   type="button"
                   disabled={quantity <= 1 || isOutOfStock}
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2.5 text-slate-600 hover:bg-slate-200 disabled:opacity-30 cursor-pointer"
+                  className="p-2.5 text-stone-600 hover:bg-stone-200 disabled:opacity-30 cursor-pointer"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="w-12 text-center text-sm font-black text-slate-900">
+                <span className="w-12 text-center text-sm font-black text-stone-900">
                   {quantity}
                 </span>
                 <button
                   type="button"
                   disabled={quantity >= availableStock || isOutOfStock}
                   onClick={() => setQuantity(Math.min(availableStock, quantity + 1))}
-                  className="p-2.5 text-slate-600 hover:bg-slate-200 disabled:opacity-30 cursor-pointer"
+                  className="p-2.5 text-stone-600 hover:bg-stone-200 disabled:opacity-30 cursor-pointer"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-4 h-4" />
@@ -423,7 +417,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   type="button"
                   disabled={isOutOfStock || actionLoading}
                   onClick={handleAddToCart}
-                  className="flex-1 flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-sm shadow-lg shadow-rose-600/25 transition-all hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
+                  className="flex-1 flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl bg-stone-900 hover:bg-stone-800 disabled:bg-stone-200 disabled:text-stone-400 text-white font-extrabold text-sm shadow-card transition-all hover:-translate-y-0.5 cursor-pointer"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   <span>
@@ -436,12 +430,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   onClick={() => toggleWishlist(product.id)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                     isSavedInWishlist
-                      ? "border-rose-600 bg-rose-50 text-rose-600 shadow-sm"
-                      : "border-slate-200 hover:border-slate-300 text-slate-600 hover:text-rose-600 bg-white"
+                      ? "border-stone-900 bg-stone-900 text-white shadow-sm"
+                      : "border-stone-200 hover:border-stone-400 text-stone-600 hover:text-stone-900 bg-white"
                   }`}
                   title={isSavedInWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
                 >
-                  <Heart className={`w-5 h-5 ${isSavedInWishlist ? "fill-rose-600" : ""}`} />
+                  <Heart className={`w-5 h-5 ${isSavedInWishlist ? "fill-white" : ""}`} />
                 </button>
               </div>
 
@@ -453,7 +447,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 productCode={matchedVariant?.sku || product.slug}
                 color={selectedColor}
                 size={selectedSize}
-                className="w-full py-4 text-sm font-black rounded-2xl shadow-lg shadow-emerald-500/20"
+                className="w-full py-4 text-sm font-black rounded-2xl shadow-subtle"
               />
             </div>
 
@@ -477,21 +471,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           </div>
 
           {/* Store Assurance Badges */}
-          <div className="grid grid-cols-3 gap-3 pt-6 border-t border-slate-100 text-center">
-            <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
-              <ShieldCheck className="w-5 h-5 text-rose-600 mx-auto" />
-              <div className="text-xs font-bold text-slate-900">Pure Fabric</div>
-              <div className="text-[10px] text-slate-500">Soft & breathable cotton</div>
+          <div className="grid grid-cols-3 gap-3 pt-6 border-t border-stone-100 text-center">
+            <div className="p-3 bg-[#FAF9F6] rounded-2xl space-y-1 border border-stone-200">
+              <ShieldCheck className="w-5 h-5 text-stone-700 mx-auto" />
+              <div className="text-xs font-bold text-stone-900">Pure Fabric</div>
+              <div className="text-[10px] text-stone-500">Soft & breathable cotton</div>
             </div>
-            <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
-              <Store className="w-5 h-5 text-amber-600 mx-auto" />
-              <div className="text-xs font-bold text-slate-900">Store Pickup</div>
-              <div className="text-[10px] text-slate-500">Same-day pickup available</div>
+            <div className="p-3 bg-[#FAF9F6] rounded-2xl space-y-1 border border-stone-200">
+              <Store className="w-5 h-5 text-stone-700 mx-auto" />
+              <div className="text-xs font-bold text-stone-900">Store Pickup</div>
+              <div className="text-[10px] text-stone-500">Same-day pickup available</div>
             </div>
-            <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
-              <Sparkles className="w-5 h-5 text-emerald-600 mx-auto" />
-              <div className="text-xs font-bold text-slate-900">Quality Checked</div>
-              <div className="text-[10px] text-slate-500">Inspected for kids comfort</div>
+            <div className="p-3 bg-[#FAF9F6] rounded-2xl space-y-1 border border-stone-200">
+              <Sparkles className="w-5 h-5 text-stone-700 mx-auto" />
+              <div className="text-xs font-bold text-stone-900">Quality Checked</div>
+              <div className="text-[10px] text-stone-500">Inspected for kids comfort</div>
             </div>
           </div>
         </div>
