@@ -3,12 +3,28 @@ import { db } from "../db";
 import { categories, Category, products } from "../db/schema";
 import { CreateCategoryInput, UpdateCategoryInput, CategoryQueryParams } from "../validations/category.validation";
 import { slugify } from "../utils/slugify";
+import { AdminService } from "./admin.service";
+
+let cachedAllCategories: { data: Category[]; expiresAt: number } | null = null;
+const CATEGORIES_CACHE_TTL_MS = 60_000;
 
 export class CategoryService {
+  public static invalidateCache(): void {
+    cachedAllCategories = null;
+    AdminService.invalidateStatsCache();
+  }
+
   /**
    * Fetch all categories with optional gender or active status filtering.
+   * Utilizes in-memory caching when fetching unfiltered categories.
    */
   public static async getAllCategories(params?: CategoryQueryParams): Promise<Category[]> {
+    const isUnfiltered = !params?.gender && params?.isActive === undefined;
+
+    if (isUnfiltered && cachedAllCategories && Date.now() < cachedAllCategories.expiresAt) {
+      return cachedAllCategories.data;
+    }
+
     const conditions = [];
 
     if (params?.gender) {
@@ -19,15 +35,26 @@ export class CategoryService {
       conditions.push(eq(categories.isActive, params.isActive));
     }
 
+    let results: Category[];
+
     if (conditions.length > 0) {
-      return await db
+      results = await db
         .select()
         .from(categories)
         .where(and(...conditions))
         .orderBy(categories.name);
+    } else {
+      results = await db.select().from(categories).orderBy(categories.name);
     }
 
-    return await db.select().from(categories).orderBy(categories.name);
+    if (isUnfiltered) {
+      cachedAllCategories = {
+        data: results,
+        expiresAt: Date.now() + CATEGORIES_CACHE_TTL_MS,
+      };
+    }
+
+    return results;
   }
 
   /**
@@ -59,6 +86,7 @@ export class CategoryService {
       })
       .returning();
 
+    CategoryService.invalidateCache();
     return newCategory;
   }
 
@@ -86,6 +114,7 @@ export class CategoryService {
       .where(eq(categories.id, id))
       .returning();
 
+    CategoryService.invalidateCache();
     return updated || null;
   }
 
@@ -113,6 +142,7 @@ export class CategoryService {
     }
 
     await db.delete(categories).where(eq(categories.id, id));
+    CategoryService.invalidateCache();
     return { success: true, message: "Category deleted successfully" };
   }
 }

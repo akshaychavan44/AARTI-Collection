@@ -7,7 +7,6 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import {
-  ShoppingBag,
   ShoppingCart,
   Heart,
   User as UserIcon,
@@ -101,18 +100,12 @@ export const Navbar: React.FC = () => {
           <div className="flex justify-between h-20 items-center">
             {/* Left Group: Company Logo & Nav Links firmly on the Left */}
             <div className="flex items-center">
-              <Link href="/" prefetch={true} className="flex items-center gap-3 shrink-0 group">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#ff7849] via-[#f4a7b9] to-[#facc15] flex items-center justify-center text-[#1e1e24] shadow-card group-hover:scale-105 transition-transform duration-300">
-                  <ShoppingBag className="w-5 h-5 text-[#1e1e24]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-extrabold text-2xl tracking-tight text-[#1e1e24] group-hover:text-[#ff7849] transition-colors leading-none">
-                    Kalyan Kids
-                  </span>
-                  <span className="text-[10px] font-semibold tracking-wider text-[#1e1e24]/50 mt-1 uppercase">
-                    Kids Clothing Store
-                  </span>
-                </div>
+              <Link href="/" prefetch={true} className="flex items-center shrink-0 group py-1">
+                <img
+                  src="/brand-logo.png"
+                  alt="आरती Collection Kids Wear"
+                  className="h-14 sm:h-16 md:h-16 w-auto max-w-[230px] sm:max-w-[290px] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                />
               </Link>
 
               {/* Desktop Navigation Links next to Company Name */}
@@ -139,6 +132,7 @@ export const Navbar: React.FC = () => {
               {/* Wishlist Link */}
               <Link
                 href="/wishlist"
+                prefetch={true}
                 className="relative p-2.5 text-[#1e1e24] hover:text-[#ff7849] hover:bg-[#f6efe2] rounded-full transition-all"
                 title="Wishlist"
               >
@@ -153,6 +147,7 @@ export const Navbar: React.FC = () => {
               {/* Shopping Cart Link */}
               <Link
                 href="/cart"
+                prefetch={true}
                 className="relative p-2.5 text-[#1e1e24] hover:text-[#ff7849] hover:bg-[#f6efe2] rounded-full transition-all"
                 title="Shopping Cart"
               >
@@ -171,6 +166,7 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <Link
                     href="/account/orders"
+                    prefetch={true}
                     className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-[#1e1e24] hover:text-[#ff7849] hover:bg-[#f6efe2] transition-colors"
                     title="My Orders"
                   >
@@ -219,6 +215,7 @@ export const Navbar: React.FC = () => {
                         <div className="py-1">
                           <Link
                             href="/profile"
+                            prefetch={true}
                             onClick={() => setUserMenuOpen(false)}
                             className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-[#1e1e24] hover:bg-[#f6efe2] hover:text-[#ff7849] transition-colors"
                           >
@@ -228,6 +225,7 @@ export const Navbar: React.FC = () => {
 
                           <Link
                             href="/account/orders"
+                            prefetch={true}
                             onClick={() => setUserMenuOpen(false)}
                             className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-[#1e1e24] hover:bg-[#f6efe2] hover:text-[#ff7849] transition-colors"
                           >
@@ -238,6 +236,7 @@ export const Navbar: React.FC = () => {
                           {user.role === "ADMIN" && (
                             <Link
                               href="/admin"
+                              prefetch={true}
                               onClick={() => setUserMenuOpen(false)}
                               className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-[#1e1e24] hover:bg-[#f6efe2] hover:text-[#ff7849] transition-colors"
                             >
@@ -269,12 +268,14 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <Link
                     href="/login"
+                    prefetch={true}
                     className="text-xs font-bold text-[#1e1e24] hover:text-[#ff7849] px-3 py-2 rounded-full hover:bg-[#f6efe2] transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/register"
+                    prefetch={true}
                     className="text-xs font-bold text-[#1e1e24] hover:text-white hover:bg-[#1e1e24] border border-[#1e1e24]/20 px-4 py-2 rounded-full transition-all"
                   >
                     Create Account
@@ -346,17 +347,17 @@ export const Navbar: React.FC = () => {
                 href="/products?gender=BOYS"
                 prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#a8d8ea]/30 hover:bg-[#a8d8ea]/50 rounded-xl"
+                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#a8d8ea]/30 hover:bg-[#a8d8ea]/50 rounded-xl text-center"
               >
-                👦 Boys Wear
+                Boys
               </Link>
               <Link
                 href="/products?gender=GIRLS"
                 prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#f4a7b9]/30 hover:bg-[#f4a7b9]/50 rounded-xl"
+                className="px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#f4a7b9]/30 hover:bg-[#f4a7b9]/50 rounded-xl text-center"
               >
-                👧 Girls Wear
+                Girls
               </Link>
               <Link
                 href="/products?ageGroup=0-2"
@@ -364,7 +365,7 @@ export const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="col-span-2 px-3.5 py-3 text-xs font-bold text-[#1e1e24] bg-[#facc15]/30 hover:bg-[#facc15]/50 rounded-xl text-center"
               >
-                🍼 Infants (0–2 Yrs)
+                Infants (0–2 Yrs)
               </Link>
             </div>
 
@@ -385,6 +386,7 @@ export const Navbar: React.FC = () => {
                 <div className="grid grid-cols-2 gap-2">
                   <Link
                     href="/account/orders"
+                    prefetch={true}
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center justify-center gap-2 text-[#1e1e24] font-bold py-2.5 px-3 bg-[#f6efe2] hover:bg-white rounded-xl text-xs"
                   >
@@ -393,6 +395,7 @@ export const Navbar: React.FC = () => {
                   </Link>
                   <Link
                     href="/profile"
+                    prefetch={true}
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center justify-center gap-2 text-[#1e1e24] font-bold py-2.5 px-3 bg-[#f6efe2] hover:bg-white rounded-xl text-xs"
                   >
@@ -416,6 +419,7 @@ export const Navbar: React.FC = () => {
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <Link
                   href="/login"
+                  prefetch={true}
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-center py-2.5 px-4 rounded-xl border border-[#1e1e24]/20 text-[#1e1e24] font-bold text-xs hover:bg-[#f6efe2]"
                 >
@@ -423,6 +427,7 @@ export const Navbar: React.FC = () => {
                 </Link>
                 <Link
                   href="/register"
+                  prefetch={true}
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-center py-2.5 px-4 rounded-xl border border-[#1e1e24]/30 text-[#1e1e24] font-bold text-xs hover:bg-[#1e1e24] hover:text-white transition-colors"
                 >

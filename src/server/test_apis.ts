@@ -213,7 +213,7 @@ async function runTests() {
       name: "Boys Smart Striped Polo Shirt",
       gender: "BOYS",
       ageGroup: "6-9",
-      brand: "Kalyan Kids",
+      brand: "Aarti Collection",
       description: "Classic collar polo t-shirt with knitted stripes.",
       images: [
         {

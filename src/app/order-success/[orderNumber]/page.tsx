@@ -104,7 +104,7 @@ export default function OrderSuccessPage({
         </span>
         <h1 className="text-3xl font-black tracking-tight">Order Confirmed!</h1>
         <p className="text-rose-100 text-sm max-w-md mx-auto">
-          Thank you for shopping at Kalyan Kids. Your clothing items have been reserved and prepared for local pickup.
+          Thank you for shopping at Aarti Collection. Your clothing items have been reserved and prepared for pickup or delivery.
         </p>
       </div>
 

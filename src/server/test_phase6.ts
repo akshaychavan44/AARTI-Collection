@@ -186,7 +186,7 @@ async function runTests() {
         name: "Admin Special Organic Polo",
         gender: "BOYS",
         ageGroup: "6-9",
-        brand: "Kalyan Kids Luxury",
+        brand: "Aarti Collection Luxury",
         description: "100% fine cotton polo shirt.",
         compareAtPrice: 1299,
         variants: [

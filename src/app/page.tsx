@@ -20,7 +20,7 @@ const categories = [
     title: "Boys Collection",
     subtitle: "Crisp shirts, rugged denims & everyday tees",
     href: "/products?gender=BOYS",
-    image: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=85&w=800",
+    image: "/images/products/boys-stretch-denim-jeans.jpg",
     color: "bg-[#a8d8ea]/40",
     badge: "Ages 2–16Y",
   },
@@ -28,7 +28,7 @@ const categories = [
     title: "Girls Frocks & Sets",
     subtitle: "Breezy dresses, twirl frocks & pastel sets",
     href: "/products?gender=GIRLS",
-    image: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&q=85&w=800",
+    image: "/images/products/girls-floral-party-frock.jpg",
     color: "bg-[#f4a7b9]/40",
     badge: "Trending Now",
   },
@@ -36,7 +36,7 @@ const categories = [
     title: "Infants & Toddlers",
     subtitle: "Ultra-soft rompers & organic onesies",
     href: "/products?ageGroup=0-2",
-    image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&q=85&w=800",
+    image: "/images/products/baby-cotton-romper-suit.jpg",
     color: "bg-[#facc15]/40",
     badge: "0–2 Years",
   },
@@ -44,7 +44,7 @@ const categories = [
     title: "Festive & Party Wear",
     subtitle: "Sparkling lehengas, kurtas & wedding sets",
     href: "/products?search=Festive",
-    image: "/images/categories/festive-party-wear.jpg",
+    image: "/images/products/girls-foil-print-lehenga.jpg",
     color: "bg-[#c084fc]/30",
     badge: "Occasion Edit",
   },
@@ -54,56 +54,56 @@ const bestsellers = [
   {
     id: 1,
     name: "Pure Combed Cotton Graphic Play Tee",
-    price: 699,
-    compareAtPrice: 999,
-    discount: "30% OFF",
-    category: "Boys Wear",
-    image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&q=85&w=600",
+    price: 499,
+    compareAtPrice: 699,
+    discount: "28% OFF",
+    category: "Boys T-Shirts",
+    image: "/images/products/boys-dino-tee.jpg",
     rating: 5,
     tag: "Bestseller",
-    slug: "cotton-play-tee",
+    slug: "boys-dinosaur-printed-cotton-t-shirt",
   },
   {
     id: 2,
-    name: "Pastel Blossom Tiered Twirl Dress",
-    price: 1199,
-    compareAtPrice: 1599,
-    discount: "25% OFF",
+    name: "Pastel Peach Tiered Party Frock",
+    price: 999,
+    compareAtPrice: 1499,
+    discount: "33% OFF",
     category: "Girls Frocks",
-    image: "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=85&w=600",
+    image: "/images/products/girls-floral-party-frock.jpg",
     rating: 5,
     tag: "Customer Favorite",
-    slug: "blossom-tiered-dress",
+    slug: "girls-floral-layered-party-frock",
   },
   {
     id: 3,
-    name: "Organic Newborn Essentials Romper (Set of 2)",
-    price: 899,
-    compareAtPrice: 1199,
-    discount: "25% OFF",
+    name: "Organic Newborn Essentials Romper",
+    price: 399,
+    compareAtPrice: 599,
+    discount: "33% OFF",
     category: "Infants 0–2Y",
-    image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&q=85&w=600",
+    image: "/images/products/baby-cotton-romper-suit.jpg",
     rating: 5,
     tag: "Organic Cotton",
-    slug: "newborn-essentials-romper",
+    slug: "baby-boys-organic-cotton-romper-suit",
   },
   {
     id: 4,
-    name: "Celebration Embroidered Kurta & Dhoti Set",
+    name: "Celebration Royal Blue Kurta Pajama Set",
     price: 1499,
     compareAtPrice: 1999,
     discount: "25% OFF",
     category: "Festive Edit",
-    image: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=85&w=600",
+    image: "/images/products/boys-silk-kurta-pajama.jpg",
     rating: 5,
     tag: "Festive Star",
-    slug: "celebration-kurta-set",
+    slug: "boys-traditional-silk-blend-kurta-pajama-set",
   },
 ];
 
 export default function Home() {
   const conciergeUrl = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    "Hello Kalyan Kids Boutique! I would like help styling an outfit for my child."
+    "Hello! I would like help choosing an outfit for my child."
   )}`;
 
   return (
@@ -119,7 +119,7 @@ export default function Home() {
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f6efe2] border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
                 <span className="h-2 w-2 rounded-full bg-[#ff7849] animate-pulse" />
-                <span>Kids Clothing Boutique in Kalyan</span>
+                <span>Aarti Collection</span>
               </div>
 
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#1e1e24] leading-[1.05]">
@@ -150,6 +150,7 @@ export default function Home() {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link
                   href="/products"
+                  prefetch={true}
                   className="btn-bouncy inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#ff7849] hover:bg-[#ff7849]/90 text-[#1e1e24] font-bold text-sm shadow-card hover:shadow-card-hover"
                 >
                   <ShoppingBag className="w-4 h-4" />
@@ -171,13 +172,13 @@ export default function Home() {
               {/* Trust Pill Chips */}
               <div className="flex flex-wrap items-center gap-2 pt-4">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
-                  <Check className="w-3.5 h-3.5 text-emerald-600" /> 100% Combed Cotton
+                  <Check className="w-3.5 h-3.5 text-emerald-600" /> Pure Breathable Cotton
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
-                  <Smile className="w-3.5 h-3.5 text-amber-500" /> Ages 0–16 Years
+                  <Smile className="w-3.5 h-3.5 text-amber-500" /> Sized for Ages 0–16
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#1e1e24]/10 text-xs font-semibold text-[#1e1e24] shadow-subtle">
-                  <MapPin className="w-3.5 h-3.5 text-rose-500" /> Kalyan Store Pickup
+                  <MapPin className="w-3.5 h-3.5 text-rose-500" /> Store Pickup & Fast Delivery
                 </span>
               </div>
             </div>
@@ -250,6 +251,7 @@ export default function Home() {
             </div>
             <Link
               href="/products"
+              prefetch={true}
               className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1e1e24] hover:text-[#ff7849] transition-colors"
             >
               <span>View all collections</span>
@@ -262,6 +264,7 @@ export default function Home() {
               <Link
                 key={cat.title}
                 href={cat.href}
+                prefetch={true}
                 className="doodle-sticker group rounded-3xl bg-white border border-[#1e1e24]/10 overflow-hidden shadow-subtle flex flex-col justify-between"
               >
                 <div className="relative aspect-[4/3] overflow-hidden bg-[#f6efe2]">
@@ -327,6 +330,7 @@ export default function Home() {
               <Link
                 key={slot.age}
                 href={`/products?ageGroup=${slot.query}`}
+                prefetch={true}
                 className="doodle-sticker p-4 rounded-2xl bg-white border border-[#1e1e24]/10 text-center shadow-subtle group hover:border-[#ff7849]"
               >
                 <div className="text-2xl font-black text-[#1e1e24] group-hover:text-[#ff7849] transition-colors">
@@ -344,7 +348,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. CURATED BESTSELLERS GRID */}
+      {/* 5. BESTSELLERS GRID */}
       <section className="py-16 sm:py-20 bg-[#fffdfa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
@@ -358,6 +362,7 @@ export default function Home() {
             </div>
             <Link
               href="/products"
+              prefetch={true}
               className="btn-bouncy inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f6efe2] hover:bg-[#ff7849] hover:text-[#1e1e24] text-xs font-bold transition-all shadow-subtle"
             >
               <span>Explore All Garments</span>
@@ -515,10 +520,10 @@ export default function Home() {
             <Sparkles className="w-3.5 h-3.5" /> Need Sizing Advice?
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Chat Directly with our Kalyan Boutique Stylist
+            Chat Directly with Aarti Collection Stylist
           </h2>
           <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
-            Not sure about the size or fabric? Message us directly on WhatsApp or drop by our Kalyan store for personalized fittings.
+            Not sure about the size or fabric? Message us directly on WhatsApp for personalized styling and sizing advice.
           </p>
           <div className="pt-2">
             <a

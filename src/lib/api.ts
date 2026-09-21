@@ -1,3 +1,5 @@
+import { clientCache } from "./cache";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
 
 export interface ApiResponse<T = any> {
@@ -50,27 +52,95 @@ export async function fetchApi<T = any>(
   return data;
 }
 
+function handleMutationInvalidation(endpoint: string) {
+  if (endpoint.includes("product")) {
+    clientCache.invalidate("product");
+    clientCache.invalidate("admin/stats");
+  } else if (endpoint.includes("category") || endpoint.includes("categories")) {
+    clientCache.invalidate("categor");
+    clientCache.invalidate("product");
+    clientCache.invalidate("admin/stats");
+  } else if (endpoint.includes("order")) {
+    clientCache.invalidate("order");
+    clientCache.invalidate("admin/stats");
+  } else if (endpoint.includes("cart")) {
+    clientCache.invalidate("cart");
+  } else if (endpoint.includes("wishlist")) {
+    clientCache.invalidate("wishlist");
+  } else if (endpoint.includes("coupon")) {
+    clientCache.invalidate("coupon");
+  } else if (endpoint.includes("auth") || endpoint.includes("customer")) {
+    clientCache.invalidate("auth");
+    clientCache.invalidate("customer");
+    clientCache.invalidate("admin/stats");
+  } else {
+    clientCache.invalidate();
+  }
+}
+
 export const api = {
   get: <T = any>(endpoint: string, options?: RequestInit) =>
     fetchApi<T>(endpoint, { ...options, method: "GET" }),
-  post: <T = any>(endpoint: string, body?: any, options?: RequestInit) =>
-    fetchApi<T>(endpoint, {
+
+  /**
+   * Get with stale-while-revalidate client-side caching.
+   * Enables instant page transitions without loading spinners when data is in cache.
+   */
+  getCached: async <T = any>(
+    endpoint: string,
+    optionsOrTtl?: RequestInit | number,
+    ttlMs?: number
+  ) => {
+    let options: RequestInit | undefined;
+    let ttl = ttlMs;
+    if (typeof optionsOrTtl === "number") {
+      ttl = optionsOrTtl;
+    } else {
+      options = optionsOrTtl;
+    }
+
+    return clientCache.fetchWithSWR<ApiResponse<T>>(
+      endpoint,
+      () => fetchApi<T>(endpoint, { ...options, method: "GET" }),
+      ttl
+    );
+  },
+
+  post: async <T = any>(endpoint: string, body?: any, options?: RequestInit) => {
+    const res = await fetchApi<T>(endpoint, {
       ...options,
       method: "POST",
       body: body ? JSON.stringify(body) : undefined,
-    }),
-  put: <T = any>(endpoint: string, body?: any, options?: RequestInit) =>
-    fetchApi<T>(endpoint, {
+    });
+    handleMutationInvalidation(endpoint);
+    return res;
+  },
+
+  put: async <T = any>(endpoint: string, body?: any, options?: RequestInit) => {
+    const res = await fetchApi<T>(endpoint, {
       ...options,
       method: "PUT",
       body: body ? JSON.stringify(body) : undefined,
-    }),
-  patch: <T = any>(endpoint: string, body?: any, options?: RequestInit) =>
-    fetchApi<T>(endpoint, {
+    });
+    handleMutationInvalidation(endpoint);
+    return res;
+  },
+
+  patch: async <T = any>(endpoint: string, body?: any, options?: RequestInit) => {
+    const res = await fetchApi<T>(endpoint, {
       ...options,
       method: "PATCH",
       body: body ? JSON.stringify(body) : undefined,
-    }),
-  delete: <T = any>(endpoint: string, options?: RequestInit) =>
-    fetchApi<T>(endpoint, { ...options, method: "DELETE" }),
+    });
+    handleMutationInvalidation(endpoint);
+    return res;
+  },
+
+  delete: async <T = any>(endpoint: string, options?: RequestInit) => {
+    const res = await fetchApi<T>(endpoint, { ...options, method: "DELETE" });
+    handleMutationInvalidation(endpoint);
+    return res;
+  },
+
+  invalidateCache: (prefix?: string) => clientCache.invalidate(prefix),
 };

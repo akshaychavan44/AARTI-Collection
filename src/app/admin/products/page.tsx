@@ -36,9 +36,14 @@ interface AdminProductItem {
   createdAt: string;
 }
 
+import { clientCache } from "@/lib/cache";
+
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState<AdminProductItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const initialCacheKey = "admin/products?status=all";
+  const cached = clientCache.get<any>(initialCacheKey);
+  const initialProducts = cached?.data || cached || [];
+  const [products, setProducts] = useState<AdminProductItem[]>(Array.isArray(initialProducts) ? initialProducts : []);
+  const [loading, setLoading] = useState(products.length === 0);
   const [error, setError] = useState<string | null>(null);
 
   // Filters
@@ -50,26 +55,27 @@ export default function AdminProductsPage() {
   const [deleting, setDeleting] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [statusFilter]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       setError(null);
       let query = `?status=${statusFilter}`;
       if (search.trim()) query += `&search=${encodeURIComponent(search.trim())}`;
-      const res = await api.get<AdminProductItem[]>(`/admin/products${query}`);
-      if (res.success && res.data) {
-        setProducts(res.data);
+      const res = await api.getCached<AdminProductItem[]>(`/admin/products${query}`);
+      if (res.data?.success && res.data.data) {
+        setProducts(res.data.data);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load products");
+      if (products.length === 0) setError(err.message || "Failed to load products");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const hasData = products.length > 0;
+    fetchProducts(hasData);
+  }, [statusFilter]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,7 +175,7 @@ export default function AdminProductsPage() {
 
           <button
             type="button"
-            onClick={fetchProducts}
+            onClick={() => fetchProducts()}
             className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
           >
             Refresh
@@ -245,7 +251,7 @@ export default function AdminProductsPage() {
                               <ExternalLink className="w-3 h-3 text-slate-300 shrink-0" />
                             </Link>
                             <div className="text-[11px] text-slate-400 mt-0.5 flex items-center gap-2">
-                              <span>{p.brand || "Kalyan Kids"}</span>
+                              <span>{p.brand || "Aarti Collection"}</span>
                               <span>•</span>
                               <span>{p.gender}</span>
                               <span>•</span>

@@ -63,7 +63,7 @@ export default function EditProductPage() {
   const [categoryId, setCategoryId] = useState<number | "">("");
   const [gender, setGender] = useState<"BOYS" | "GIRLS">("BOYS");
   const [ageGroup, setAgeGroup] = useState<"0-2" | "3-5" | "6-9" | "10-13" | "14-16">("3-5");
-  const [brand, setBrand] = useState("Kalyan Kids");
+  const [brand, setBrand] = useState("Aarti Collection");
   const [compareAtPrice, setCompareAtPrice] = useState<string>("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [isActive, setIsActive] = useState(true);
@@ -105,7 +105,7 @@ export default function EditProductPage() {
         setCategoryId(p.category ? p.category.id : "");
         setGender(p.gender);
         setAgeGroup(p.ageGroup);
-        setBrand(p.brand || "Kalyan Kids");
+        setBrand(p.brand || "Aarti Collection");
         setCompareAtPrice(p.compareAtPrice ? String(p.compareAtPrice) : "");
         setIsFeatured(p.isFeatured ?? false);
         setIsActive(p.isActive ?? true);
@@ -432,7 +432,7 @@ export default function EditProductPage() {
                 type="text"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
-                placeholder="e.g. Kalyan Kids"
+                placeholder="e.g. Aarti Collection"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
               />
             </div>

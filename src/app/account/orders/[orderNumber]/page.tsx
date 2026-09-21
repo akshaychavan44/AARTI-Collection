@@ -324,7 +324,7 @@ export default function OrderDetailPage() {
               )}
               <div className="flex justify-between">
                 <span>Fulfillment:</span>
-                <span className="font-medium text-slate-900">Kalyan Store Pickup (Free)</span>
+                <span className="font-medium text-slate-900">Store Pickup (Free)</span>
               </div>
             </div>
           </div>
@@ -345,7 +345,7 @@ export default function OrderDetailPage() {
             )}
 
             <div className="flex justify-between text-slate-600">
-              <span>Kalyan Store Pickup</span>
+              <span>Store Pickup</span>
               <span className="font-semibold text-emerald-600">FREE</span>
             </div>
 
@@ -360,7 +360,7 @@ export default function OrderDetailPage() {
         <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <ShieldCheck className="w-4 h-4 text-slate-400" />
-            <span>Kalyan Kids Store Guarantee • 100% Cotton & Safe Dyes</span>
+            <span>Aarti Collection Store Guarantee • Quality Fabrics & Kids Comfort</span>
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -395,7 +395,7 @@ export default function OrderDetailPage() {
             <h3 className="text-lg font-bold text-slate-900">Cancel Order {order.orderNumber}?</h3>
 
             <p className="text-xs text-slate-500 leading-relaxed">
-              Are you sure you want to cancel this order? Any reserved inventory will be immediately restored to the Kalyan Kids catalog.
+              Are you sure you want to cancel this order? Any reserved inventory will be immediately restored to the Aarti Collection catalog.
               {order.paymentStatus === "PAID" && " If you made an online payment, a refund request will be initiated."}
             </p>
 

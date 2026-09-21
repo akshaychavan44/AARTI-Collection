@@ -45,7 +45,7 @@ export default function AddProductPage() {
   const [categoryId, setCategoryId] = useState<number | "">("");
   const [gender, setGender] = useState<"BOYS" | "GIRLS">("BOYS");
   const [ageGroup, setAgeGroup] = useState<"0-2" | "3-5" | "6-9" | "10-13" | "14-16">("3-5");
-  const [brand, setBrand] = useState("Kalyan Kids");
+  const [brand, setBrand] = useState("Aarti Collection");
   const [compareAtPrice, setCompareAtPrice] = useState<string>("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [isActive, setIsActive] = useState(true);
@@ -179,7 +179,7 @@ export default function AddProductPage() {
         categoryId: Number(categoryId),
         gender,
         ageGroup,
-        brand: brand.trim() || "Kalyan Kids",
+        brand: brand.trim() || "Aarti Collection",
         compareAtPrice: compareAtPrice ? parseFloat(compareAtPrice) : undefined,
         isFeatured,
         isActive,

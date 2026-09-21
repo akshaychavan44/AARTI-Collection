@@ -71,7 +71,7 @@ function LoginForm() {
   };
 
   const fillAdminCredentials = () => {
-    setEmail("admin@kalyankids.com");
+    setEmail("admin@aarticollection.com");
     setPassword("Admin@12345");
     setError(null);
   };
@@ -89,7 +89,7 @@ function LoginForm() {
           Welcome Back
         </span>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-          Sign In to Kalyan Kids
+          Sign In to Aarti Collection
         </h1>
         <p className="text-sm text-slate-500 mt-2">
           Access your account, orders, or store administrator console.
@@ -204,7 +204,7 @@ function LoginForm() {
             <span className="flex items-center gap-1 text-[11px] text-amber-700 font-extrabold uppercase">
               <Shield className="w-3 h-3" /> Admin Login
             </span>
-            <span className="text-[10px] text-slate-500 font-normal truncate">admin@kalyankids.com</span>
+            <span className="text-[10px] text-slate-500 font-normal truncate">admin@aarticollection.com</span>
           </button>
 
           <button

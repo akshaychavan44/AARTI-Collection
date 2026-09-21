@@ -32,9 +32,14 @@ interface AdminOrderItem {
   itemCount: number;
 }
 
+import { clientCache } from "@/lib/cache";
+
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState<AdminOrderItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const initialCacheKey = "/admin/orders?";
+  const cached = clientCache.get<any>(initialCacheKey);
+  const initialOrders = cached?.data || cached || [];
+  const [orders, setOrders] = useState<AdminOrderItem[]>(Array.isArray(initialOrders) ? initialOrders : []);
+  const [loading, setLoading] = useState(orders.length === 0);
   const [error, setError] = useState<string | null>(null);
 
   // Filters
@@ -42,37 +47,36 @@ export default function AdminOrdersPage() {
   const [orderStatus, setOrderStatus] = useState<string>("all");
   const [paymentStatus, setPaymentStatus] = useState<string>("all");
 
-  useEffect(() => {
-    fetchOrders();
-  }, [orderStatus, paymentStatus]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       setError(null);
       const params = new URLSearchParams();
       if (search.trim()) params.append("search", search.trim());
       if (orderStatus !== "all") params.append("status", orderStatus);
       if (paymentStatus !== "all") params.append("paymentStatus", paymentStatus);
 
-      const res = await api.get<any>(`/admin/orders?${params.toString()}`);
-      if (res.success && res.data) {
-        const ordList = Array.isArray(res.data)
-          ? res.data
-          : Array.isArray((res.data as any).orders)
-          ? (res.data as any).orders
+      const res = await api.getCached<any>(`/admin/orders?${params.toString()}`);
+      const dataPayload = res.data?.data || res.data;
+      if (dataPayload) {
+        const ordList = Array.isArray(dataPayload)
+          ? dataPayload
+          : Array.isArray((dataPayload as any).orders)
+          ? (dataPayload as any).orders
           : [];
         setOrders(ordList);
-      } else {
-        setOrders([]);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load customer orders");
-      setOrders([]);
+      if (orders.length === 0) setError(err.message || "Failed to load customer orders");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const hasData = orders.length > 0;
+    fetchOrders(hasData);
+  }, [orderStatus, paymentStatus]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,7 +199,7 @@ export default function AdminOrdersPage() {
 
           <button
             type="button"
-            onClick={fetchOrders}
+            onClick={() => fetchOrders()}
             className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
           >
             Refresh

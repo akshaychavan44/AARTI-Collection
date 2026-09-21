@@ -88,7 +88,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [isAuthenticated, refreshCart]);
 
-  const addToCart = async (productId: number, variantId: number, quantity: number = 1) => {
+  const addToCart = useCallback(async (productId: number, variantId: number, quantity: number = 1) => {
     if (!isAuthenticated) {
       throw new Error("Please log in to add items to your cart");
     }
@@ -98,52 +98,55 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       throw new Error(res.message || "Failed to add item to cart");
     }
-  };
+  }, [isAuthenticated]);
 
-  const updateQuantity = async (itemId: number, quantity: number) => {
+  const updateQuantity = useCallback(async (itemId: number, quantity: number) => {
     const res = await api.put<Cart>(`/cart/items/${itemId}`, { quantity });
     if (res.success && res.data) {
       setCart(res.data);
     } else {
       throw new Error(res.message || "Failed to update quantity");
     }
-  };
+  }, []);
 
-  const removeItem = async (itemId: number) => {
+  const removeItem = useCallback(async (itemId: number) => {
     const res = await api.delete<Cart>(`/cart/items/${itemId}`);
     if (res.success && res.data) {
       setCart(res.data);
     } else {
       throw new Error(res.message || "Failed to remove item");
     }
-  };
+  }, []);
 
-  const clearCart = async () => {
+  const clearCart = useCallback(async () => {
     const res = await api.delete<Cart>("/cart");
     if (res.success && res.data) {
       setCart(res.data);
     } else {
       throw new Error(res.message || "Failed to clear cart");
     }
-  };
+  }, []);
 
   const itemCount = cart?.totalItems ?? 0;
   const subtotal = cart?.subtotal ?? 0;
 
+  const value = React.useMemo<CartContextType>(
+    () => ({
+      cart,
+      loading,
+      itemCount,
+      subtotal,
+      addToCart,
+      updateQuantity,
+      removeItem,
+      clearCart,
+      refreshCart,
+    }),
+    [cart, loading, itemCount, subtotal, addToCart, updateQuantity, removeItem, clearCart, refreshCart]
+  );
+
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        loading,
-        itemCount,
-        subtotal,
-        addToCart,
-        updateQuantity,
-        removeItem,
-        clearCart,
-        refreshCart,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );

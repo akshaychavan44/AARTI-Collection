@@ -23,7 +23,7 @@ export class AuthController {
 
       res.status(201).json({
         success: true,
-        message: "Registration successful. Welcome to Kalyan Kids!",
+        message: "Registration successful. Welcome to Aarti Collection!",
         data: session,
       });
     } catch (error: any) {

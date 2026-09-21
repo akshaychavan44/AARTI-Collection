@@ -25,9 +25,14 @@ interface CategoryItem {
   createdAt: string;
 }
 
+import { clientCache } from "@/lib/cache";
+
 export default function AdminCategoriesPage() {
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const initialCacheKey = "/admin/categories";
+  const cached = clientCache.get<any>(initialCacheKey);
+  const initialCats = cached?.data || cached || [];
+  const [categories, setCategories] = useState<CategoryItem[]>(Array.isArray(initialCats) ? initialCats : []);
+  const [loading, setLoading] = useState(categories.length === 0);
   const [error, setError] = useState<string | null>(null);
 
   // Modal states
@@ -45,24 +50,25 @@ export default function AdminCategoriesPage() {
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
+  const fetchCategories = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       setError(null);
-      const res = await api.get<CategoryItem[]>("/admin/categories");
-      if (res.success && res.data) {
-        setCategories(res.data);
+      const res = await api.getCached<CategoryItem[]>("/admin/categories");
+      if (res.data?.success && res.data.data) {
+        setCategories(res.data.data);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load categories");
+      if (categories.length === 0) setError(err.message || "Failed to load categories");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const hasData = categories.length > 0;
+    fetchCategories(hasData);
+  }, []);
 
   const openAddModal = () => {
     setEditingCategory(null);

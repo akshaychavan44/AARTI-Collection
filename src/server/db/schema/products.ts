@@ -29,7 +29,7 @@ export const products = pgTable(
     description: text("description"),
     gender: genderEnum("gender").notNull(),
     ageGroup: ageGroupEnum("age_group").notNull(),
-    brand: varchar("brand", { length: 100 }).default("Kalyan Kids"),
+    brand: varchar("brand", { length: 100 }).default("Aarti Collection"),
     compareAtPrice: numeric("compare_at_price", { precision: 10, scale: 2 }),
     isFeatured: boolean("is_featured").default(false).notNull(),
     isActive: boolean("is_active").default(true).notNull(),

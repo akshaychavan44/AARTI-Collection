@@ -70,7 +70,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 sm:p-10">
         <div className="text-center mb-8">
           <span className="inline-block px-3 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-semibold mb-3">
-            Join Kalyan Kids
+            Join Aarti Collection
           </span>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
             Create Your Account

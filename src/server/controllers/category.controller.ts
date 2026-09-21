@@ -12,6 +12,7 @@ export class CategoryController {
   public static async getCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const categories = await CategoryService.getAllCategories(req.query as unknown as CategoryQueryParams);
+      res.setHeader("Cache-Control", "public, max-age=60, stale-while-revalidate=120");
       res.status(200).json({
         success: true,
         data: categories,

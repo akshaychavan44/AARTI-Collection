@@ -173,7 +173,7 @@ export default function CheckoutPage() {
           key: rzpData.keyId,
           amount: rzpData.amount,
           currency: rzpData.currency,
-          name: "Kalyan Kids Clothing",
+          name: "Aarti Collection",
           description: `Order #${orderNumber}`,
           order_id: rzpData.razorpayOrderId,
           prefill: {
@@ -297,7 +297,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[10px] uppercase font-bold text-slate-400">
-                        {item.product.brand || "Kalyan Kids"}
+                        {item.product.brand || "Aarti Collection"}
                       </div>
                       <div className="font-bold text-slate-900 text-sm truncate">
                         {item.product.name}

@@ -51,7 +51,7 @@ export const createProductSchema = z.object({
   }),
   compareAtPrice: z.coerce.number().positive().optional(),
   isFeatured: z.boolean().optional().default(false),
-  brand: z.string().trim().max(100).optional().default("Kalyan Kids"),
+  brand: z.string().trim().max(100).optional().default("Aarti Collection"),
   isActive: z.boolean().optional().default(true),
   variants: z
     .array(createVariantSchema)

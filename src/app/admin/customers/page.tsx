@@ -24,30 +24,36 @@ interface AdminCustomerItem {
   createdAt: string;
 }
 
+import { clientCache } from "@/lib/cache";
+
 export default function AdminCustomersPage() {
-  const [customers, setCustomers] = useState<AdminCustomerItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const initialCacheKey = "/admin/customers";
+  const cached = clientCache.get<any>(initialCacheKey);
+  const initialCusts = cached?.data || cached || [];
+  const [customers, setCustomers] = useState<AdminCustomerItem[]>(Array.isArray(initialCusts) ? initialCusts : []);
+  const [loading, setLoading] = useState(customers.length === 0);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
-
-  const fetchCustomers = async () => {
+  const fetchCustomers = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       setError(null);
-      const res = await api.get<AdminCustomerItem[]>("/admin/customers");
-      if (res.success && res.data) {
-        setCustomers(res.data);
+      const res = await api.getCached<AdminCustomerItem[]>("/admin/customers");
+      if (res.data?.success && res.data.data) {
+        setCustomers(res.data.data);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load customers directory");
+      if (customers.length === 0) setError(err.message || "Failed to load customers directory");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const hasData = customers.length > 0;
+    fetchCustomers(hasData);
+  }, []);
 
   const handleToggleStatus = async (customerId: number) => {
     try {
@@ -76,7 +82,7 @@ export default function AdminCustomersPage() {
           Customers Directory
         </h1>
         <p className="text-xs text-slate-500 mt-1">
-          Registered Kalyan shoppers, order history telemetry, and account access status.
+          Registered Aarti Collection shoppers, order history, and account access status.
         </p>
       </div>
 
@@ -95,7 +101,7 @@ export default function AdminCustomersPage() {
 
         <button
           type="button"
-          onClick={fetchCustomers}
+          onClick={() => fetchCustomers()}
           className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
         >
           Refresh

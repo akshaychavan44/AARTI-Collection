@@ -41,29 +41,32 @@ interface DashboardStats {
   }>;
 }
 
-export default function AdminDashboardPage() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+import { clientCache } from "@/lib/cache";
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
+export default function AdminDashboardPage() {
+  const cached = clientCache.get<DashboardStats>("admin/stats");
+  const [stats, setStats] = useState<DashboardStats | null>(cached);
+  const [loading, setLoading] = useState(!cached);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchStats = async () => {
     try {
-      setLoading(true);
+      if (!stats) setLoading(true);
       setError(null);
-      const res = await api.get<DashboardStats>("/admin/stats");
-      if (res.success && res.data) {
-        setStats(res.data);
+      const res = await api.getCached<DashboardStats>("/admin/stats");
+      if (res.data?.success && res.data.data) {
+        setStats(res.data.data);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load dashboard metrics");
+      if (!stats) setError(err.message || "Failed to load dashboard metrics");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
 
   const getStatusBadge = (status: "PENDING" | "CONFIRMED" | "CANCELLED") => {
     switch (status) {
@@ -151,7 +154,7 @@ export default function AdminDashboardPage() {
             Store Overview
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Real-time sales, inventory telemetry, and customer operations in Kalyan.
+            Real-time sales, inventory, and customer operations for Aarti Collection.
           </p>
         </div>
 

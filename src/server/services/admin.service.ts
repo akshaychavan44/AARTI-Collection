@@ -68,61 +68,51 @@ export interface AdminCustomerItem {
   createdAt: Date;
 }
 
+// In-memory cache for dashboard metrics (15-second TTL to avoid repeated DB roundtrips)
+let cachedDashboardStats: { data: DashboardStats; expiresAt: number } | null = null;
+const STATS_CACHE_TTL_MS = 15_000;
+
 export class AdminService {
   /**
+   * Invalidate cached dashboard metrics when products or orders are updated.
+   */
+  public static invalidateStatsCache(): void {
+    cachedDashboardStats = null;
+  }
+
+  /**
    * Retrieves clean aggregated metrics for the Admin Dashboard.
+   * Uses a single consolidated SQL query run in parallel with recent orders.
    */
   public static async getDashboardStats(): Promise<DashboardStats> {
-    // 1. Total Products
-    const [prodCount] = await db.select({ count: sql<number>`count(*)::int` }).from(products);
+    if (cachedDashboardStats && Date.now() < cachedDashboardStats.expiresAt) {
+      return cachedDashboardStats.data;
+    }
 
-    // 2. Total Categories
-    const [catCount] = await db.select({ count: sql<number>`count(*)::int` }).from(categories);
+    // Execute consolidated metrics query and recent orders in parallel
+    const [metricsResult, rawRecentOrders] = await Promise.all([
+      db.execute(sql`
+        SELECT
+          (SELECT count(*)::int FROM products) AS total_products,
+          (SELECT count(*)::int FROM categories) AS total_categories,
+          (SELECT count(*)::int FROM orders) AS total_orders,
+          (SELECT count(*)::int FROM users WHERE role = 'CUSTOMER') AS total_customers,
+          (SELECT count(*)::int FROM orders WHERE status = 'PENDING') AS pending_orders,
+          (SELECT count(*)::int FROM orders WHERE status = 'CONFIRMED') AS confirmed_orders,
+          (SELECT coalesce(sum(case when payment_status = 'PAID' or status = 'CONFIRMED' then total::numeric else 0 end), 0)::float FROM orders) AS total_revenue,
+          (SELECT count(*)::int FROM inventory WHERE quantity <= low_stock_threshold) AS low_stock_count
+      `),
+      db.query.orders.findMany({
+        limit: 5,
+        orderBy: [desc(orders.createdAt)],
+        with: {
+          user: true,
+          items: true,
+        },
+      }),
+    ]);
 
-    // 3. Total Orders
-    const [orderCount] = await db.select({ count: sql<number>`count(*)::int` }).from(orders);
-
-    // 4. Total Customers
-    const [custCount] = await db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(users)
-      .where(eq(users.role, "CUSTOMER"));
-
-    // 5. Orders by status
-    const [pendingCount] = await db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(orders)
-      .where(eq(orders.status, "PENDING"));
-
-    const [confirmedCount] = await db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(orders)
-      .where(eq(orders.status, "CONFIRMED"));
-
-    // 6. Total Revenue (sum of total for PAID or CONFIRMED orders)
-    const [revenueResult] = await db
-      .select({
-        total: sql<string>`coalesce(sum(case when payment_status = 'PAID' or status = 'CONFIRMED' then total::numeric else 0 end), 0)`,
-      })
-      .from(orders);
-
-    const totalRevenue = parseFloat(revenueResult?.total || "0");
-
-    // 7. Low stock variants count
-    const [lowStockResult] = await db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(inventory)
-      .where(sql`${inventory.quantity} <= ${inventory.lowStockThreshold}`);
-
-    // 8. Recent 5 Orders with customer info
-    const rawRecentOrders = await db.query.orders.findMany({
-      limit: 5,
-      orderBy: [desc(orders.createdAt)],
-      with: {
-        user: true,
-        items: true,
-      },
-    });
+    const row: any = (metricsResult as any)?.rows?.[0] || {};
 
     const recentOrders = rawRecentOrders.map((o: any) => ({
       id: o.id,
@@ -136,17 +126,24 @@ export class AdminService {
       itemCount: o.items?.length || 0,
     }));
 
-    return {
-      totalProducts: prodCount?.count || 0,
-      totalCategories: catCount?.count || 0,
-      totalOrders: orderCount?.count || 0,
-      totalCustomers: custCount?.count || 0,
-      pendingOrders: pendingCount?.count || 0,
-      confirmedOrders: confirmedCount?.count || 0,
-      totalRevenue,
-      lowStockCount: lowStockResult?.count || 0,
+    const result: DashboardStats = {
+      totalProducts: Number(row.total_products || 0),
+      totalCategories: Number(row.total_categories || 0),
+      totalOrders: Number(row.total_orders || 0),
+      totalCustomers: Number(row.total_customers || 0),
+      pendingOrders: Number(row.pending_orders || 0),
+      confirmedOrders: Number(row.confirmed_orders || 0),
+      totalRevenue: Number(row.total_revenue || 0),
+      lowStockCount: Number(row.low_stock_count || 0),
       recentOrders,
     };
+
+    cachedDashboardStats = {
+      data: result,
+      expiresAt: Date.now() + STATS_CACHE_TTL_MS,
+    };
+
+    return result;
   }
 
   /**
@@ -271,6 +268,8 @@ export class AdminService {
     await db.delete(productImages).where(eq(productImages.productId, productId));
     await db.delete(products).where(eq(products.id, productId));
 
+    AdminService.invalidateStatsCache();
+
     return {
       deleted: true,
       deactivated: false,
@@ -296,6 +295,8 @@ export class AdminService {
       .set({ isActive: newStatus, updatedAt: new Date() })
       .where(eq(products.id, productId));
 
+    AdminService.invalidateStatsCache();
+
     return newStatus;
   }
 
@@ -303,17 +304,18 @@ export class AdminService {
    * Retrieves categories with count of assigned products.
    */
   public static async getCategoriesWithCounts() {
-    const catList = await db.query.categories.findMany({
-      orderBy: [categories.name],
-    });
-
-    const counts = await db
-      .select({
-        categoryId: products.categoryId,
-        count: sql<number>`count(*)::int`,
-      })
-      .from(products)
-      .groupBy(products.categoryId);
+    const [catList, counts] = await Promise.all([
+      db.query.categories.findMany({
+        orderBy: [categories.name],
+      }),
+      db
+        .select({
+          categoryId: products.categoryId,
+          count: sql<number>`count(*)::int`,
+        })
+        .from(products)
+        .groupBy(products.categoryId),
+    ]);
 
     const countMap = new Map<number, number>();
     counts.forEach((c) => {
@@ -349,6 +351,7 @@ export class AdminService {
     }
 
     await db.delete(categories).where(eq(categories.id, categoryId));
+    AdminService.invalidateStatsCache();
   }
 
   /**
@@ -517,6 +520,7 @@ export class AdminService {
     if (data.paymentStatus) updateFields.paymentStatus = data.paymentStatus;
 
     await db.update(orders).set(updateFields).where(eq(orders.id, order.id));
+    AdminService.invalidateStatsCache();
 
     return await this.getOrderDetails(orderNumber);
   }
@@ -526,19 +530,20 @@ export class AdminService {
    * Excludes password hashes.
    */
   public static async getCustomers(): Promise<AdminCustomerItem[]> {
-    const customerUsers = await db.query.users.findMany({
-      where: eq(users.role, "CUSTOMER"),
-      orderBy: [desc(users.createdAt)],
-    });
-
-    const userOrders = await db
-      .select({
-        userId: orders.userId,
-        orderCount: sql<number>`count(*)::int`,
-        totalSpent: sql<string>`coalesce(sum(case when payment_status = 'PAID' or status = 'CONFIRMED' then total::numeric else 0 end), 0)`,
-      })
-      .from(orders)
-      .groupBy(orders.userId);
+    const [customerUsers, userOrders] = await Promise.all([
+      db.query.users.findMany({
+        where: eq(users.role, "CUSTOMER"),
+        orderBy: [desc(users.createdAt)],
+      }),
+      db
+        .select({
+          userId: orders.userId,
+          orderCount: sql<number>`count(*)::int`,
+          totalSpent: sql<string>`coalesce(sum(case when payment_status = 'PAID' or status = 'CONFIRMED' then total::numeric else 0 end), 0)`,
+        })
+        .from(orders)
+        .groupBy(orders.userId),
+    ]);
 
     const statsMap = new Map<number, { orderCount: number; totalSpent: number }>();
     userOrders.forEach((uo) => {

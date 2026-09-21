@@ -37,12 +37,12 @@ export default function AdminLoginPage() {
   }, [isAuthenticated, isAdmin, authLoading, router]);
 
   const handleInstantDemoLogin = async () => {
-    setEmail("admin@kalyankids.com");
+    setEmail("admin@aarticollection.com");
     setPassword("Admin@12345");
     setError(null);
     try {
       setSubmitting(true);
-      const user = await login("admin@kalyankids.com", "Admin@12345");
+      const user = await login("admin@aarticollection.com", "Admin@12345");
       if (user.role !== "ADMIN") {
         setError("Access denied. This account does not possess administrator privileges.");
         return;
@@ -106,7 +106,7 @@ export default function AdminLoginPage() {
               Admin Sign In
             </h1>
             <p className="text-xs text-slate-400 mt-1">
-              Sign in to access Kalyan Kids administration
+              Sign in to access Aarti Collection administration
             </p>
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function AdminLoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@kalyankids.com"
+                placeholder="admin@aarticollection.com"
                 required
                 autoComplete="email"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/80 transition-all"

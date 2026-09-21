@@ -114,7 +114,7 @@ export default function CartPage() {
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
         <div>
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 mb-1">
-            <Sparkles className="w-3.5 h-3.5" /> Kalyan Atelier Bag
+            <Sparkles className="w-3.5 h-3.5" /> Aarti Collection Bag
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">Shopping Bag</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -162,7 +162,7 @@ export default function CartPage() {
                 {/* Details */}
                 <div className="flex-1 space-y-1.5">
                   <div className="text-[10px] uppercase tracking-wider font-extrabold text-slate-400">
-                    {item.product.brand || "Kalyan Kids Atelier"}
+                    {item.product.brand || "Aarti Collection"}
                   </div>
                   <Link
                     href={`/products/${item.product.slug}`}
@@ -261,7 +261,7 @@ export default function CartPage() {
                 <span className="font-extrabold text-slate-950">Included</span>
               </div>
               <div className="flex justify-between text-slate-600">
-                <span>Kalyan Store Pickup</span>
+                <span>Store Pickup</span>
                 <span className="font-extrabold text-emerald-600">FREE</span>
               </div>
             </div>
@@ -304,18 +304,18 @@ export default function CartPage() {
             </div>
 
             <p className="text-center text-[10px] text-slate-400 font-semibold">
-              🔒 Safe & Encrypted Checkout • Verified Kalyan Stock
+              🔒 Safe & Encrypted Checkout • Verified Aarti Collection Stock
             </p>
           </div>
 
-          {/* Kalyan Boutique Perks Card */}
+          {/* Aarti Collection Perks Card */}
           <div className="bg-gradient-to-br from-rose-50/60 via-amber-50/40 to-slate-50 rounded-3xl p-6 border border-rose-100/80 space-y-3">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-white text-rose-600 flex items-center justify-center shadow-xs">
                 <Truck className="w-4 h-4" />
               </div>
               <div className="text-xs">
-                <div className="font-extrabold text-slate-900">Same-Day Kalyan Pickup</div>
+                <div className="font-extrabold text-slate-900">Same-Day Store Pickup</div>
                 <div className="text-slate-500">Available at Shivaji Chowk, Kalyan West</div>
               </div>
             </div>

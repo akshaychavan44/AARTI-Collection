@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { api } from "@/lib/api";
+import { clientCache } from "@/lib/cache";
 import { useWishlist } from "@/context/WishlistContext";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import {
@@ -117,18 +118,14 @@ function ProductCatalogContent() {
     [router, searchParams]
   );
 
-  // Fetch categories once
+  // Fetch categories once with SWR caching
   useEffect(() => {
-    if (cachedCategories && cachedCategories.length > 0) {
-      setCategories(cachedCategories);
-      return;
-    }
     async function loadCategories() {
       try {
-        const res = await api.get<Category[]>("/categories");
-        if (res.success && res.data) {
-          cachedCategories = res.data;
-          setCategories(res.data);
+        const res = await api.getCached<Category[]>("/categories", 60000);
+        if (res.data?.success && res.data.data) {
+          cachedCategories = res.data.data;
+          setCategories(res.data.data);
         }
       } catch (err) {
         console.error("Failed to load categories:", err);
@@ -137,29 +134,40 @@ function ProductCatalogContent() {
     loadCategories();
   }, []);
 
-  // Fetch products cleanly whenever search parameters change
+  // Fetch products cleanly whenever search parameters change with SWR instant render
   useEffect(() => {
     let isCancelled = false;
     async function loadProducts() {
-      setLoading(true);
-      try {
-        const query = new URLSearchParams();
-        if (search) query.set("search", search);
-        if (gender) query.set("gender", gender);
-        if (category) query.set("category", category);
-        if (ageGroup) query.set("ageGroup", ageGroup);
-        if (minPrice) query.set("minPrice", minPrice);
-        if (maxPrice) query.set("maxPrice", maxPrice);
-        if (availability && availability !== "all") query.set("availability", availability);
-        if (sortBy) query.set("sortBy", sortBy);
-        query.set("page", page.toString());
-        query.set("limit", "12");
+      const query = new URLSearchParams();
+      if (search) query.set("search", search);
+      if (gender) query.set("gender", gender);
+      if (category) query.set("category", category);
+      if (ageGroup) query.set("ageGroup", ageGroup);
+      if (minPrice) query.set("minPrice", minPrice);
+      if (maxPrice) query.set("maxPrice", maxPrice);
+      if (availability && availability !== "all") query.set("availability", availability);
+      if (sortBy) query.set("sortBy", sortBy);
+      query.set("page", page.toString());
+      query.set("limit", "12");
 
-        const res = await api.get<ProductItem[]>(`/products?${query.toString()}`);
-        if (!isCancelled && res.success && res.data) {
-          setProducts(res.data);
-          if (res.pagination) {
-            setPagination(res.pagination);
+      const endpoint = `/products?${query.toString()}`;
+      const cached = clientCache.get<any>(endpoint);
+      if (cached?.data && Array.isArray(cached.data)) {
+        setProducts(cached.data);
+        if (cached.pagination) {
+          setPagination(cached.pagination);
+        }
+        setLoading(false);
+      } else {
+        setLoading(true);
+      }
+
+      try {
+        const res = await api.getCached<ProductItem[]>(endpoint, 30000);
+        if (!isCancelled && res.data?.success && res.data.data) {
+          setProducts(res.data.data);
+          if (res.data.pagination) {
+            setPagination(res.data.pagination);
           }
         }
       } catch (err) {
@@ -201,13 +209,13 @@ function ProductCatalogContent() {
 
         <div className="relative z-10 max-w-3xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#1e1e24]/10 text-[#ff7849] text-xs font-bold uppercase tracking-wider shadow-subtle">
-            <Sparkles className="w-3.5 h-3.5" /> Kalyan Kids • Curated Wardrobe
+            <Sparkles className="w-3.5 h-3.5" /> Aarti Collection
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1e1e24]">
             Kids Fashion Catalog
           </h1>
           <p className="text-[#1e1e24]/75 text-sm sm:text-base leading-relaxed">
-            Discover twirl-worthy frocks, shirts, celebration sets, and breathable daily organic wear. Sized for ages 0–16 and available for same-day boutique pickup in Kalyan.
+            Explore our collection of frocks, festive sets, casual shirts, and everyday essentials crafted for comfort and play.
           </p>
 
           {/* Quick Active Filter Badges */}
@@ -216,7 +224,7 @@ function ProductCatalogContent() {
               <span className="text-xs text-[#1e1e24]/60 font-semibold">Active filters:</span>
               {gender && (
                 <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-[#1e1e24] text-white shadow-subtle">
-                  {gender === "BOYS" ? "Boys Wear" : "Girls Wear"}
+                  {gender === "BOYS" ? "Boys" : "Girls"}
                   <button onClick={() => updateFilter({ gender: "", page: 1 })} className="hover:text-[#ff7849] cursor-pointer">
                     <X className="w-3 h-3" />
                   </button>
@@ -224,7 +232,7 @@ function ProductCatalogContent() {
               )}
               {ageGroup && (
                 <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-[#1e1e24] text-white shadow-subtle">
-                  Age {ageGroup} Yrs
+                  {ageGroup} Years
                   <button onClick={() => updateFilter({ ageGroup: "", page: 1 })} className="hover:text-[#ff7849] cursor-pointer">
                     <X className="w-3 h-3" />
                   </button>
@@ -433,7 +441,7 @@ function ProductCatalogContent() {
                   onChange={() => updateFilter({ availability: "in_stock", page: 1 })}
                   className="text-rose-600 focus:ring-rose-500"
                 />
-                In Stock in Kalyan Only
+                In Stock Only
               </label>
             </div>
           </div>
@@ -490,7 +498,7 @@ function ProductCatalogContent() {
               </div>
               <h3 className="text-xl font-extrabold text-slate-900">No Outfits Found</h3>
               <p className="text-slate-500 text-xs sm:text-sm max-w-md mx-auto">
-                We couldn&apos;t find any outfits matching your exact filter settings. Clear your filters or ask our Kalyan stylist for custom orders on WhatsApp!
+                We couldn&apos;t find any outfits matching your exact filter settings. Clear your filters or ask our stylist on WhatsApp!
               </p>
               <div className="pt-2 flex justify-center gap-3">
                 <button
@@ -515,7 +523,7 @@ function ProductCatalogContent() {
                   >
                     {/* Image Area with Badges & Wishlist Button */}
                     <div className="relative aspect-4/5 bg-[#f6efe2] overflow-hidden">
-                      <Link href={`/products/${product.slug}`}>
+                      <Link href={`/products/${product.slug}`} prefetch={true}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={primaryImage}
@@ -563,7 +571,7 @@ function ProductCatalogContent() {
                           </span>
                         ) : (
                           <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-600/90 text-white backdrop-blur-md shadow-xs">
-                            ● In Stock (Kalyan)
+                            ● In Stock
                           </span>
                         )}
                       </div>
@@ -581,24 +589,25 @@ function ProductCatalogContent() {
                                 : "text-pink-800 bg-[#f4a7b9]/40 px-2.5 py-0.5 rounded-full"
                             }
                           >
-                            {product.gender}
+                            {product.gender === "BOYS" ? "Boys" : "Girls"}
                           </span>
                           <span className="text-[#1e1e24]/20">•</span>
                           <span className="text-[#1e1e24]/70 bg-[#f6efe2] px-2.5 py-0.5 rounded-full">
-                            Age {product.ageGroup} Yrs
+                            {product.ageGroup} Yrs
                           </span>
                         </div>
 
                         {/* Product Title */}
                         <Link
                           href={`/products/${product.slug}`}
+                          prefetch={true}
                           className="font-extrabold text-[#1e1e24] hover:text-[#ff7849] transition-colors line-clamp-1 text-base tracking-tight"
                         >
                           {product.name}
                         </Link>
 
                         <p className="text-[11px] font-semibold text-[#1e1e24]/50 mt-0.5 uppercase tracking-wider">
-                          {product.brand || "Kalyan Kids Boutique"}
+                          {product.brand || "Aarti Collection"}
                         </p>
                       </div>
 
@@ -632,6 +641,7 @@ function ProductCatalogContent() {
 
                           <Link
                             href={`/products/${product.slug}`}
+                            prefetch={true}
                             className="btn-bouncy px-4 py-2 rounded-full bg-[#1e1e24] hover:bg-[#ff7849] hover:text-[#1e1e24] text-white text-xs font-bold transition-all shadow-subtle"
                           >
                             View

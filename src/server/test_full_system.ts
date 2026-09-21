@@ -37,7 +37,7 @@ async function test(name: string, fn: () => Promise<boolean>, details?: string) 
 
 async function runSystemAudit() {
   console.log("================================================================================");
-  console.log("👗 AARTI / KALYAN KIDS: FULL WEBSITE & ADMIN PANEL END-TO-END VERIFICATION");
+  console.log("👗 AARTI COLLECTION: FULL WEBSITE & ADMIN PANEL END-TO-END VERIFICATION");
   console.log("================================================================================\n");
 
   const timestamp = Date.now();

@@ -95,70 +95,96 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, [isAuthenticated, refreshWishlist]);
 
-  const isInWishlist = (productId: number): boolean => {
-    return (wishlist?.items || []).some((item) => item.productId === productId);
-  };
+  const isInWishlist = useCallback(
+    (productId: number): boolean => {
+      return (wishlist?.items || []).some((item) => item.productId === productId);
+    },
+    [wishlist]
+  );
 
-  const addToWishlist = async (productId: number) => {
-    if (!isAuthenticated) {
-      throw new Error("Please log in to save items to your wishlist");
-    }
-    const res = await api.post<Wishlist>("/wishlist", { productId });
-    if (res.success && res.data) {
-      setWishlist(res.data);
-    } else {
-      throw new Error(res.message || "Failed to add to wishlist");
-    }
-  };
+  const addToWishlist = useCallback(
+    async (productId: number) => {
+      if (!isAuthenticated) {
+        throw new Error("Please log in to save items to your wishlist");
+      }
+      const res = await api.post<Wishlist>("/wishlist", { productId });
+      if (res.success && res.data) {
+        setWishlist(res.data);
+      } else {
+        throw new Error(res.message || "Failed to add to wishlist");
+      }
+    },
+    [isAuthenticated]
+  );
 
-  const removeFromWishlist = async (productId: number) => {
+  const removeFromWishlist = useCallback(async (productId: number) => {
     const res = await api.delete<Wishlist>(`/wishlist/${productId}`);
     if (res.success && res.data) {
       setWishlist(res.data);
     } else {
       throw new Error(res.message || "Failed to remove from wishlist");
     }
-  };
+  }, []);
 
-  const toggleWishlist = async (productId: number) => {
-    if (isInWishlist(productId)) {
-      await removeFromWishlist(productId);
-    } else {
-      await addToWishlist(productId);
-    }
-  };
+  const toggleWishlist = useCallback(
+    async (productId: number) => {
+      if (isInWishlist(productId)) {
+        await removeFromWishlist(productId);
+      } else {
+        await addToWishlist(productId);
+      }
+    },
+    [isInWishlist, removeFromWishlist, addToWishlist]
+  );
 
-  const moveToCart = async (productId: number, variantId?: number) => {
-    const res = await api.post<{ cart: any; wishlist: Wishlist }>(
-      `/wishlist/${productId}/move-to-cart`,
-      { variantId }
-    );
-    if (res.success && res.data) {
-      setWishlist(res.data.wishlist);
-      await refreshCart();
-    } else {
-      throw new Error(res.message || "Failed to move item to cart");
-    }
-  };
+  const moveToCart = useCallback(
+    async (productId: number, variantId?: number) => {
+      const res = await api.post<{ cart: any; wishlist: Wishlist }>(
+        `/wishlist/${productId}/move-to-cart`,
+        { variantId }
+      );
+      if (res.success && res.data) {
+        setWishlist(res.data.wishlist);
+        await refreshCart();
+      } else {
+        throw new Error(res.message || "Failed to move item to cart");
+      }
+    },
+    [refreshCart]
+  );
 
   const items = wishlist?.items || [];
   const itemCount = wishlist?.totalItems ?? 0;
 
+  const value = React.useMemo<WishlistContextType>(
+    () => ({
+      wishlist,
+      items,
+      loading,
+      itemCount,
+      isInWishlist,
+      toggleWishlist,
+      addToWishlist,
+      removeFromWishlist,
+      moveToCart,
+      refreshWishlist,
+    }),
+    [
+      wishlist,
+      items,
+      loading,
+      itemCount,
+      isInWishlist,
+      toggleWishlist,
+      addToWishlist,
+      removeFromWishlist,
+      moveToCart,
+      refreshWishlist,
+    ]
+  );
+
   return (
-    <WishlistContext.Provider
-      value={{
-        wishlist,
-        items,
-        loading,
-        itemCount,
-        isInWishlist,
-        toggleWishlist,
-        addToWishlist,
-        removeFromWishlist,
-        moveToCart,
-        refreshWishlist,
-      }}
-    >
+    <WishlistContext.Provider value={value}>
       {children}
     </WishlistContext.Provider>
   );

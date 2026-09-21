@@ -30,7 +30,7 @@ export class EmailService {
     order: EmailOrderDetails,
     customer: { name: string; email: string }
   ): Promise<boolean> {
-    const subject = `Order Confirmed: #${order.orderNumber} - Kalyan Kids`;
+    const subject = `Order Confirmed: #${order.orderNumber} - Aarti Collection`;
 
     const itemsHtml = order.items
       .map(
@@ -50,14 +50,14 @@ export class EmailService {
     const emailHtml = `
       <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; padding: 24px;">
         <div style="text-align: center; margin-bottom: 24px;">
-          <h1 style="color: #e11d48; margin: 0; font-size: 24px;">Kalyan Kids Clothing</h1>
-          <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Quality Kids Fashion in Kalyan</p>
+          <h1 style="color: #e11d48; margin: 0; font-size: 24px;">Aarti Collection</h1>
+          <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Kids Clothing & Ethnic Wear</p>
         </div>
 
         <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
           <h2 style="color: #0f172a; margin-top: 0; font-size: 18px;">Thank you for your order, ${customer.name}!</h2>
           <p style="color: #475569; font-size: 14px; line-height: 1.5;">
-            Your order has been confirmed and is being prepared for convenient store pickup at Kalyan.
+            Your order has been confirmed and is being prepared for convenient store pickup.
           </p>
           <div style="display: flex; justify-content: space-between; margin-top: 16px; padding: 12px; background-color: #ffffff; border-radius: 8px; border: 1px solid #cbd5e1;">
             <div>
@@ -104,8 +104,8 @@ export class EmailService {
         </table>
 
         <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 16px; font-size: 12px; color: #94a3b8;">
-          <p>Kalyan Kids Store, Shivaji Chowk, Kalyan (W), Maharashtra</p>
-          <p>Questions? Contact us or visit our Kalyan store anytime.</p>
+          <p>Aarti Collection, Shivaji Chowk, Kalyan (W), Maharashtra</p>
+          <p>Questions? Contact us or visit our store anytime.</p>
         </div>
       </div>
     `;
@@ -113,7 +113,7 @@ export class EmailService {
     if (resendClient) {
       try {
         await resendClient.emails.send({
-          from: env.RESEND_FROM_EMAIL || "orders@kalyankids.com",
+          from: env.RESEND_FROM_EMAIL || "orders@aarticollection.com",
           to: customer.email,
           subject,
           html: emailHtml,

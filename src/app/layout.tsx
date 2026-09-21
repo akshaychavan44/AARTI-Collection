@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kalyan Kids | Modern & Playful Kidswear Boutique (Ages 0–16)",
-  description: "Thoughtfully crafted organic cotton clothing, festive wear, and everyday essentials for boys and girls in Kalyan, Maharashtra.",
+  title: "Aarti Collection | Kids Clothing & Ethnic Wear (Ages 0–16)",
+  description: "High-quality kids clothing, festive ethnic wear, frocks, shirts, and everyday essentials from Aarti Collection.",
 };
 
 export default function RootLayout({

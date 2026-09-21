@@ -332,7 +332,7 @@ export default function AdminOrderDetailPage() {
             )}
 
             <div className="flex justify-between text-slate-600">
-              <span>Kalyan Store Pickup</span>
+              <span>Store Pickup</span>
               <span className="font-semibold text-emerald-600">FREE</span>
             </div>
 

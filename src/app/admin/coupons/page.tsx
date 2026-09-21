@@ -14,6 +14,8 @@ import {
   Percent,
 } from "lucide-react";
 
+import { clientCache } from "@/lib/cache";
+
 interface CouponItem {
   id: number;
   code: string;
@@ -26,8 +28,11 @@ interface CouponItem {
 }
 
 export default function AdminCouponsPage() {
-  const [coupons, setCoupons] = useState<CouponItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const initialCacheKey = "/admin/coupons";
+  const cached = clientCache.get<any>(initialCacheKey);
+  const initialCoupons = cached?.data || cached || [];
+  const [coupons, setCoupons] = useState<CouponItem[]>(Array.isArray(initialCoupons) ? initialCoupons : []);
+  const [loading, setLoading] = useState(coupons.length === 0);
   const [error, setError] = useState<string | null>(null);
 
   // Modal states
@@ -41,24 +46,25 @@ export default function AdminCouponsPage() {
   const [saving, setSaving] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchCoupons();
-  }, []);
-
-  const fetchCoupons = async () => {
+  const fetchCoupons = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       setError(null);
-      const res = await api.get<CouponItem[]>("/admin/coupons");
-      if (res.success && res.data) {
-        setCoupons(res.data);
+      const res = await api.getCached<CouponItem[]>("/admin/coupons");
+      if (res.data?.success && res.data.data) {
+        setCoupons(res.data.data);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load coupons");
+      if (coupons.length === 0) setError(err.message || "Failed to load coupons");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const hasData = coupons.length > 0;
+    fetchCoupons(hasData);
+  }, []);
 
   const openAddModal = () => {
     setEditingCoupon(null);

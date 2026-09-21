@@ -105,11 +105,11 @@ export default function WishlistPage() {
       <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-rose-600 mb-1">
-            <Sparkles className="w-3.5 h-3.5" /> Curated By You
+            <Sparkles className="w-3.5 h-3.5" /> Saved By You
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">Saved Wishlist</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            You have <span className="font-extrabold text-slate-900">{items.length}</span> luxury outfit(s) bookmarked
+            You have <span className="font-extrabold text-slate-900">{items.length}</span> outfit(s) saved
           </p>
         </div>
 
@@ -164,7 +164,7 @@ export default function WishlistPage() {
               <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
                   <div className="text-[10px] uppercase tracking-wider font-extrabold text-slate-400 mb-1">
-                    {p.brand || "Kalyan Kids Atelier"}
+                    {p.brand || "Aarti Collection"}
                   </div>
                   <Link
                     href={`/products/${p.slug}`}

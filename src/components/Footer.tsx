@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
   }
 
   const whatsappUrl = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    "Hello Kalyan Kids Boutique! I would like personal styling assistance or have a question about kids fashion."
+    "Hello Aarti Collection! I would like personal styling assistance or have a question about kids fashion."
   )}`;
 
   return (
@@ -44,16 +44,16 @@ export const Footer: React.FC = () => {
               </div>
               <div>
                 <span className="font-extrabold text-2xl tracking-tight text-white block">
-                  Kalyan Kids
+                  Aarti Collection
                 </span>
                 <span className="text-[10px] tracking-wider uppercase font-semibold text-[#ff7849]">
-                  Modern Playful Boutique (Ages 0–16)
+                  Kids Clothing & Ethnic Wear (Ages 0–16)
                 </span>
               </div>
             </Link>
 
             <p className="text-sm text-white/70 leading-relaxed max-w-md pt-1">
-              Curating cheerful, authentic kids’ fashion in Kalyan. From celebratory festive lehengas and bandhgalas to ultra-soft everyday playwear, crafted for pure comfort and endless childhood adventures.
+              Cheerful, high-quality kids’ fashion from Aarti Collection. From celebratory festive lehengas and kurta sets to soft everyday playwear, crafted for comfort and childhood adventures.
             </p>
 
             {/* Direct WhatsApp Concierge Button */}
@@ -141,7 +141,7 @@ export const Footer: React.FC = () => {
           {/* Boutique Visit Info */}
           <div>
             <h3 className="text-xs font-bold text-[#a8d8ea] uppercase tracking-wider mb-4 border-l-2 border-[#a8d8ea] pl-3">
-              Kalyan Boutique
+              Store Location
             </h3>
             <div className="space-y-3 text-xs text-white/70">
               <div className="flex items-start gap-2.5">
@@ -167,7 +167,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="mt-14 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
-          <p>© {new Date().getFullYear()} Kalyan Kids. All rights reserved. Thoughtfully crafted kids fashion.</p>
+          <p>© {new Date().getFullYear()} Aarti Collection. All rights reserved.</p>
           <div className="flex items-center gap-4 text-white/60">
             <span>UPI • RuPay • NetBanking • Visa • Cash on Delivery</span>
           </div>

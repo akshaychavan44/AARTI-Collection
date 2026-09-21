@@ -12,6 +12,21 @@ import {
 } from "../db/schema";
 import { CreateProductInput, UpdateProductInput, ProductQueryParams } from "../validations/product.validation";
 import { slugify } from "../utils/slugify";
+import { AdminService } from "./admin.service";
+
+// In-memory cache for category slug-to-id resolution to prevent redundant queries
+let categorySlugMapCache: { map: Map<string, number>; expiresAt: number } | null = null;
+const SLUG_CACHE_TTL_MS = 60_000;
+
+async function getCategoryIdBySlug(slug: string): Promise<number | null> {
+  if (!categorySlugMapCache || Date.now() > categorySlugMapCache.expiresAt) {
+    const allCats = await db.select({ id: categories.id, slug: categories.slug }).from(categories);
+    const map = new Map<string, number>();
+    allCats.forEach((c) => map.set(c.slug, c.id));
+    categorySlugMapCache = { map, expiresAt: Date.now() + SLUG_CACHE_TTL_MS };
+  }
+  return categorySlugMapCache.map.get(slug) ?? null;
+}
 
 export interface FormattedVariant {
   id: number;
@@ -154,13 +169,9 @@ export class ProductService {
       if (isNumeric) {
         productConditions.push(eq(products.categoryId, parseInt(params.category, 10)));
       } else {
-        const cat = await db
-          .select({ id: categories.id })
-          .from(categories)
-          .where(eq(categories.slug, params.category))
-          .limit(1);
-        if (cat.length > 0) {
-          productConditions.push(eq(products.categoryId, cat[0].id));
+        const catId = await getCategoryIdBySlug(params.category);
+        if (catId) {
+          productConditions.push(eq(products.categoryId, catId));
         } else {
           // Category slug does not exist, return empty
           return { products: [], pagination: { page, limit, total: 0, totalPages: 0 } };
@@ -215,15 +226,6 @@ export class ProductService {
 
     const whereClause = and(...productConditions);
 
-    // 9. Execute SQL Count Query for Pagination
-    const totalCountResult = await db
-      .select({ count: sql<number>`count(${products.id})` })
-      .from(products)
-      .where(whereClause);
-
-    const total = Number(totalCountResult[0]?.count || 0);
-    const totalPages = Math.ceil(total / limit);
-
     // 10. Dynamic Order By
     let orderBy: any[];
     switch (params.sortBy) {
@@ -255,22 +257,31 @@ export class ProductService {
         break;
     }
 
-    // 11. Execute SQL Paginated Query with Relations
-    const productList = await db.query.products.findMany({
-      where: whereClause,
-      limit,
-      offset,
-      orderBy,
-      with: {
-        category: true,
-        images: true,
-        variants: {
-          with: {
-            inventory: true,
+    // 11. Execute SQL Count and Paginated Query in Parallel
+    const [totalCountResult, productList] = await Promise.all([
+      db
+        .select({ count: sql<number>`count(${products.id})` })
+        .from(products)
+        .where(whereClause),
+      db.query.products.findMany({
+        where: whereClause,
+        limit,
+        offset,
+        orderBy,
+        with: {
+          category: true,
+          images: true,
+          variants: {
+            with: {
+              inventory: true,
+            },
           },
         },
-      },
-    });
+      }),
+    ]);
+
+    const total = Number(totalCountResult[0]?.count || 0);
+    const totalPages = Math.ceil(total / limit);
 
     const formatted = productList.map((p) => this.formatProduct(p));
 
@@ -376,7 +387,7 @@ export class ProductService {
         slug: finalSlug,
         gender: data.gender,
         ageGroup: data.ageGroup,
-        brand: data.brand || "Kalyan Kids",
+        brand: data.brand || "Aarti Collection",
         description: data.description,
         isActive: data.isActive ?? true,
         isFeatured: data.isFeatured ?? false,
@@ -415,6 +426,8 @@ export class ProductService {
         lowStockThreshold: variant.lowStockThreshold ?? 5,
       });
     }
+
+    AdminService.invalidateStatsCache();
 
     const fullProduct = await this.getProductById(newProduct.id);
     if (!fullProduct) {
@@ -579,6 +592,8 @@ export class ProductService {
       }
     }
 
+    AdminService.invalidateStatsCache();
+
     return await this.getProductById(id);
   }
 
@@ -587,6 +602,9 @@ export class ProductService {
    */
   public static async deleteProduct(id: number): Promise<boolean> {
     const result = await db.delete(products).where(eq(products.id, id)).returning({ id: products.id });
+    if (result.length > 0) {
+      AdminService.invalidateStatsCache();
+    }
     return result.length > 0;
   }
 }

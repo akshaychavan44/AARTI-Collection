@@ -92,7 +92,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
           <h1 className="text-xl font-bold text-slate-900">Access Denied</h1>
           <p className="text-xs text-slate-500 leading-relaxed">
-            Your account ({user?.email}) does not have store administrator privileges. Admin pages are restricted to Kalyan Kids managers.
+            Your account ({user?.email}) does not have store administrator privileges. Admin pages are restricted to Aarti Collection managers.
           </p>
           <div className="pt-2 flex gap-3">
             <Link
@@ -137,11 +137,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
           <Link href="/admin" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-white shadow-xs font-bold text-base">
-              K
+              A
             </div>
             <div>
               <div className="font-extrabold text-sm tracking-tight text-slate-900 leading-tight">
-                Kalyan Kids
+                Aarti Collection
               </div>
               <div className="text-[10px] uppercase font-bold text-rose-600 tracking-wider">
                 Admin Console
@@ -159,6 +159,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={true}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   active
                     ? "bg-slate-900 text-white shadow-xs"
@@ -176,6 +177,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-4 border-t border-slate-100 space-y-3">
           <Link
             href="/"
+            prefetch={true}
             className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
           >
             <span className="flex items-center gap-2">
@@ -207,10 +209,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className="md:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-white font-bold text-sm">
-            K
+            A
           </div>
           <div>
-            <div className="font-bold text-xs text-slate-900">Kalyan Kids Admin</div>
+            <div className="font-bold text-xs text-slate-900">Aarti Collection Admin</div>
           </div>
         </div>
 
@@ -233,9 +235,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={true}
                 onClick={() => setMobileNavOpen(false)}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold ${
-                  active ? "bg-slate-900 text-white" : "text-slate-700 hover:bg-slate-50"
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold ${
+                  active
+                    ? "bg-slate-900 text-white"
+                    : "text-slate-600 hover:bg-slate-100"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -246,6 +251,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="pt-2 border-t border-slate-100 flex gap-2">
             <Link
               href="/"
+              prefetch={true}
               onClick={() => setMobileNavOpen(false)}
               className="flex-1 py-2 text-center rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
             >
@@ -272,13 +278,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <h2 className="text-xs sm:text-sm font-bold text-slate-800 tracking-tight">
-              Kalyan Kids Store Administration
+              Aarti Collection Store Administration
             </h2>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
               href="/"
+              prefetch={true}
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 text-xs font-semibold transition-colors"
             >
               <Store className="w-3.5 h-3.5 text-slate-400" />

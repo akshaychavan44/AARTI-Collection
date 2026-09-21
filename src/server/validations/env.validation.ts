@@ -17,7 +17,7 @@ export const envSchema = z.object({
   RAZORPAY_WEBHOOK_SECRET: z.string().optional().default("rzp_webhook_secret_placeholder"),
   // Resend Transactional Email Configurations
   RESEND_API_KEY: z.string().optional(),
-  RESEND_FROM_EMAIL: z.string().optional().default("orders@kalyankids.com"),
+  RESEND_FROM_EMAIL: z.string().optional().default("orders@aarticollection.com"),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

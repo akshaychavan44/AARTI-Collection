@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch current user profile on initial mount to persist session
-  const refreshUser = async () => {
+  const refreshUser = React.useCallback(async () => {
     try {
       const res = await api.get<User>("/auth/me");
       if (res.success && res.data) {
@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const hasCheckedRef = React.useRef(false);
 
@@ -54,18 +54,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       hasCheckedRef.current = true;
       refreshUser();
     }
-  }, []);
+  }, [refreshUser]);
 
-  const login = async (email: string, password: string): Promise<User> => {
+  const login = React.useCallback(async (email: string, password: string): Promise<User> => {
     const res = await api.post<{ user: User; token: string }>("/auth/login", { email, password });
     if (res.success && res.data?.user) {
       setUser(res.data.user);
       return res.data.user;
     }
     throw new Error(res.message || "Login failed");
-  };
+  }, []);
 
-  const register = async (name: string, email: string, password: string): Promise<User> => {
+  const register = React.useCallback(async (name: string, email: string, password: string): Promise<User> => {
     const res = await api.post<{ user: User; token: string }>("/auth/register", {
       name,
       email,
@@ -76,36 +76,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return res.data.user;
     }
     throw new Error(res.message || "Registration failed");
-  };
+  }, []);
 
-  const logout = async (): Promise<void> => {
+  const logout = React.useCallback(async (): Promise<void> => {
     try {
       await api.post("/auth/logout");
     } finally {
       setUser(null);
     }
-  };
+  }, []);
 
-  const updateProfile = async (name: string): Promise<User> => {
+  const updateProfile = React.useCallback(async (name: string): Promise<User> => {
     const res = await api.put<User>("/auth/profile", { name });
     if (res.success && res.data) {
       setUser(res.data);
       return res.data;
     }
     throw new Error(res.message || "Failed to update profile");
-  };
+  }, []);
 
-  const value: AuthContextType = {
-    user,
-    loading,
-    isAuthenticated: !!user,
-    isAdmin: user?.role === "ADMIN",
-    login,
-    register,
-    logout,
-    updateProfile,
-    refreshUser,
-  };
+  const value = React.useMemo<AuthContextType>(
+    () => ({
+      user,
+      loading,
+      isAuthenticated: !!user,
+      isAdmin: user?.role === "ADMIN",
+      login,
+      register,
+      logout,
+      updateProfile,
+      refreshUser,
+    }),
+    [user, loading, login, register, logout, updateProfile, refreshUser]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

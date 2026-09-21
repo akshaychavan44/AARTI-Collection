@@ -18,7 +18,7 @@ import {
 } from "./schema";
 
 async function seed() {
-  console.log("🌱 Starting database seeding for Kalyan Kids Clothing Shop...");
+  console.log("🌱 Starting database seeding for Aarti Collection Kids Clothing Shop...");
 
   try {
     // 1. Clean existing records in reverse order of foreign keys
@@ -49,6 +49,7 @@ async function seed() {
       "Ethnic Wear",
       "Party Wear",
       "Jackets",
+      "Rompers",
     ];
 
     const girlsCategoryNames = [
@@ -91,13 +92,12 @@ async function seed() {
         categoryKey: "BOYS_T-Shirts",
         gender: "BOYS" as const,
         ageGroup: "3-5" as const,
-        brand: "Kalyan Kids",
+        brand: "Aarti Kids",
         compareAtPrice: "699.00",
         isFeatured: true,
-        description: "Soft 100% combed cotton breathable t-shirt featuring playful dinosaur graphics. Perfect for everyday summer wear.",
+        description: "Soft, breathable pure cotton t-shirt featuring playful cartoon dinosaur graphics and a comfortable ribbed crew neckline. Perfect for everyday summer play.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800", altText: "Front view dinosaur t-shirt", sortOrder: 0 },
-          { imageUrl: "https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=800", altText: "Close up graphic print", sortOrder: 1 },
+          { imageUrl: "/images/products/boys-dino-tee.jpg", altText: "Boys Dinosaur Printed Cotton T-Shirt", sortOrder: 0 },
         ],
         variants: [
           { size: "3-4Y", color: "Navy Blue", price: "499.00", sku: "BOY-TSH-DINO-NB-34", stock: 15, threshold: 5 },
@@ -113,13 +113,12 @@ async function seed() {
         categoryKey: "BOYS_Jeans",
         gender: "BOYS" as const,
         ageGroup: "6-9" as const,
-        brand: "Little Denim Co",
+        brand: "Denim Craft",
         compareAtPrice: "1299.00",
         isFeatured: false,
-        description: "Durable mid-wash denim jeans with adjustable elastic waistband and flexible stretch for active school and play.",
+        description: "Durable mid-wash indigo stretch denim jeans with an adjustable elastic waistband, copper rivets, and flexible stretch for active kids.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=800", altText: "Boys denim jeans front", sortOrder: 0 },
-          { imageUrl: "https://images.unsplash.com/photo-1475403614135-5f1aa0eb5015?w=800", altText: "Denim texture details", sortOrder: 1 },
+          { imageUrl: "/images/products/boys-stretch-denim-jeans.jpg", altText: "Boys Slim Fit Stretchable Denim Jeans", sortOrder: 0 },
         ],
         variants: [
           { size: "6-7Y", color: "Dark Blue", price: "899.00", sku: "BOY-JNS-SLIM-DB-67", stock: 12, threshold: 4 },
@@ -135,12 +134,12 @@ async function seed() {
         categoryKey: "BOYS_Ethnic Wear",
         gender: "BOYS" as const,
         ageGroup: "10-13" as const,
-        brand: "Utsav Kids",
+        brand: "Aarti Festive",
         compareAtPrice: "1999.00",
         isFeatured: true,
-        description: "Festive silk-blend royal blue kurta with embroidered mandarin collar, paired with crisp white cotton pajama.",
+        description: "Festive royal blue silk-blend kurta adorned with delicate golden collar embroidery, paired with crisp white cotton pajama trousers.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1596870230751-ebdfce98ec42?w=800", altText: "Boys ethnic kurta pajama", sortOrder: 0 },
+          { imageUrl: "/images/products/boys-silk-kurta-pajama.jpg", altText: "Boys Traditional Silk Blend Kurta Pajama Set", sortOrder: 0 },
         ],
         variants: [
           { size: "10-11Y", color: "Royal Blue", price: "1499.00", sku: "BOY-ETH-KUR-RB-1011", stock: 10, threshold: 3 },
@@ -156,13 +155,12 @@ async function seed() {
         categoryKey: "GIRLS_Frocks",
         gender: "GIRLS" as const,
         ageGroup: "3-5" as const,
-        brand: "Princess Bloom",
+        brand: "Little Princess",
         compareAtPrice: "1499.00",
         isFeatured: true,
-        description: "Enchanting fit and flare frock featuring multi-layer net flare, soft cotton lining, and floral lace bodice with satin waist bow.",
+        description: "Enchanting pastel peach fit-and-flare party frock featuring floral lace bodice, satin waist bow sash, and tiered multi-layer soft tulle net skirt.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800", altText: "Pink floral party frock", sortOrder: 0 },
-          { imageUrl: "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=800", altText: "Bow detail party frock", sortOrder: 1 },
+          { imageUrl: "/images/products/girls-floral-party-frock.jpg", altText: "Girls Floral Layered Party Frock", sortOrder: 0 },
         ],
         variants: [
           { size: "3-4Y", color: "Peach Pink", price: "999.00", sku: "GRL-FRK-FLOR-PP-34", stock: 14, threshold: 5 },
@@ -178,12 +176,12 @@ async function seed() {
         categoryKey: "GIRLS_Ethnic Wear",
         gender: "GIRLS" as const,
         ageGroup: "6-9" as const,
-        brand: "Utsav Kids",
+        brand: "Aarti Festive",
         compareAtPrice: "2499.00",
         isFeatured: true,
-        description: "Graceful festive lehenga choli set adorned with gold foil ethnic motifs and matching net dupatta with lace borders.",
+        description: "Festive magenta flared lehenga choli set adorned with gold foil traditional ethnic motifs, matching embroidered blouse, and delicate net dupatta.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=800", altText: "Festive Lehenga Choli front", sortOrder: 0 },
+          { imageUrl: "/images/products/girls-foil-print-lehenga.jpg", altText: "Girls Festive Foil Print Lehenga Choli", sortOrder: 0 },
         ],
         variants: [
           { size: "6-7Y", color: "Magenta", price: "1699.00", sku: "GRL-ETH-LHN-MG-67", stock: 9, threshold: 3 },
@@ -199,12 +197,12 @@ async function seed() {
         categoryKey: "GIRLS_Dresses",
         gender: "GIRLS" as const,
         ageGroup: "10-13" as const,
-        brand: "Kalyan Kids",
+        brand: "Aarti Kids",
         compareAtPrice: "1199.00",
         isFeatured: false,
-        description: "Charming casual A-line sleeveless summer dress with classic polka dots, flutter sleeves, and breathable cotton fabric.",
+        description: "Cheerful cherry red casual summer A-line dress crafted in soft breathable cotton with classic white polka dots, flutter cap sleeves, and tiered skirt.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800", altText: "Polka dot dress model", sortOrder: 0 },
+          { imageUrl: "/images/products/girls-polka-dot-dress.jpg", altText: "Girls Polka Dot Cotton A-Line Dress", sortOrder: 0 },
         ],
         variants: [
           { size: "10-11Y", color: "Red", price: "799.00", sku: "GRL-DRS-POLK-RD-1011", stock: 15, threshold: 4 },
@@ -223,9 +221,9 @@ async function seed() {
         brand: "Urban Kids",
         compareAtPrice: "2699.00",
         isFeatured: true,
-        description: "Warm and trendy insulated puffer jacket with detachable fleece-lined hood, wind-resistant shell, and dual zipper pockets.",
+        description: "Insulated colorblock hooded puffer jacket in navy and mustard tones with detachable fleece hood, zip pockets, and wind-resistant shell.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800", altText: "Boys puffer jacket", sortOrder: 0 },
+          { imageUrl: "/images/products/boys-colorblock-puffer-jacket.jpg", altText: "Boys Colorblock Lightweight Puffer Jacket", sortOrder: 0 },
         ],
         variants: [
           { size: "14-15Y", color: "Black/Grey", price: "1899.00", sku: "BOY-JCK-PUFF-BG-1415", stock: 7, threshold: 2 },
@@ -236,15 +234,15 @@ async function seed() {
       {
         name: "Baby Boys Organic Cotton Romper Suit",
         slug: "baby-boys-organic-cotton-romper-suit",
-        categoryKey: "BOYS_Ethnic Wear",
+        categoryKey: "BOYS_Rompers",
         gender: "BOYS" as const,
         ageGroup: "0-2" as const,
-        brand: "BabyJoy",
+        brand: "Aarti Baby",
         compareAtPrice: "599.00",
         isFeatured: false,
-        description: "Ultra-soft certified organic cotton one-piece romper with nickel-free snaps for effortless diaper changes.",
+        description: "Ultra-soft certified organic ribbed cotton one-piece baby romper jumpsuit with nickel-free snaps for quick, effortless diaper changes.",
         images: [
-          { imageUrl: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800", altText: "Baby cotton romper suit", sortOrder: 0 },
+          { imageUrl: "/images/products/baby-cotton-romper-suit.jpg", altText: "Baby Boys Organic Cotton Romper Suit", sortOrder: 0 },
         ],
         variants: [
           { size: "0-6M", color: "Sky Blue", price: "399.00", sku: "BOY-RMP-ORG-SB-06M", stock: 25, threshold: 5 },
@@ -262,7 +260,7 @@ async function seed() {
         brand: "Urban Kids",
         compareAtPrice: "1899.00",
         isFeatured: true,
-        description: "Premium brushed cotton plaid flannel button-down overshirt paired with an inner white cotton crewneck tee and tailored stretch denim. Designed specifically for teenage boys aged 14 to 16.",
+        description: "Brushed cotton plaid flannel button-down overshirt paired with an inner white cotton crewneck tee and tailored stretch denim.",
         images: [
           { imageUrl: "/images/products/teen-boy-flannel-shirt-jeans.jpg", altText: "Teen boys plaid flannel overshirt and denim set", sortOrder: 0 },
         ],
@@ -278,10 +276,10 @@ async function seed() {
         categoryKey: "GIRLS_Dresses",
         gender: "GIRLS" as const,
         ageGroup: "14-16" as const,
-        brand: "Princess Bloom",
+        brand: "Little Princess",
         compareAtPrice: "1999.00",
         isFeatured: true,
-        description: "Chic pastel lilac floral print tiered midi dress featuring an elasticated smocked bodice, flutter cap sleeves, and cropped washed denim jacket pairing. Styled for teenage girls aged 14 to 16.",
+        description: "Pastel lilac floral print tiered midi dress featuring an elasticated smocked bodice, flutter cap sleeves, and cropped washed denim jacket pairing.",
         images: [
           { imageUrl: "/images/products/teen-girl-floral-smocked-dress.jpg", altText: "Teen girls floral smocked tiered midi dress", sortOrder: 0 },
         ],
@@ -300,7 +298,7 @@ async function seed() {
         brand: "Urban Kids",
         compareAtPrice: "1799.00",
         isFeatured: false,
-        description: "Casual chic aesthetic featuring a sage green ribbed polo shirt with embroidered floral accent and relaxed-fit beige linen-blend utility trousers with drawstring waist. Designed for girls aged 14 to 16.",
+        description: "Sage green ribbed polo shirt with embroidered floral accent and relaxed-fit beige linen-blend utility trousers with drawstring waist.",
         images: [
           { imageUrl: "/images/products/teen-girl-ribbed-polo-trouser-set.jpg", altText: "Teen girls ribbed polo and linen trouser set", sortOrder: 0 },
         ],
@@ -376,8 +374,8 @@ async function seed() {
       .insert(users)
       .values([
         {
-          name: "Kalyan Admin",
-          email: "admin@kalyankids.com",
+          name: "Aarti Collection Admin",
+          email: "admin@aarticollection.com",
           passwordHash: adminPasswordHash,
           role: "ADMIN",
           isActive: true,
@@ -405,6 +403,13 @@ async function seed() {
           isActive: true,
         },
         {
+          code: "AARTI50",
+          discountType: "FIXED",
+          discountValue: "50.00",
+          minOrderAmount: "499.00",
+          isActive: true,
+        },
+        {
           code: "KALYAN50",
           discountType: "FIXED",
           discountValue: "50.00",
@@ -425,7 +430,7 @@ async function seed() {
     console.log(`   - Categories: ${insertedCategories.length}`);
     console.log(`   - Products: ${sampleProducts.length}`);
     console.log(`   - Coupons: ${insertedCoupons.length}`);
-    console.log(`   - Users: ${insertedUsers.length} (Admin: admin@kalyankids.com, Customer: customer@example.com)`);
+    console.log(`   - Users: ${insertedUsers.length} (Admin: admin@aarticollection.com, Customer: customer@example.com)`);
   } catch (error) {
     console.error("❌ Seeding failed:", error);
     process.exit(1);

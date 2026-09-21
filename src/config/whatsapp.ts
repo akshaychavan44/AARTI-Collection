@@ -1,5 +1,5 @@
 /**
- * WhatsApp Configuration & Link Generator for Kalyan Kids
+ * WhatsApp Configuration & Link Generator for Aarti Collection
  * Standard WhatsApp Click-to-Chat protocol (wa.me)
  */
 

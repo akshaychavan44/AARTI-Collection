@@ -17,6 +17,8 @@ import {
   Calendar,
 } from "lucide-react";
 
+import { clientCache } from "@/lib/cache";
+
 interface OrderItem {
   id: number;
   productId: number;
@@ -43,9 +45,41 @@ interface OrderSummary {
 
 export default function OrderHistoryPage() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
-  const [orders, setOrders] = useState<OrderSummary[]>([]);
-  const [loading, setLoading] = useState(true);
+  const initialCacheKey = "/orders";
+  const cached = clientCache.get<any>(initialCacheKey);
+  const initialOrders = cached?.data
+    ? Array.isArray(cached.data)
+      ? cached.data
+      : cached.data.orders || []
+    : [];
+  const [orders, setOrders] = useState<OrderSummary[]>(Array.isArray(initialOrders) ? initialOrders : []);
+  const [loading, setLoading] = useState(orders.length === 0);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchOrders = async (silent = false) => {
+    try {
+      if (!silent) setLoading(true);
+      setError(null);
+      const res = await api.getCached<OrderSummary[] | { orders: OrderSummary[] }>("/orders");
+      if (res.data?.success && res.data.data) {
+        const orderList = Array.isArray(res.data.data)
+          ? res.data.data
+          : Array.isArray((res.data.data as any).orders)
+          ? (res.data.data as any).orders
+          : [];
+        setOrders(orderList);
+      } else if (!silent) {
+        setOrders([]);
+      }
+    } catch (err: any) {
+      if (orders.length === 0) {
+        setError(err.message || "Failed to load orders");
+        setOrders([]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -54,32 +88,10 @@ export default function OrderHistoryPage() {
     }
 
     if (isAuthenticated) {
-      fetchOrders();
+      const hasData = orders.length > 0;
+      fetchOrders(hasData);
     }
   }, [authLoading, isAuthenticated]);
-
-  const fetchOrders = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await api.get<OrderSummary[] | { orders: OrderSummary[] }>("/orders");
-      if (res.success && res.data) {
-        const orderList = Array.isArray(res.data)
-          ? res.data
-          : Array.isArray((res.data as any).orders)
-          ? (res.data as any).orders
-          : [];
-        setOrders(orderList);
-      } else {
-        setOrders([]);
-      }
-    } catch (err: any) {
-      setError(err.message || "Failed to load orders");
-      setOrders([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getStatusBadge = (status: OrderSummary["status"]) => {
     switch (status) {
@@ -157,7 +169,7 @@ export default function OrderHistoryPage() {
         </div>
         <h1 className="text-2xl font-bold text-slate-900">Sign in to View Your Orders</h1>
         <p className="text-slate-500 text-sm max-w-md mx-auto">
-          Please sign in to your Kalyan Kids account to view past orders, item receipts, and track order statuses.
+          Please sign in to your Aarti Collection account to view past orders, item receipts, and track order statuses.
         </p>
         <div className="pt-2">
           <Link

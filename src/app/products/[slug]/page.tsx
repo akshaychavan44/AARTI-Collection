@@ -233,7 +233,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 </span>
               ) : (
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-600/90 text-white backdrop-blur-md shadow-sm">
-                  ● In Stock in Kalyan Store ({availableStock} units)
+                  ● In Stock ({availableStock} units available)
                 </span>
               )}
             </div>
@@ -272,15 +272,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                     : "bg-rose-50 text-rose-700 border border-rose-200/60"
                 }`}
               >
-                {product.gender === "BOYS" ? "👦 Boys Wear" : "👧 Girls Wear"}
+                {product.gender === "BOYS" ? "Boys" : "Girls"}
               </span>
 
               <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/60">
-                Age {product.ageGroup} Years
+                {product.ageGroup} Years
               </span>
 
               <span className="text-xs font-semibold text-slate-400">
-                Brand: <strong className="text-slate-700">{product.brand || "Kalyan Kids Atelier"}</strong>
+                Brand: <strong className="text-slate-700">{product.brand || "Aarti Collection"}</strong>
               </span>
             </div>
 
@@ -374,12 +374,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             ) : availableStock <= (matchedVariant?.lowStockThreshold || 5) ? (
               <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3.5 py-2 rounded-xl">
                 <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>Only {availableStock} garments left in stock in Kalyan boutique — order soon!</span>
+                <span>Only {availableStock} garments left in stock — order soon!</span>
               </div>
             ) : (
               <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-xl">
                 <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Available for immediate Kalyan store pickup</span>
+                <span>In stock — Ready for store pickup & fast dispatch</span>
               </div>
             )}
           </div>
@@ -476,22 +476,22 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             )}
           </div>
 
-          {/* Luxury Store Assurance Badges */}
+          {/* Store Assurance Badges */}
           <div className="grid grid-cols-3 gap-3 pt-6 border-t border-slate-100 text-center">
             <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
               <ShieldCheck className="w-5 h-5 text-rose-600 mx-auto" />
-              <div className="text-xs font-bold text-slate-900">100% Cotton</div>
-              <div className="text-[10px] text-slate-500">Pure hypoallergenic</div>
+              <div className="text-xs font-bold text-slate-900">Pure Fabric</div>
+              <div className="text-[10px] text-slate-500">Soft & breathable cotton</div>
             </div>
             <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
               <Store className="w-5 h-5 text-amber-600 mx-auto" />
               <div className="text-xs font-bold text-slate-900">Store Pickup</div>
-              <div className="text-[10px] text-slate-500">In-store pickup only</div>
+              <div className="text-[10px] text-slate-500">Same-day pickup available</div>
             </div>
             <div className="p-3 bg-slate-50/70 rounded-2xl space-y-1 border border-slate-100">
               <Sparkles className="w-5 h-5 text-emerald-600 mx-auto" />
-              <div className="text-xs font-bold text-slate-900">Quality Verified</div>
-              <div className="text-[10px] text-slate-500">Kalyan inspected</div>
+              <div className="text-xs font-bold text-slate-900">Quality Checked</div>
+              <div className="text-[10px] text-slate-500">Inspected for kids comfort</div>
             </div>
           </div>
         </div>
