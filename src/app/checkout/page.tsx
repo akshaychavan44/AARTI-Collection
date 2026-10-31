@@ -42,7 +42,8 @@ export default function CheckoutPage() {
 
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [razorpayScriptLoaded, setRazorpayScriptLoaded] = useState<boolean>(false);
+  const [razorpayScriptLoaded, setRazorpayScriptLoaded] =
+    useState<boolean>(false);
 
   // Redirect if unauthenticated
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function CheckoutPage() {
   if (authLoading || cartLoading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-stone-900 border-t-transparent mb-4" />
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-[#287e6d] border-t-transparent mb-4" />
         <p className="text-stone-600 font-medium">Securing your checkout...</p>
       </div>
     );
@@ -64,15 +65,19 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4">
-        <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] text-stone-700 flex items-center justify-center mx-auto border border-stone-200">
+        <div className="w-16 h-16 rounded-2xl bg-[#eaf2eb] text-stone-700 flex items-center justify-center mx-auto border border-stone-200">
           <ShoppingBag className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-stone-900">Your Cart is Empty</h1>
-        <p className="text-stone-600 text-sm">Please add items to your basket before checking out.</p>
+        <h1 className="text-2xl font-bold text-stone-900">
+          Your Cart is Empty
+        </h1>
+        <p className="text-stone-600 text-sm">
+          Please add items to your basket before checking out.
+        </p>
         <div className="pt-2">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-stone-900 text-white font-semibold text-sm shadow-card hover:bg-stone-800"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#287e6d] text-white font-semibold text-sm shadow-sm hover:bg-[#1e6255]"
           >
             Explore Collection
           </Link>
@@ -157,7 +162,9 @@ export default function CheckoutPage() {
       }>("/payments/create-order", { orderNumber });
 
       if (!rzpRes.success || !rzpRes.data?.razorpayOrderId) {
-        throw new Error(rzpRes.message || "Failed to initialize payment gateway");
+        throw new Error(
+          rzpRes.message || "Failed to initialize payment gateway",
+        );
       }
 
       const rzpData = rzpRes.data;
@@ -197,7 +204,9 @@ export default function CheckoutPage() {
                 await refreshCart();
                 router.push(`/order-success/${orderNumber}`);
               } else {
-                setErrorMessage(verifyRes.message || "Payment verification failed");
+                setErrorMessage(
+                  verifyRes.message || "Payment verification failed",
+                );
               }
             } catch (err: any) {
               setErrorMessage(err.message || "Verification failed");
@@ -232,7 +241,9 @@ export default function CheckoutPage() {
         }
       }
     } catch (err: any) {
-      setErrorMessage(err.message || "An unexpected error occurred during checkout");
+      setErrorMessage(
+        err.message || "An unexpected error occurred during checkout",
+      );
     } finally {
       setPaymentLoading(false);
     }
@@ -248,14 +259,15 @@ export default function CheckoutPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Header */}
         <div className="text-center max-w-lg mx-auto mb-8">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EFECE6] text-stone-800 border border-stone-200 mb-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#eaf2eb] text-stone-800 border border-stone-200 mb-2">
             <Lock className="w-3.5 h-3.5" /> 256-Bit SSL Encrypted Checkout
           </span>
-          <h1 className="text-3xl font-black tracking-tight text-stone-900">
+          <h1 className="text-3xl font-medium tracking-tight text-stone-900">
             Complete Your Order
           </h1>
           <p className="text-sm text-stone-600 mt-1">
-            Review your clothing items and complete payment securely via Razorpay.
+            Review your clothing items and complete payment securely via
+            Razorpay.
           </p>
         </div>
 
@@ -284,10 +296,12 @@ export default function CheckoutPage() {
 
             <div className="divide-y divide-stone-100">
               {items.map((item) => {
-                const img = item.product.image || "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=300";
+                const img =
+                  item.product.image ||
+                  "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=300";
                 return (
                   <div key={item.id} className="py-3.5 flex items-center gap-4">
-                    <div className="w-16 h-20 rounded-xl overflow-hidden bg-[#EFECE6] shrink-0 border border-stone-200">
+                    <div className="w-16 h-20 rounded-xl overflow-hidden bg-[#eaf2eb] shrink-0 border border-stone-200">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img}
@@ -303,11 +317,12 @@ export default function CheckoutPage() {
                         {item.product.name}
                       </div>
                       <div className="text-xs text-stone-500 mt-0.5">
-                        {item.variant.size} • {item.variant.color} • Qty: {item.quantity}
+                        {item.variant.size} • {item.variant.color} • Qty:{" "}
+                        {item.quantity}
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-extrabold text-stone-900 text-sm">
+                      <div className="font-semibold text-stone-900 text-sm">
                         ₹{item.totalPrice}
                       </div>
                       <div className="text-[11px] text-stone-400">
@@ -332,7 +347,8 @@ export default function CheckoutPage() {
                 <div className="p-3 bg-stone-50 border border-stone-200 rounded-2xl flex items-center justify-between">
                   <div>
                     <div className="text-xs font-bold text-stone-900 flex items-center gap-1.5">
-                      <Tag className="w-3.5 h-3.5 text-emerald-600" /> Coupon &apos;{appliedCoupon.code}&apos; Active
+                      <Tag className="w-3.5 h-3.5 text-emerald-600" /> Coupon
+                      &apos;{appliedCoupon.code}&apos; Active
                     </div>
                     <div className="text-[11px] text-emerald-600 font-semibold">
                       You saved ₹{appliedCoupon.discountAmount}!
@@ -351,14 +367,16 @@ export default function CheckoutPage() {
                   <input
                     type="text"
                     value={couponInput}
-                    onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                    onChange={(e) =>
+                      setCouponInput(e.target.value.toUpperCase())
+                    }
                     placeholder="e.g. WELCOME10"
-                    className="flex-1 px-3 py-2 text-sm rounded-xl border border-stone-200 uppercase focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900"
+                    className="flex-1 px-3 py-2 text-sm rounded-xl border border-stone-200 uppercase focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d]"
                   />
                   <button
                     type="submit"
                     disabled={couponLoading || !couponInput.trim()}
-                    className="px-4 py-2 bg-stone-900 hover:bg-stone-800 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                    className="px-4 py-2 bg-[#287e6d] hover:bg-[#1e6255] disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
                   >
                     {couponLoading ? "..." : "Apply"}
                   </button>
@@ -386,7 +404,9 @@ export default function CheckoutPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-stone-600">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-stone-900">₹{subtotal}</span>
+                  <span className="font-semibold text-stone-900">
+                    ₹{subtotal}
+                  </span>
                 </div>
 
                 {appliedCoupon && (
@@ -404,10 +424,14 @@ export default function CheckoutPage() {
 
               <div className="pt-3 border-t border-stone-100 flex justify-between items-baseline">
                 <div>
-                  <div className="text-base font-bold text-stone-900">Total Amount</div>
-                  <div className="text-[11px] text-stone-400">Server validated price</div>
+                  <div className="text-base font-bold text-stone-900">
+                    Total Amount
+                  </div>
+                  <div className="text-[11px] text-stone-400">
+                    Server validated price
+                  </div>
                 </div>
-                <div className="text-2xl font-black text-stone-900">
+                <div className="text-2xl font-medium text-stone-900">
                   ₹{finalTotal}
                 </div>
               </div>
@@ -417,10 +441,12 @@ export default function CheckoutPage() {
                 type="button"
                 disabled={paymentLoading}
                 onClick={handlePayment}
-                className="w-full py-4 px-6 rounded-2xl bg-stone-900 hover:bg-stone-800 disabled:bg-stone-200 disabled:text-stone-400 text-white font-bold text-base shadow-card hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-4 px-6 rounded-2xl bg-[#287e6d] hover:bg-[#1e6255] disabled:bg-stone-200 disabled:text-stone-400 text-white font-bold text-base shadow-sm hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <CreditCard className="w-5 h-5" />
-                {paymentLoading ? "Processing Payment..." : `Pay ₹${finalTotal}`}
+                {paymentLoading
+                  ? "Processing Payment..."
+                  : `Pay ₹${finalTotal}`}
               </button>
 
               <div className="flex items-center justify-center gap-2 text-[11px] text-stone-500 pt-1">

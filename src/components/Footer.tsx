@@ -1,180 +1,66 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Sparkles,
-  ShoppingBag,
-  MapPin,
-  Phone,
-  Clock,
-  Store,
-  Heart,
-  MessageCircle,
-} from "lucide-react";
+import { ArrowUpRight, Heart, MapPin, MessageCircle, Phone, ShoppingBag } from "lucide-react";
 import { STORE_WHATSAPP_NUMBER } from "@/config/whatsapp";
+import styles from "./Footer.module.css";
 
-export const Footer: React.FC = () => {
+export function Footer() {
   const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
 
-  // Do not render consumer storefront footer on admin pages
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
-
-  const whatsappUrl = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    "Hello Aarti Collection! I would like personal styling assistance or have a question about kids fashion."
-  )}`;
+  const whatsapp = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello Aarti Collection! I’d like some help with sizing or an order.")}`;
 
   return (
-    <footer className="bg-stone-950 text-stone-300 relative overflow-hidden border-t border-stone-800">
-      {/* Decorative Warm Ambient Glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-400/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-stone-800/40 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Brand Column */}
-          <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-3 group">
-              <div className="w-11 h-11 rounded-2xl bg-stone-900 border border-stone-800 flex items-center justify-center text-white shadow-card group-hover:scale-105 transition-transform">
-                <ShoppingBag className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="font-extrabold text-2xl tracking-tight text-white block">
-                  Aarti Collection
-                </span>
-                <span className="text-[10px] tracking-wider uppercase font-semibold text-stone-400">
-                  Kids Clothing & Ethnic Wear (Ages 0–16)
-                </span>
-              </div>
+    <footer className={styles.footer}>
+      <div className={`shell ${styles.inner}`}>
+        <div className={styles.grid}>
+          <div className={styles.about}>
+            <Link href="/" className={styles.brand} aria-label="Aarti Collection home">
+              <span>AARTI<span className={styles.flower} aria-hidden="true">✳</span></span>
+              <small>COLLECTION</small>
             </Link>
-
-            <p className="text-sm text-stone-400 leading-relaxed max-w-md pt-1">
-              Cheerful, high-quality kids’ fashion from Aarti Collection. From celebratory festive lehengas and kurta sets to soft everyday playwear, crafted for comfort and childhood adventures.
-            </p>
-
-            {/* Direct WhatsApp Concierge Button */}
-            <div className="pt-2">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-100 font-bold text-xs shadow-card transition-all hover:-translate-y-0.5"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-400" />
-                <span>WhatsApp Stylist: +91 72088 30380</span>
-              </a>
+            <p>For little personalities. For big, beautiful childhoods. Discover everyday favourites and special occasion styles for ages 0–16.</p>
+            <span className={styles.location}><MapPin size={14} /> Kalyan, Maharashtra</span>
+            <div className={styles.shortcuts}>
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Chat with Aarti Collection on WhatsApp"><MessageCircle size={18} /></a>
+              <a href={`tel:+${STORE_WHATSAPP_NUMBER}`} aria-label="Call Aarti Collection"><Phone size={17} /></a>
+              <Link href="/products" aria-label="Shop the collection"><ShoppingBag size={18} /></Link>
             </div>
           </div>
 
-          {/* Quick Collections */}
-          <div>
-            <h3 className="text-xs font-bold text-stone-200 uppercase tracking-wider mb-4 border-l-2 border-stone-500 pl-3">
-              Collections
-            </h3>
-            <ul className="space-y-2.5 text-sm text-stone-400">
-              <li>
-                <Link href="/products?gender=GIRLS" className="hover:text-white transition-colors">
-                  Girls Frocks & Sets
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?gender=BOYS" className="hover:text-white transition-colors">
-                  Boys Shirts & Denims
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?ageGroup=0-2" className="hover:text-white transition-colors">
-                  Infants & Toddlers (0–2Y)
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?ageGroup=3-5" className="hover:text-white transition-colors">
-                  Preschoolers (3–5Y)
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?ageGroup=6-9" className="hover:text-white transition-colors">
-                  Junior Trendsetters (6–9Y)
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?ageGroup=10-13" className="hover:text-white transition-colors">
-                  Pre-Teens (10–13Y)
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <nav className={styles.column} aria-label="Footer quick links">
+            <h2>Quick links</h2>
+            <Link href="/">Home</Link>
+            <Link href="/products">Shop all</Link>
+            <Link href="/products?gender=BOYS">Boys collection</Link>
+            <Link href="/products?gender=GIRLS">Girls collection</Link>
+            <Link href="/products?ageGroup=0-2">Baby & toddler</Link>
+            <Link href="/products?search=festive">The festive edit</Link>
+          </nav>
 
-          {/* Customer Care */}
-          <div>
-            <h3 className="text-xs font-bold text-stone-200 uppercase tracking-wider mb-4 border-l-2 border-stone-500 pl-3">
-              Help & Orders
-            </h3>
-            <ul className="space-y-2.5 text-sm text-stone-400">
-              <li>
-                <Link href="/cart" className="hover:text-white transition-colors">
-                  My Shopping Bag
-                </Link>
-              </li>
-              <li>
-                <Link href="/wishlist" className="hover:text-white transition-colors">
-                  Saved Wishlist
-                </Link>
-              </li>
-              <li>
-                <Link href="/account/orders" className="hover:text-white transition-colors">
-                  Track My Orders
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile" className="hover:text-white transition-colors">
-                  My Profile
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Boutique Visit Info */}
-          <div>
-            <h3 className="text-xs font-bold text-stone-200 uppercase tracking-wider mb-4 border-l-2 border-stone-500 pl-3">
-              Store Location
-            </h3>
-            <div className="space-y-3 text-xs text-stone-400">
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-stone-300 shrink-0 mt-0.5" />
-                <span>Station Road / Khadakpada, Kalyan West, Maharashtra 421301</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-stone-300 shrink-0" />
-                <span>Mon–Sun: 10:00 AM – 9:30 PM</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Support: +91 72088 30380</span>
-              </div>
-              <div className="pt-2">
-                <span className="inline-block px-3 py-1 rounded-full bg-stone-900 text-stone-300 text-[11px] font-semibold border border-stone-800">
-                  ● Store Open Today
-                </span>
-              </div>
-            </div>
-          </div>
+          <nav className={styles.column} aria-label="Footer account and support">
+            <h2>Your little world</h2>
+            <Link href="/profile">My account</Link>
+            <Link href="/account/orders">My orders</Link>
+            <Link href="/wishlist">My wishlist</Link>
+            <Link href="/cart">Shopping bag</Link>
+            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className={styles.contact}>Let’s find their perfect fit <ArrowUpRight size={15} /></a>
+            <a href={`tel:+${STORE_WHATSAPP_NUMBER}`} className={styles.phone}>+91 72088 30380</a>
+          </nav>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-14 pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
-          <p>© {new Date().getFullYear()} Aarti Collection. All rights reserved.</p>
-          <div className="flex items-center gap-4 text-stone-400">
-            <span>UPI • RuPay • NetBanking • Visa • Cash on Delivery</span>
-          </div>
+        <div className={styles.watermark} aria-hidden="true">AARTI COLLECTION</div>
+
+        <div className={styles.bottom}>
+          <span>© {new Date().getFullYear()} AARTI COLLECTION. All rights reserved.</span>
+          <span>Little details. Lots of love. <Heart size={12} /></span>
+          <span>UPI · Cards · Netbanking</span>
         </div>
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;

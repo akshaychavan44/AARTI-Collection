@@ -64,7 +64,9 @@ function LoginForm() {
         }
       }, 600);
     } catch (err: any) {
-      setError(err.message || "Failed to sign in. Please check your credentials.");
+      setError(
+        err.message || "Failed to sign in. Please check your credentials.",
+      );
     } finally {
       setLoading(false);
     }
@@ -85,7 +87,7 @@ function LoginForm() {
   return (
     <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-stone-200 p-8 sm:p-10">
       <div className="text-center mb-8">
-        <span className="inline-block px-3 py-1 rounded-full bg-[#EFECE6] text-stone-800 text-xs font-semibold mb-3 border border-stone-200">
+        <span className="inline-block px-3 py-1 rounded-full bg-[#eaf2eb] text-stone-800 text-xs font-semibold mb-3 border border-stone-200">
           Welcome Back
         </span>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
@@ -115,7 +117,10 @@ function LoginForm() {
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+          <label
+            htmlFor="email"
+            className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2"
+          >
             Email Address
           </label>
           <div className="relative">
@@ -128,7 +133,7 @@ function LoginForm() {
               placeholder="name@example.com"
               required
               autoComplete="email"
-              className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
+              className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FFFFFF]"
             />
           </div>
         </div>
@@ -136,7 +141,10 @@ function LoginForm() {
         {/* Password Field */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="password" className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
+            <label
+              htmlFor="password"
+              className="text-xs font-semibold text-stone-700 uppercase tracking-wider"
+            >
               Password
             </label>
             <Link
@@ -156,7 +164,7 @@ function LoginForm() {
               placeholder="••••••••"
               required
               autoComplete="current-password"
-              className="w-full pl-11 pr-11 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
+              className="w-full pl-11 pr-11 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FFFFFF]"
             />
             <button
               type="button"
@@ -164,7 +172,11 @@ function LoginForm() {
               className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1 cursor-pointer"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
             </button>
           </div>
         </div>
@@ -173,7 +185,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full py-3.5 px-4 bg-[#287e6d] hover:bg-[#1e6255] text-white rounded-xl font-medium text-sm shadow-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <>
@@ -190,7 +202,7 @@ function LoginForm() {
       </form>
 
       {/* Demo Credentials Quick Fill */}
-      <div className="mt-8 pt-6 border-t border-stone-200 text-xs text-stone-600 bg-[#FAF9F6] p-4 rounded-2xl space-y-3">
+      <div className="mt-8 pt-6 border-t border-stone-200 text-xs text-stone-600 bg-[#FFFFFF] p-4 rounded-2xl space-y-3">
         <div className="font-semibold text-stone-800 flex items-center gap-1.5">
           <KeyRound className="w-3.5 h-3.5 text-stone-500" />
           <span>Quick 1-Click Demo Accounts:</span>
@@ -201,19 +213,25 @@ function LoginForm() {
             onClick={fillAdminCredentials}
             className="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-bold text-left transition-all cursor-pointer flex flex-col gap-0.5"
           >
-            <span className="flex items-center gap-1 text-[11px] text-amber-700 font-extrabold uppercase">
+            <span className="flex items-center gap-1 text-[11px] text-amber-700 font-semibold uppercase">
               <Shield className="w-3 h-3" /> Admin Login
             </span>
-            <span className="text-[10px] text-stone-500 font-normal truncate">admin@aarticollection.com</span>
+            <span className="text-[10px] text-stone-500 font-normal truncate">
+              admin@aarticollection.com
+            </span>
           </button>
 
           <button
             type="button"
             onClick={fillCustomerCredentials}
-            className="p-2 rounded-xl bg-white hover:bg-[#EFECE6] border border-stone-200 text-stone-800 font-semibold text-left transition-all cursor-pointer flex flex-col gap-0.5"
+            className="p-2 rounded-xl bg-white hover:bg-[#eaf2eb] border border-stone-200 text-stone-800 font-semibold text-left transition-all cursor-pointer flex flex-col gap-0.5"
           >
-            <span className="text-[11px] text-stone-700 font-bold uppercase">Customer Login</span>
-            <span className="text-[10px] text-stone-500 font-normal truncate">customer@example.com</span>
+            <span className="text-[11px] text-stone-700 font-bold uppercase">
+              Customer Login
+            </span>
+            <span className="text-[10px] text-stone-500 font-normal truncate">
+              customer@example.com
+            </span>
           </button>
         </div>
       </div>
@@ -232,7 +250,10 @@ function LoginForm() {
       {/* Switch to Register */}
       <div className="text-center mt-5 text-sm text-stone-600">
         Don&apos;t have an account yet?{" "}
-        <Link href="/register" className="font-semibold text-stone-900 hover:text-stone-700 hover:underline">
+        <Link
+          href="/register"
+          className="font-semibold text-stone-900 hover:text-stone-700 hover:underline"
+        >
           Create Account
         </Link>
       </div>

@@ -52,7 +52,9 @@ export default function OrderHistoryPage() {
       ? cached.data
       : cached.data.orders || []
     : [];
-  const [orders, setOrders] = useState<OrderSummary[]>(Array.isArray(initialOrders) ? initialOrders : []);
+  const [orders, setOrders] = useState<OrderSummary[]>(
+    Array.isArray(initialOrders) ? initialOrders : [],
+  );
   const [loading, setLoading] = useState(orders.length === 0);
   const [error, setError] = useState<string | null>(null);
 
@@ -60,13 +62,15 @@ export default function OrderHistoryPage() {
     try {
       if (!silent) setLoading(true);
       setError(null);
-      const res = await api.getCached<OrderSummary[] | { orders: OrderSummary[] }>("/orders");
+      const res = await api.getCached<
+        OrderSummary[] | { orders: OrderSummary[] }
+      >("/orders");
       if (res.data?.success && res.data.data) {
         const orderList = Array.isArray(res.data.data)
           ? res.data.data
           : Array.isArray((res.data.data as any).orders)
-          ? (res.data.data as any).orders
-          : [];
+            ? (res.data.data as any).orders
+            : [];
         setOrders(orderList);
       } else if (!silent) {
         setOrders([]);
@@ -164,17 +168,20 @@ export default function OrderHistoryPage() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center space-y-4">
-        <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] text-stone-800 flex items-center justify-center mx-auto border border-stone-200">
+        <div className="w-16 h-16 rounded-2xl bg-[#eaf2eb] text-stone-800 flex items-center justify-center mx-auto border border-stone-200">
           <Package className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-stone-900">Sign in to View Your Orders</h1>
+        <h1 className="text-2xl font-bold text-stone-900">
+          Sign in to View Your Orders
+        </h1>
         <p className="text-stone-600 text-sm max-w-md mx-auto">
-          Please sign in to your Aarti Collection account to view past orders, item receipts, and track order statuses.
+          Please sign in to your Aarti Collection account to view past orders,
+          item receipts, and track order statuses.
         </p>
         <div className="pt-2">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-sm shadow-card"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#287e6d] hover:bg-[#1e6255] text-white font-semibold text-sm shadow-sm"
           >
             Sign In Now
           </Link>
@@ -188,7 +195,7 @@ export default function OrderHistoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-stone-900 tracking-tight">
+          <h1 className="text-3xl font-semibold text-stone-900 tracking-tight">
             Order History
           </h1>
           <p className="text-sm text-stone-600 mt-1">
@@ -198,7 +205,7 @@ export default function OrderHistoryPage() {
 
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-stone-300 text-stone-800 hover:bg-[#EFECE6] text-xs font-semibold self-start sm:self-auto transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-stone-300 text-stone-800 hover:bg-[#eaf2eb] text-xs font-semibold self-start sm:self-auto transition-colors"
         >
           <ShoppingBag className="w-4 h-4 text-stone-700" /> Continue Shopping
         </Link>
@@ -213,17 +220,18 @@ export default function OrderHistoryPage() {
 
       {safeOrders.length === 0 ? (
         <div className="bg-white rounded-3xl border border-stone-200 p-12 text-center space-y-4 shadow-sm">
-          <div className="w-20 h-20 rounded-3xl bg-[#EFECE6] text-stone-700 flex items-center justify-center mx-auto border border-stone-200">
+          <div className="w-20 h-20 rounded-3xl bg-[#eaf2eb] text-stone-700 flex items-center justify-center mx-auto border border-stone-200">
             <Package className="w-10 h-10" />
           </div>
           <h2 className="text-xl font-bold text-stone-900">No Orders Found</h2>
           <p className="text-stone-600 text-sm max-w-md mx-auto">
-            You haven&apos;t placed any orders yet. Discover our latest designer collections for boys and girls up to age 16!
+            You haven&apos;t placed any orders yet. Discover our latest designer
+            collections for boys and girls up to age 16!
           </p>
           <div className="pt-2">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-sm shadow-card transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#287e6d] hover:bg-[#1e6255] text-white font-bold text-sm shadow-sm transition-all"
             >
               Browse Products <ArrowRight className="w-4 h-4" />
             </Link>
@@ -232,13 +240,16 @@ export default function OrderHistoryPage() {
       ) : (
         <div className="space-y-4">
           {safeOrders.map((order) => {
-            const formattedDate = new Date(order.createdAt).toLocaleDateString("en-IN", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            });
+            const formattedDate = new Date(order.createdAt).toLocaleDateString(
+              "en-IN",
+              {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              },
+            );
 
             return (
               <div
@@ -275,7 +286,7 @@ export default function OrderHistoryPage() {
                     {(order.items || []).slice(0, 4).map((item) => (
                       <div
                         key={item.id}
-                        className="relative w-14 h-16 rounded-lg bg-[#EFECE6] border border-stone-200 overflow-hidden shrink-0"
+                        className="relative w-14 h-16 rounded-lg bg-[#eaf2eb] border border-stone-200 overflow-hidden shrink-0"
                         title={`${item.productName} (${item.variantInfo})`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -288,20 +299,21 @@ export default function OrderHistoryPage() {
                           className="w-full h-full object-cover object-top"
                         />
                         {item.quantity > 1 && (
-                          <span className="absolute bottom-0.5 right-0.5 bg-stone-900/80 text-white text-[10px] font-bold px-1 rounded">
+                          <span className="absolute bottom-0.5 right-0.5 bg-[#287e6d]/80 text-white text-[10px] font-bold px-1 rounded">
                             x{item.quantity}
                           </span>
                         )}
                       </div>
                     ))}
                     {(order.items || []).length > 4 && (
-                      <div className="w-14 h-16 rounded-lg bg-[#FAF9F6] border border-dashed border-stone-300 flex items-center justify-center text-xs font-semibold text-stone-500 shrink-0">
+                      <div className="w-14 h-16 rounded-lg bg-[#FFFFFF] border border-dashed border-stone-300 flex items-center justify-center text-xs font-semibold text-stone-500 shrink-0">
                         +{order.items.length - 4} more
                       </div>
                     )}
                     <div className="pl-1">
                       <div className="text-xs font-semibold text-stone-900">
-                        {order.items.length} {order.items.length === 1 ? "item" : "items"}
+                        {order.items.length}{" "}
+                        {order.items.length === 1 ? "item" : "items"}
                       </div>
                       <div className="text-[11px] text-stone-500 truncate max-w-[200px]">
                         {order.items.map((i) => i.productName).join(", ")}
@@ -313,7 +325,7 @@ export default function OrderHistoryPage() {
                   <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100">
                     <div className="text-left sm:text-right">
                       <div className="text-xs text-stone-400">Total Amount</div>
-                      <div className="text-lg font-extrabold text-stone-900">
+                      <div className="text-lg font-semibold text-stone-900">
                         ₹{order.total}
                       </div>
                       {order.discount > 0 && (
@@ -325,7 +337,7 @@ export default function OrderHistoryPage() {
 
                     <Link
                       href={`/account/orders/${order.orderNumber}`}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition-all shadow-card"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#287e6d] hover:bg-[#1e6255] text-white text-xs font-semibold transition-all shadow-sm"
                     >
                       View Details <ChevronRight className="w-3.5 h-3.5" />
                     </Link>

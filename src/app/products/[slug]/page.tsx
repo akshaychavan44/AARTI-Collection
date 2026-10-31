@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, use } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { api } from "@/lib/api";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -48,13 +49,22 @@ interface ProductDetails {
   compareAtPrice: string | null;
   discountPercentage: number | null;
   category: { id: number; name: string; slug: string } | null;
-  images: { id: number; imageUrl: string; altText: string | null; sortOrder: number }[];
+  images: {
+    id: number;
+    imageUrl: string;
+    altText: string | null;
+    sortOrder: number;
+  }[];
   variants: Variant[];
   priceRange: { min: number; max: number };
   overallStockStatus: "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
 }
 
-export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
 
@@ -72,7 +82,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
   const [quantity, setQuantity] = useState<number>(1);
 
   const [actionLoading, setActionLoading] = useState<boolean>(false);
-  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     async function loadProduct() {
@@ -103,7 +116,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     return (
       <div className="max-w-7xl mx-auto px-4 py-24 text-center">
         <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-rose-500 border-t-transparent mb-4" />
-        <p className="text-slate-600 font-bold text-sm tracking-wide">Retrieving atelier garment details...</p>
+        <p className="text-slate-600 font-bold text-sm tracking-wide">
+          Finding your favourite…
+        </p>
       </div>
     );
   }
@@ -114,13 +129,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
         <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-4">
           <AlertCircle className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl font-black text-slate-950 mb-2">Garment Not Found</h2>
-        <p className="text-slate-500 text-sm mb-6">{error || "The requested clothing item is no longer available in our collection."}</p>
+        <h2 className="text-2xl font-medium text-slate-950 mb-2">
+          We couldn’t find this style
+        </h2>
+        <p className="text-slate-500 text-sm mb-6">
+          {error ||
+            "The requested clothing item is no longer available in our collection."}
+        </p>
         <Link
           href="/products"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-rose-600 transition-colors"
         >
-          Return to Catalog
+          Explore the collection
         </Link>
       </div>
     );
@@ -128,14 +148,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
   // Find matching variant based on selected size and color
   const matchedVariant = product.variants.find(
-    (v) => v.size === selectedSize && v.color === selectedColor
-  ) || product.variants[0];
+    (v) => v.size === selectedSize && v.color === selectedColor,
+  );
 
   // Derive unique sizes and colors
-  const availableSizes = Array.from(new Set(product.variants.map((v) => v.size)));
-  const availableColors = Array.from(new Set(product.variants.map((v) => v.color)));
+  const availableSizes = Array.from(
+    new Set(product.variants.map((v) => v.size)),
+  );
+  const availableColors = Array.from(
+    new Set(product.variants.map((v) => v.color)),
+  );
 
-  const currentPrice = matchedVariant ? parseFloat(matchedVariant.price) : product.priceRange.min;
+  const currentPrice = matchedVariant
+    ? parseFloat(matchedVariant.price)
+    : product.priceRange.min;
   const availableStock = matchedVariant ? matchedVariant.stock : 0;
   const isOutOfStock = availableStock <= 0;
   const isSavedInWishlist = isInWishlist(product.id);
@@ -168,21 +194,36 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     }
   };
 
-  const imagesList = product.images.length > 0
-    ? product.images
-    : [{ id: 0, imageUrl: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=800", altText: product.name, sortOrder: 0 }];
+  const imagesList =
+    product.images.length > 0
+      ? product.images
+      : [
+          {
+            id: 0,
+            imageUrl:
+              "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=800",
+            altText: product.name,
+            sortOrder: 0,
+          },
+        ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Luxury Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-8 overflow-x-auto pb-1">
-        <Link href="/" className="hover:text-rose-600 transition-colors flex items-center gap-1">
+        <Link
+          href="/"
+          className="hover:text-rose-600 transition-colors flex items-center gap-1"
+        >
           <Home className="w-3.5 h-3.5" />
           <span>Home</span>
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-300 shrink-0" />
-        <Link href="/products" className="hover:text-rose-600 transition-colors shrink-0">
-          Atelier Collection
+        <Link
+          href="/products"
+          className="hover:text-rose-600 transition-colors shrink-0"
+        >
+          The collection
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-300 shrink-0" />
         {product.category && (
@@ -196,7 +237,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             <ChevronRight className="w-3.5 h-3.5 text-slate-300 shrink-0" />
           </>
         )}
-        <span className="text-slate-900 font-bold truncate max-w-xs shrink-0">{product.name}</span>
+        <span className="text-slate-900 font-bold truncate max-w-xs shrink-0">
+          {product.name}
+        </span>
       </nav>
 
       {/* Product View Grid */}
@@ -205,8 +248,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
         <div className="lg:col-span-6 space-y-4">
           <div className="relative aspect-4/5 rounded-3xl overflow-hidden bg-white border border-stone-200 shadow-sm">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={imagesList[selectedImageIndex]?.imageUrl || imagesList[0].imageUrl}
+            <motion.img
+              key={selectedImageIndex}
+              initial={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              src={
+                imagesList[selectedImageIndex]?.imageUrl ||
+                imagesList[0].imageUrl
+              }
               alt={imagesList[selectedImageIndex]?.altText || product.name}
               className="w-full h-full object-cover object-top"
             />
@@ -214,7 +264,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-col gap-2">
               {product.isFeatured && (
-                <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-stone-900 text-white shadow-sm">
+                <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-[#287e6d] text-white shadow-sm">
                   ✨ Featured
                 </span>
               )}
@@ -228,7 +278,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             {/* In-Stock Indicator Pill on Image */}
             <div className="absolute bottom-4 left-4">
               {isOutOfStock ? (
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-stone-900/90 text-white backdrop-blur-md">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#287e6d]/90 text-white backdrop-blur-md">
                   ● Out of Stock in Selected Variant
                 </span>
               ) : (
@@ -248,12 +298,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   onClick={() => setSelectedImageIndex(idx)}
                   className={`relative w-20 h-24 rounded-2xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
                     selectedImageIndex === idx
-                      ? "border-stone-900 shadow-sm scale-105"
+                      ? "border-[#287e6d] shadow-sm scale-105"
                       : "border-stone-200 opacity-60 hover:opacity-100"
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img.imageUrl} alt="Thumbnail" className="w-full h-full object-cover" />
+                  <img
+                    src={img.imageUrl}
+                    alt="Thumbnail"
+                    className="w-full h-full object-cover"
+                  />
                 </button>
               ))}
             </div>
@@ -269,22 +323,27 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 {product.gender === "BOYS" ? "Boys" : "Girls"}
               </span>
 
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#EFECE6] text-stone-800 border border-stone-200">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#eaf2eb] text-stone-800 border border-stone-200">
                 {product.ageGroup} Years
               </span>
 
               <span className="text-xs font-semibold text-stone-400">
-                Brand: <strong className="text-stone-700">{product.brand || "Aarti Collection"}</strong>
+                Brand:{" "}
+                <strong className="text-stone-700">
+                  {product.brand || "Aarti Collection"}
+                </strong>
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-stone-900 tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-medium text-stone-900 tracking-tight leading-tight">
               {product.name}
             </h1>
 
             {/* Price Section */}
             <div className="flex items-baseline gap-3 pt-1">
-              <span className="text-3xl sm:text-4xl font-black text-stone-900">₹{currentPrice}</span>
+              <span className="text-3xl sm:text-4xl font-medium text-stone-900">
+                ₹{currentPrice}
+              </span>
               {product.compareAtPrice && (
                 <span className="text-lg text-stone-400 line-through">
                   ₹{product.compareAtPrice}
@@ -308,10 +367,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           {/* Variant Selector: Size */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-stone-900">
-                Select Child Size
+              <label className="text-xs font-semibold uppercase tracking-wider text-stone-900">
+                Choose a size
               </label>
-              <span className="text-xs text-stone-500 font-medium">Standard Indian Kid Fit</span>
+              <span className="text-xs text-stone-500 font-medium">
+                Standard Indian Kid Fit
+              </span>
             </div>
             <div className="flex flex-wrap gap-2">
               {availableSizes.map((size) => {
@@ -319,11 +380,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 return (
                   <button
                     key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-extrabold border transition-all cursor-pointer ${
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      setSelectedSize(size);
+                      setQuantity(1);
+                    }}
+                    className={`px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                       isSelected
-                        ? "border-stone-900 bg-stone-900 text-white shadow-xs"
-                        : "border-stone-200 bg-white text-stone-800 hover:border-stone-400 hover:bg-[#FAF9F6]"
+                        ? "border-[#287e6d] bg-[#287e6d] text-white shadow-xs"
+                        : "border-stone-200 bg-white text-stone-800 hover:border-stone-400 hover:bg-[#FFFFFF]"
                     }`}
                   >
                     {size}
@@ -335,8 +400,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
           {/* Variant Selector: Color */}
           <div className="space-y-2">
-            <label className="block text-xs font-extrabold uppercase tracking-wider text-stone-900">
-              Select Colorway
+            <label className="block text-xs font-semibold uppercase tracking-wider text-stone-900">
+              Choose a colour
             </label>
             <div className="flex flex-wrap gap-2">
               {availableColors.map((color) => {
@@ -344,10 +409,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 return (
                   <button
                     key={color}
-                    onClick={() => setSelectedColor(color)}
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      setSelectedColor(color);
+                      setQuantity(1);
+                    }}
                     className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                       isSelected
-                        ? "border-stone-900 bg-stone-900 text-white shadow-xs"
+                        ? "border-[#287e6d] bg-[#287e6d] text-white shadow-xs"
                         : "border-stone-200 bg-white text-stone-700 hover:border-stone-400"
                     }`}
                   >
@@ -363,12 +432,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             {isOutOfStock ? (
               <div className="inline-flex items-center gap-2 text-xs font-bold text-red-700 bg-red-50 border border-red-200 px-3.5 py-2 rounded-xl">
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
-                <span>Selected variant is currently out of stock. Contact us on WhatsApp for backorder.</span>
+                <span>
+                  Selected variant is currently out of stock. Contact us on
+                  WhatsApp for backorder.
+                </span>
               </div>
             ) : availableStock <= (matchedVariant?.lowStockThreshold || 5) ? (
               <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3.5 py-2 rounded-xl">
                 <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>Only {availableStock} garments left in stock — order soon!</span>
+                <span>
+                  Only {availableStock} garments left in stock — order soon!
+                </span>
               </div>
             ) : (
               <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-xl">
@@ -382,10 +456,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           <div className="space-y-4 pt-2 border-t border-stone-100">
             {/* Quantity Selector */}
             <div className="flex items-center gap-4">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-stone-700">
+              <label className="text-xs font-semibold uppercase tracking-wider text-stone-700">
                 Quantity:
               </label>
-              <div className="flex items-center border border-stone-200 rounded-xl overflow-hidden bg-[#FAF9F6] shadow-2xs">
+              <div className="flex items-center border border-stone-200 rounded-xl overflow-hidden bg-[#FFFFFF] shadow-2xs">
                 <button
                   type="button"
                   disabled={quantity <= 1 || isOutOfStock}
@@ -395,13 +469,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="w-12 text-center text-sm font-black text-stone-900">
+                <span className="w-12 text-center text-sm font-medium text-stone-900">
                   {quantity}
                 </span>
                 <button
                   type="button"
                   disabled={quantity >= availableStock || isOutOfStock}
-                  onClick={() => setQuantity(Math.min(availableStock, quantity + 1))}
+                  onClick={() =>
+                    setQuantity(Math.min(availableStock, quantity + 1))
+                  }
                   className="p-2.5 text-stone-600 hover:bg-stone-200 disabled:opacity-30 cursor-pointer"
                   aria-label="Increase quantity"
                 >
@@ -417,25 +493,53 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   type="button"
                   disabled={isOutOfStock || actionLoading}
                   onClick={handleAddToCart}
-                  className="flex-1 flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl bg-stone-900 hover:bg-stone-800 disabled:bg-stone-200 disabled:text-stone-400 text-white font-extrabold text-sm shadow-card transition-all hover:-translate-y-0.5 cursor-pointer"
+                  className="flex-1 flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl bg-[#287e6d] hover:bg-[#1e6255] disabled:bg-stone-200 disabled:text-stone-400 text-white font-semibold text-sm shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   <span>
-                    {actionLoading ? "Adding..." : isOutOfStock ? "Out of Stock" : "Add to Shopping Bag"}
+                    {actionLoading
+                      ? "Adding..."
+                      : isOutOfStock
+                        ? "Out of Stock"
+                        : "Add to Shopping Bag"}
                   </span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => toggleWishlist(product.id)}
+                  onClick={async () => {
+                    if (!isAuthenticated) {
+                      setFeedback({
+                        type: "error",
+                        message: "Please sign in to save this style.",
+                      });
+                      return;
+                    }
+                    try {
+                      await toggleWishlist(product.id);
+                    } catch {
+                      setFeedback({
+                        type: "error",
+                        message:
+                          "Couldn’t update your wishlist. Please try again.",
+                      });
+                    }
+                  }}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                     isSavedInWishlist
-                      ? "border-stone-900 bg-stone-900 text-white shadow-sm"
+                      ? "border-[#287e6d] bg-[#287e6d] text-white shadow-sm"
                       : "border-stone-200 hover:border-stone-400 text-stone-600 hover:text-stone-900 bg-white"
                   }`}
-                  title={isSavedInWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
+                  aria-label={
+                    isSavedInWishlist
+                      ? "Remove from wishlist"
+                      : "Save to wishlist"
+                  }
+                  aria-pressed={isSavedInWishlist}
                 >
-                  <Heart className={`w-5 h-5 ${isSavedInWishlist ? "fill-white" : ""}`} />
+                  <Heart
+                    className={`w-5 h-5 ${isSavedInWishlist ? "fill-white" : ""}`}
+                  />
                 </button>
               </div>
 
@@ -447,13 +551,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 productCode={matchedVariant?.sku || product.slug}
                 color={selectedColor}
                 size={selectedSize}
-                className="w-full py-4 text-sm font-black rounded-2xl shadow-subtle"
+                className="w-full py-4 text-sm font-medium rounded-2xl shadow-subtle"
               />
             </div>
 
             {/* Feedback Message */}
             {feedback && (
               <div
+                role="status"
                 className={`p-4 rounded-2xl text-xs font-bold flex items-center justify-between ${
                   feedback.type === "success"
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-200"
@@ -462,7 +567,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
               >
                 <span>{feedback.message}</span>
                 {feedback.type === "success" && (
-                  <Link href="/cart" className="underline font-black text-emerald-950 ml-2">
+                  <Link
+                    href="/cart"
+                    className="underline font-medium text-emerald-950 ml-2"
+                  >
                     View Bag →
                   </Link>
                 )}
@@ -472,20 +580,32 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
           {/* Store Assurance Badges */}
           <div className="grid grid-cols-3 gap-3 pt-6 border-t border-stone-100 text-center">
-            <div className="p-3 bg-[#FAF9F6] rounded-2xl space-y-1 border border-stone-200">
+            <div className="p-3 bg-[#FFFFFF] rounded-2xl space-y-1 border border-stone-200">
               <ShieldCheck className="w-5 h-5 text-stone-700 mx-auto" />
-              <div className="text-xs font-bold text-stone-900">Pure Fabric</div>
-              <div className="text-[10px] text-stone-500">Soft & breathable cotton</div>
+              <div className="text-xs font-bold text-stone-900">
+                Pure Fabric
+              </div>
+              <div className="text-[10px] text-stone-500">
+                Soft & breathable cotton
+              </div>
             </div>
-            <div className="p-3 bg-[#FAF9F6] rounded-2xl space-y-1 border border-stone-200">
+            <div className="p-3 bg-[#FFFFFF] rounded-2xl space-y-1 border border-stone-200">
               <Store className="w-5 h-5 text-stone-700 mx-auto" />
-              <div className="text-xs font-bold text-stone-900">Store Pickup</div>
-              <div className="text-[10px] text-stone-500">Same-day pickup available</div>
+              <div className="text-xs font-bold text-stone-900">
+                Store Pickup
+              </div>
+              <div className="text-[10px] text-stone-500">
+                Same-day pickup available
+              </div>
             </div>
-            <div className="p-3 bg-[#FAF9F6] rounded-2xl space-y-1 border border-stone-200">
+            <div className="p-3 bg-[#FFFFFF] rounded-2xl space-y-1 border border-stone-200">
               <Sparkles className="w-5 h-5 text-stone-700 mx-auto" />
-              <div className="text-xs font-bold text-stone-900">Quality Checked</div>
-              <div className="text-[10px] text-stone-500">Inspected for kids comfort</div>
+              <div className="text-xs font-bold text-stone-900">
+                Quality Checked
+              </div>
+              <div className="text-[10px] text-stone-500">
+                Inspected for kids comfort
+              </div>
             </div>
           </div>
         </div>

@@ -71,8 +71,10 @@ export default function OrderSuccessPage({
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-stone-900 border-t-transparent mb-4" />
-        <p className="text-stone-600 font-medium">Fetching order confirmation...</p>
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-[#287e6d] border-t-transparent mb-4" />
+        <p className="text-stone-600 font-medium">
+          Fetching order confirmation...
+        </p>
       </div>
     );
   }
@@ -81,12 +83,14 @@ export default function OrderSuccessPage({
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4">
         <h1 className="text-2xl font-bold text-stone-900">Order Not Found</h1>
-        <p className="text-stone-600 text-sm">{error || "Unable to display this order."}</p>
+        <p className="text-stone-600 text-sm">
+          {error || "Unable to display this order."}
+        </p>
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-stone-900 text-white font-semibold text-sm hover:bg-stone-800 shadow-card"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#287e6d] text-white font-semibold text-sm hover:bg-[#1e6255] shadow-sm"
         >
-          Return to Catalog
+          Explore the collection
         </Link>
       </div>
     );
@@ -95,16 +99,19 @@ export default function OrderSuccessPage({
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Luxury Confirmation Banner */}
-      <div className="bg-stone-950 rounded-3xl p-8 text-white shadow-xl text-center space-y-3 relative overflow-hidden border border-stone-800">
-        <div className="w-16 h-16 rounded-full bg-stone-800/80 border border-stone-700 flex items-center justify-center mx-auto shadow-inner">
+      <div className="bg-[#1e6255] rounded-3xl p-8 text-white shadow-xl text-center space-y-3 relative overflow-hidden border border-stone-800">
+        <div className="w-16 h-16 rounded-full bg-stone-800/80 border border-stone-700 flex items-center justify-center mx-auto shadow-none">
           <CheckCircle2 className="w-9 h-9 text-emerald-400" />
         </div>
         <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-white/10 uppercase tracking-widest text-stone-300">
           Payment Successful
         </span>
-        <h1 className="text-3xl font-black tracking-tight text-white">Order Confirmed!</h1>
+        <h1 className="text-3xl font-medium tracking-tight text-white">
+          Order Confirmed!
+        </h1>
         <p className="text-stone-300 text-sm max-w-md mx-auto">
-          Thank you for shopping at Aarti Collection. Your clothing items have been reserved and prepared for pickup or delivery.
+          Thank you for shopping at Aarti Collection. Your clothing items have
+          been reserved and prepared for pickup or delivery.
         </p>
       </div>
 
@@ -113,21 +120,28 @@ export default function OrderSuccessPage({
         {/* Top Info Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 border-b border-stone-100 pb-6 text-xs">
           <div>
-            <span className="text-stone-400 font-medium block">Order Number</span>
+            <span className="text-stone-400 font-medium block">
+              Order Number
+            </span>
             <strong className="text-stone-900 font-bold text-sm block mt-0.5 font-mono">
               #{order.orderNumber}
             </strong>
           </div>
           <div>
-            <span className="text-stone-400 font-medium block">Order Status</span>
+            <span className="text-stone-400 font-medium block">
+              Order Status
+            </span>
             <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-xs mt-0.5">
               <PackageCheck className="w-3.5 h-3.5" /> {order.status}
             </span>
           </div>
           <div>
-            <span className="text-stone-400 font-medium block">Payment Status</span>
-            <span className="inline-flex items-center gap-1 font-bold text-stone-800 bg-[#EFECE6] px-2 py-0.5 rounded text-xs mt-0.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> {order.paymentStatus}
+            <span className="text-stone-400 font-medium block">
+              Payment Status
+            </span>
+            <span className="inline-flex items-center gap-1 font-bold text-stone-800 bg-[#eaf2eb] px-2 py-0.5 rounded text-xs mt-0.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />{" "}
+              {order.paymentStatus}
             </span>
           </div>
           <div>
@@ -146,10 +160,13 @@ export default function OrderSuccessPage({
 
           <div className="divide-y divide-stone-100">
             {order.items.map((item) => (
-              <div key={item.id} className="py-3.5 flex items-center justify-between gap-4">
+              <div
+                key={item.id}
+                className="py-3.5 flex items-center justify-between gap-4"
+              >
                 <div className="flex items-center gap-3 min-w-0">
                   {item.productImage && (
-                    <div className="w-12 h-14 rounded-lg overflow-hidden bg-[#EFECE6] shrink-0 border border-stone-200">
+                    <div className="w-12 h-14 rounded-lg overflow-hidden bg-[#eaf2eb] shrink-0 border border-stone-200">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.productImage}
@@ -185,7 +202,9 @@ export default function OrderSuccessPage({
         <div className="pt-4 border-t border-stone-100 space-y-2 text-sm">
           <div className="flex justify-between text-stone-600">
             <span>Subtotal</span>
-            <span className="font-semibold text-stone-900">₹{order.subtotal}</span>
+            <span className="font-semibold text-stone-900">
+              ₹{order.subtotal}
+            </span>
           </div>
           {order.discount > 0 && (
             <div className="flex justify-between text-emerald-600 font-semibold">
@@ -198,8 +217,12 @@ export default function OrderSuccessPage({
             <span className="font-semibold text-emerald-600">FREE</span>
           </div>
           <div className="pt-3 border-t border-stone-100 flex justify-between items-baseline">
-            <span className="text-base font-bold text-stone-900">Total Paid</span>
-            <span className="text-2xl font-black text-stone-900">₹{order.total}</span>
+            <span className="text-base font-bold text-stone-900">
+              Total Paid
+            </span>
+            <span className="text-2xl font-medium text-stone-900">
+              ₹{order.total}
+            </span>
           </div>
         </div>
 
@@ -207,14 +230,14 @@ export default function OrderSuccessPage({
         <div className="pt-4 flex flex-col sm:flex-row gap-3">
           <Link
             href={`/account/orders/${order.orderNumber}`}
-            className="flex-1 py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-sm text-center transition-colors flex items-center justify-center gap-2 shadow-card"
+            className="flex-1 py-3 px-4 rounded-xl bg-[#287e6d] hover:bg-[#1e6255] text-white font-bold text-sm text-center transition-colors flex items-center justify-center gap-2 shadow-sm"
           >
             <span>View Full Order Details</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
             href="/products"
-            className="py-3 px-6 rounded-xl border border-stone-300 hover:bg-[#EFECE6] text-stone-800 font-bold text-sm text-center transition-colors"
+            className="py-3 px-6 rounded-xl border border-stone-300 hover:bg-[#eaf2eb] text-stone-800 font-bold text-sm text-center transition-colors"
           >
             Continue Shopping
           </Link>

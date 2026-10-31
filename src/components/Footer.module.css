@@ -1,0 +1,61 @@
+.footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #f2f5f6;
+  background: #030609;
+  background-image: radial-gradient(ellipse at 53% 115%, #153cb1 0%, #0b205f 38%, #050b21 65%, transparent 88%);
+}
+
+.inner { padding-top: 65px; }
+.grid { display: grid; grid-template-columns: 1.5fr .85fr .9fr; gap: 75px; }
+.brand { display: inline-flex; flex-direction: column; align-items: flex-start; color: #f4f6f5; width: fit-content; }
+.brand > span { font-family: var(--font-display), sans-serif; font-size: 42px; font-weight: 500; line-height: 1; letter-spacing: -3px; }
+.brand .flower { display: inline-block; font-size: 27px; margin-left: 6px; color: #86d4c2; vertical-align: top; letter-spacing: 0; }
+.brand small { font-size: 8px; font-weight: 500; letter-spacing: .4em; margin-top: 10px; padding-left: 2px; }
+.about p { max-width: 340px; margin-top: 30px; color: #b9c0cf; font-size: 14px; line-height: 1.9; }
+.location { display: flex; align-items: center; gap: 7px; color: #8e9bb2; font-size: 11px; margin-top: 15px; }
+.shortcuts { display: flex; gap: 12px; margin-top: 26px; }
+.shortcuts a { position: relative; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #ffffff24; border-radius: 13px; background: linear-gradient(155deg, #ffffff0e, #ffffff02); color: #eef4ff; transition: transform .2s, border-color .2s, background .2s; }
+.shortcuts a::before { content: ""; position: absolute; top: -2px; left: 10px; right: 10px; height: 2px; background: #74d4eb; box-shadow: 0 0 10px 2px #46bdfb65; border-radius: 50%; }
+.shortcuts a:hover { transform: translateY(-3px); border-color: #93d8d7a0; background: #ffffff12; }
+.column { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 10px; }
+.column h2 { font-size: 15px; font-weight: 500; margin-bottom: 5px; letter-spacing: -.02em; }
+.column a { color: #aeb6c6; font-size: 13px; line-height: 1.65; transition: color .2s, transform .2s; }
+.column a:hover { color: #fff; transform: translateX(3px); }
+.column a.contact { display: inline-flex; align-items: center; gap: 8px; color: #c9e9e5; margin-top: 5px; }
+.column a.phone { font-size: 12px; color: #9eaac0; margin-top: -8px; }
+.watermark { font-family: var(--font-display), sans-serif; font-size: clamp(40px, 10vw, 155px); font-weight: 600; line-height: 1.12; letter-spacing: -.075em; color: #a6b9ff63; text-align: center; white-space: nowrap; margin-top: 78px; padding-bottom: 9px; user-select: none; }
+.bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-top: 1px solid #b9cbff26; padding: 22px 0 26px; font-size: 10px; color: #9caac7; }
+.bottom > span { display: inline-flex; align-items: center; gap: 6px; }
+.bottom svg { color: #9cd8cc; }
+.footer :is(a, button):focus-visible { outline-color: #a3e8dd; }
+
+@media (min-width: 1600px) { .watermark { font-size: 155px; } }
+@media (max-width: 1000px) {
+  .grid { grid-template-columns: 1.2fr .8fr .9fr; gap: 35px; }
+  .about p { font-size: 13px; max-width: 280px; }
+  .column a { font-size: 12px; }
+  .column h2 { font-size: 14px; }
+  .watermark { margin-top: 65px; }
+}
+@media (max-width: 640px) {
+  .inner { padding-top: 40px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 38px 25px; }
+  .about { grid-column: 1 / -1; }
+  .brand > span { font-size: 36px; }
+  .brand .flower { font-size: 24px; }
+  .about p { margin-top: 22px; max-width: 330px; font-size: 13px; line-height: 1.85; }
+  .shortcuts { margin-top: 22px; }
+  .column { gap: 13px; padding-top: 0; }
+  .column h2 { font-size: 13px; margin-bottom: 4px; }
+  .column a { font-size: 12px; }
+  .column a.contact { align-items: flex-start; gap: 5px; }
+  .contact svg { flex-shrink: 0; margin-top: 3px; }
+  .column a.phone { font-size: 11px; }
+  .watermark { font-size: 9.7vw; margin-top: 45px; padding-bottom: 15px; letter-spacing: -.07em; }
+  .bottom { flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px 0 25px; font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shortcuts a, .column a { transition: none; }
+}

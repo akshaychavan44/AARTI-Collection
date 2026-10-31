@@ -1,445 +1,333 @@
 "use client";
-
-import React, { useState, useRef, useEffect, Suspense } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Search,
+  UserRound,
+  Heart,
+  ShoppingBag,
+  Menu,
+  X,
+  ArrowRight,
+  ChevronDown,
+  LogOut,
+  Package,
+  Shield,
+  Sparkles,
+} from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-import {
-  ShoppingCart,
-  Heart,
-  User as UserIcon,
-  LogOut,
-  Menu,
-  X,
-  Package,
-  ChevronDown,
-  Shield,
-} from "lucide-react";
 
-function DesktopNavLinks({
-  navLinks,
-}: {
-  navLinks: { name: string; href: string }[];
-}) {
+const links = [
+  { name: "Home", href: "/" },
+  { name: "Shop all", href: "/products" },
+  { name: "Boys", href: "/products?gender=BOYS", gender: "BOYS" },
+  { name: "Girls", href: "/products?gender=GIRLS", gender: "GIRLS" },
+  { name: "Little ones", href: "/products?ageGroup=0-2" },
+];
+const ages = ["0-2", "3-5", "6-9", "10-13", "14-16"];
+export function Navbar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const gender = searchParams?.get("gender");
-  const ageGroup = searchParams?.get("ageGroup");
-
-  const isLinkActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    if (href === "/products") return pathname === "/products" && !gender && !ageGroup;
-    if (href === "/products?gender=BOYS") return pathname === "/products" && gender === "BOYS";
-    if (href === "/products?gender=GIRLS") return pathname === "/products" && gender === "GIRLS";
-    if (href === "/products?ageGroup=0-2") return pathname === "/products" && ageGroup === "0-2";
-    return pathname === href;
-  };
-
-  return (
-    <nav className="hidden lg:flex items-center gap-1.5 ml-6">
-      {navLinks.map((link) => {
-        const isActive = isLinkActive(link.href);
-        return (
-          <Link
-            key={link.name}
-            href={link.href}
-            prefetch={true}
-            className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-              isActive
-                ? "bg-stone-900 text-white shadow-card font-bold"
-                : "text-stone-700 hover:text-stone-900 hover:bg-[#EFECE6]"
-            }`}
-          >
-            {link.name}
-          </Link>
-        );
-      })}
-    </nav>
-  );
-}
-
-export const Navbar: React.FC = () => {
-  const pathname = usePathname();
+  const router = useRouter();
   const { user, isAuthenticated, logout } = useAuth();
   const { itemCount: cartCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const userMenuRef = useRef<HTMLDivElement>(null);
-
-  // Do not render consumer storefront navbar on admin pages
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
-
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [announcement, setAnnouncement] = useState(true);
+  const [search, setSearch] = useState("");
+  const header = useRef<HTMLElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const searchToggle = useRef<HTMLButtonElement>(null);
+  const mobileToggle = useRef<HTMLButtonElement>(null);
+  const accountToggle = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
-        setUserMenuOpen(false);
+    function outside(e: MouseEvent) {
+      if (!header.current?.contains(e.target as Node)) {
+        setAccountOpen(false);
+        setMobileOpen(false);
+        setSearchOpen(false);
       }
+    }
+    function escape(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        if (searchOpen) searchToggle.current?.focus();
+        else if (mobileOpen) mobileToggle.current?.focus();
+        else if (accountOpen) accountToggle.current?.focus();
+        setSearchOpen(false);
+        setMobileOpen(false);
+        setAccountOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", outside);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("mousedown", outside);
+      document.removeEventListener("keydown", escape);
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Shop All", href: "/products" },
-    { name: "Boys Wear", href: "/products?gender=BOYS" },
-    { name: "Girls Wear", href: "/products?gender=GIRLS" },
-    { name: "Infants (0–2Y)", href: "/products?ageGroup=0-2" },
-  ];
-
+  }, [searchOpen, mobileOpen, accountOpen]);
+  useEffect(() => {
+    if (searchOpen) searchRef.current?.focus();
+  }, [searchOpen]);
+  function close() {
+    setMobileOpen(false);
+    setSearchOpen(false);
+    setAccountOpen(false);
+  }
+  if (pathname?.startsWith("/admin")) return null;
   return (
-    <div className="sticky top-0 z-50 w-full bg-[#FAF9F6] shadow-xs">
-      {/* Main Solid Navbar - Pushed fully to Left */}
-      <header className="doodle-nav bg-[#FAF9F6] border-b border-stone-200 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-10">
-          <div className="flex justify-between h-20 items-center">
-            {/* Left Group: Company Logo & Nav Links firmly on the Left */}
-            <div className="flex items-center">
-              <Link href="/" prefetch={true} className="flex items-center shrink-0 group py-1">
-                <img
-                  src="/brand-logo.png"
-                  alt="आरती Collection Kids Wear"
-                  className="h-14 sm:h-16 md:h-16 w-auto max-w-[230px] sm:max-w-[290px] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
-                />
-              </Link>
-
-              {/* Desktop Navigation Links next to Company Name */}
-              <Suspense
-                fallback={
-                  <nav className="hidden lg:flex items-center gap-1.5 ml-6">
-                    {navLinks.map((link) => (
-                      <span
-                        key={link.name}
-                        className="px-4 py-2 text-sm font-semibold text-stone-900"
-                      >
-                        {link.name}
-                      </span>
-                    ))}
-                  </nav>
-                }
-              >
-                <DesktopNavLinks navLinks={navLinks} />
-              </Suspense>
-            </div>
-
-            {/* Right Group: Wishlist, Cart & Clean Account */}
-            <div className="hidden md:flex items-center gap-3">
-              {/* Wishlist Link */}
+    <header className="site-header" ref={header}>
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+      {announcement && (
+        <div className="announcement">
+          <div className="announcement-copy">
+            <span>Little outfits. Big adventures.</span>
+            <span aria-hidden="true">✳</span>
+            <span>Discover everyday & festive favourites</span>
+            <span aria-hidden="true">✳</span>
+            <span>A little joy for every age, 0–16</span>
+          </div>
+          <button
+            onClick={() => setAnnouncement(false)}
+            aria-label="Dismiss announcement"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+      <div className="header-main shell">
+        <button
+          className="icon-button mobile-menu-toggle"
+          ref={mobileToggle}
+          onClick={() => {
+            setMobileOpen(!mobileOpen);
+            setSearchOpen(false);
+            setAccountOpen(false);
+          }}
+          aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
+        >
+          {mobileOpen ? <X /> : <Menu />}
+        </button>
+        <Link
+          href="/"
+          className="brand"
+          onClick={close}
+          aria-label="Aarti Collection home"
+        >
+          <span>
+            aarti<span className="brand-dot">✳</span>
+          </span>
+          <small>COLLECTION</small>
+        </Link>
+        <nav className="desktop-navigation" aria-label="Main navigation">
+          {links.map((link) => (
+            <div className="nav-item" key={link.name}>
               <Link
-                href="/wishlist"
-                prefetch={true}
-                className="relative p-2.5 text-stone-900 hover:text-stone-700 hover:bg-[#EFECE6] rounded-full transition-all"
-                title="Wishlist"
+                href={link.href}
+                onClick={close}
+                aria-current={link.href === pathname ? "page" : undefined}
               >
-                <Heart className="w-5 h-5" />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-stone-900 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-subtle">
-                    {wishlistCount}
-                  </span>
-                )}
+                {link.name}
+                {link.gender && <ChevronDown size={12} />}
               </Link>
-
-              {/* Shopping Cart Link */}
-              <Link
-                href="/cart"
-                prefetch={true}
-                className="relative p-2.5 text-stone-900 hover:text-stone-700 hover:bg-[#EFECE6] rounded-full transition-all"
-                title="Shopping Cart"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-stone-900 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-card">
-                    {cartCount}
+              {link.gender && (
+                <div className="nav-dropdown">
+                  <span className="eyebrow">
+                    A little style for every stage
                   </span>
-                )}
-              </Link>
-
-              <div className="h-5 w-px bg-stone-300 mx-1" />
-
-              {/* Auth / Profile Area */}
-              {isAuthenticated && user ? (
-                <div className="flex items-center gap-2">
-                  <Link
-                    href="/account/orders"
-                    prefetch={true}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-stone-900 hover:text-stone-700 hover:bg-[#EFECE6] transition-colors"
-                    title="My Orders"
-                  >
-                    <Package className="w-4 h-4 text-stone-700" />
-                    <span>Orders</span>
+                  <Link href={link.href}>
+                    Shop all {link.name.toLowerCase()} <ArrowRight size={15} />
                   </Link>
-
-                  {/* Circular User Avatar / Admin Dropdown Menu */}
-                  <div className="relative" ref={userMenuRef}>
-                    <button
-                      type="button"
-                      onClick={() => setUserMenuOpen(!userMenuOpen)}
-                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-white hover:bg-[#EFECE6] border border-stone-200 text-stone-900 text-xs font-semibold shadow-subtle transition-all cursor-pointer group"
-                      aria-expanded={userMenuOpen}
-                      aria-label="User Account Menu"
-                    >
-                      {/* Circular logo/avatar of user */}
-                      <div className="w-7 h-7 rounded-full bg-stone-900 text-white flex items-center justify-center text-xs font-bold shadow-xs">
-                        {user.name.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="max-w-[85px] truncate font-bold">
-                        {user.role === "ADMIN" ? "Admin" : user.name.split(" ")[0]}
-                      </span>
-                      <ChevronDown
-                        className={`w-3.5 h-3.5 text-stone-500 transition-transform duration-200 ${
-                          userMenuOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-
-                    {userMenuOpen && (
-                      <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-stone-200 shadow-card py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                        {/* User Header Details */}
-                        <div className="px-4 py-2.5 border-b border-stone-100">
-                          <p className="text-xs font-bold text-stone-900 truncate">{user.name}</p>
-                          <p className="text-[11px] text-stone-500 truncate">{user.email}</p>
-                          {user.role === "ADMIN" && (
-                            <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md bg-stone-100 text-stone-800 text-[10px] font-bold border border-stone-200">
-                              <Shield className="w-3 h-3 text-stone-700" />
-                              Store Administrator
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Navigation Links */}
-                        <div className="py-1">
-                          <Link
-                            href="/profile"
-                            prefetch={true}
-                            onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-stone-900 hover:bg-[#EFECE6] transition-colors"
-                          >
-                            <UserIcon className="w-4 h-4 text-stone-700" />
-                            <span>My Profile</span>
-                          </Link>
-
-                          <Link
-                            href="/account/orders"
-                            prefetch={true}
-                            onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-stone-900 hover:bg-[#EFECE6] transition-colors"
-                          >
-                            <Package className="w-4 h-4 text-stone-700" />
-                            <span>My Orders</span>
-                          </Link>
-
-                          {user.role === "ADMIN" && (
-                            <Link
-                              href="/admin"
-                              prefetch={true}
-                              onClick={() => setUserMenuOpen(false)}
-                              className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-stone-900 hover:bg-[#EFECE6] transition-colors"
-                            >
-                              <Shield className="w-4 h-4 text-stone-700" />
-                              <span>Admin Console</span>
-                            </Link>
-                          )}
-                        </div>
-
-                        {/* Logout Option */}
-                        <div className="pt-1 border-t border-stone-100">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setUserMenuOpen(false);
-                              logout();
-                            }}
-                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors text-left cursor-pointer"
-                          >
-                            <LogOut className="w-4 h-4 text-rose-500" />
-                            <span>Logout</span>
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Link
-                    href="/login"
-                    prefetch={true}
-                    className="text-xs font-bold text-stone-900 hover:text-stone-700 px-3 py-2 rounded-full hover:bg-[#EFECE6] transition-colors"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/register"
-                    prefetch={true}
-                    className="text-xs font-bold text-white bg-stone-900 hover:bg-stone-800 border border-stone-900 px-4 py-2 rounded-full transition-all shadow-subtle"
-                  >
-                    Create Account
-                  </Link>
+                  {ages.map((age) => (
+                    <Link key={age} href={`${link.href}&ageGroup=${age}`}>
+                      {age.replace("-", "–")} years <ArrowRight size={14} />
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
-
-            {/* Mobile Header Icons: Wishlist, Cart & Menu */}
-            <div className="flex md:hidden items-center gap-2">
-              <Link
-                href="/wishlist"
-                className="relative p-2 text-stone-900"
-                title="Wishlist"
-              >
-                <Heart className="w-5 h-5" />
-                {wishlistCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-stone-900 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    {wishlistCount}
-                  </span>
+          ))}
+        </nav>
+        <div className="header-actions">
+          <button
+            className="icon-button"
+            ref={searchToggle}
+            aria-label="Search products"
+            aria-expanded={searchOpen}
+            aria-controls="site-search"
+            onClick={() => {
+              setSearchOpen(!searchOpen);
+              setMobileOpen(false);
+              setAccountOpen(false);
+            }}
+          >
+            {searchOpen ? <X /> : <Search />}
+          </button>
+          <div className="account-container">
+            <button
+              className="icon-button account-toggle"
+              ref={accountToggle}
+              aria-label="Account menu"
+              aria-expanded={accountOpen}
+              aria-controls="account-menu"
+              onClick={() => {
+                setAccountOpen(!accountOpen);
+                setMobileOpen(false);
+                setSearchOpen(false);
+              }}
+            >
+              <UserRound />
+            </button>
+            {accountOpen && (
+              <div className="account-menu" id="account-menu">
+                <strong>
+                  {user
+                    ? `Hello, ${user.name.split(" ")[0]}`
+                    : "Welcome to Aarti"}
+                </strong>
+                {isAuthenticated ? (
+                  <>
+                    <Link href="/profile" onClick={close}>
+                      <UserRound size={16} />
+                      My account
+                    </Link>
+                    <Link href="/account/orders" onClick={close}>
+                      <Package size={16} />
+                      My orders
+                    </Link>
+                    {user?.role === "ADMIN" && (
+                      <Link href="/admin" onClick={close}>
+                        <Shield size={16} />
+                        Store dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        close();
+                        logout();
+                      }}
+                    >
+                      <LogOut size={16} />
+                      Sign out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={close}>
+                      Sign in <ArrowRight size={16} />
+                    </Link>
+                    <Link href="/register" onClick={close}>
+                      Create an account
+                    </Link>
+                  </>
                 )}
-              </Link>
-
-              <Link
-                href="/cart"
-                className="relative p-2 text-stone-900"
-                title="Cart"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-stone-900 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
-
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-stone-900 hover:bg-[#EFECE6] rounded-full cursor-pointer ml-1"
-                aria-label="Toggle Navigation Menu"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Menu Dropdown */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-stone-200 bg-[#FAF9F6] px-4 pt-4 pb-6 space-y-4 shadow-xl">
-            <div className="grid grid-cols-2 gap-2 pt-1 pb-3 border-b border-stone-200">
-              <Link
-                href="/"
-                prefetch={true}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl"
-              >
-                🏠 Home
-              </Link>
-              <Link
-                href="/products"
-                prefetch={true}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl"
-              >
-                👕 Shop All
-              </Link>
-              <Link
-                href="/products?gender=BOYS"
-                prefetch={true}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl text-center"
-              >
-                Boys
-              </Link>
-              <Link
-                href="/products?gender=GIRLS"
-                prefetch={true}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl text-center"
-              >
-                Girls
-              </Link>
-              <Link
-                href="/products?ageGroup=0-2"
-                prefetch={true}
-                onClick={() => setMobileMenuOpen(false)}
-                className="col-span-2 px-3.5 py-3 text-xs font-bold text-stone-900 bg-[#EFECE6] hover:bg-stone-200 rounded-xl text-center"
-              >
-                Infants (0–2 Yrs)
-              </Link>
-            </div>
-
-            {isAuthenticated && user ? (
-              <div className="space-y-2">
-                <div className="p-3 bg-[#EFECE6] rounded-2xl flex items-center justify-between border border-stone-200">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-stone-900 text-white flex items-center justify-center font-bold">
-                      {user.name.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <div className="font-bold text-stone-900 text-sm">{user.name}</div>
-                      <div className="text-xs text-stone-500 truncate max-w-[180px]">{user.email}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <Link
-                    href="/account/orders"
-                    prefetch={true}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 text-stone-900 font-bold py-2.5 px-3 bg-[#EFECE6] hover:bg-white rounded-xl text-xs"
-                  >
-                    <Package className="w-4 h-4 text-stone-700" />
-                    <span>My Orders</span>
-                  </Link>
-                  <Link
-                    href="/profile"
-                    prefetch={true}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 text-stone-900 font-bold py-2.5 px-3 bg-[#EFECE6] hover:bg-white rounded-xl text-xs"
-                  >
-                    <UserIcon className="w-4 h-4 text-stone-500" />
-                    <span>Profile</span>
-                  </Link>
-                </div>
-
-                <button
-                  onClick={() => {
-                    logout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full text-center text-rose-600 font-bold py-2.5 px-3 hover:bg-rose-50 rounded-xl text-xs flex items-center justify-center gap-2 border border-rose-200 cursor-pointer"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <Link
-                  href="/login"
-                  prefetch={true}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 px-4 rounded-xl border border-stone-300 text-stone-900 font-bold text-xs hover:bg-[#EFECE6]"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/register"
-                  prefetch={true}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 px-4 rounded-xl bg-stone-900 text-white font-bold text-xs hover:bg-stone-800 transition-colors"
-                >
-                  Create Account
-                </Link>
               </div>
             )}
           </div>
+          <Link
+            href="/wishlist"
+            className="icon-button wishlist-header"
+            aria-label={`Wishlist, ${wishlistCount} items`}
+            onClick={close}
+          >
+            <Heart />
+            {wishlistCount > 0 && (
+              <span className="count-badge">{wishlistCount}</span>
+            )}
+          </Link>
+          <Link
+            href="/cart"
+            className="icon-button"
+            aria-label={`Shopping bag, ${cartCount} items`}
+            onClick={close}
+          >
+            <ShoppingBag />
+            <span className="count-badge">{cartCount}</span>
+          </Link>
+        </div>
+      </div>
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            id="site-search"
+            className="search-panel"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22 }}
+          >
+            <form
+              className="shell search-form"
+              role="search"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (search.trim()) {
+                  router.push(
+                    `/products?search=${encodeURIComponent(search.trim())}`,
+                  );
+                  close();
+                }
+              }}
+            >
+              <Search size={22} />
+              <input
+                ref={searchRef}
+                aria-label="Search the collection"
+                placeholder="What are you looking for?"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button type="submit" className="button-primary">
+                Search <ArrowRight size={16} />
+              </button>
+            </form>
+            <p className="shell search-hint">
+              Try dresses, cotton tees, rompers or festive sets.
+            </p>
+          </motion.div>
         )}
-      </header>
-    </div>
+        {mobileOpen && (
+          <motion.nav
+            id="mobile-navigation"
+            className="mobile-navigation"
+            aria-label="Mobile navigation"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            {links.map((link) => (
+              <Link key={link.name} href={link.href} onClick={close}>
+                {link.name}
+                <ArrowRight size={20} />
+              </Link>
+            ))}
+            <Link
+              href={isAuthenticated ? "/profile" : "/login"}
+              onClick={close}
+            >
+              My account <UserRound size={20} />
+            </Link>
+            <Link href="/account/orders" onClick={close}>
+              My orders <Package size={20} />
+            </Link>
+            <Link href="/wishlist" onClick={close}>
+              My wishlist <Heart size={20} />
+            </Link>
+            <p>
+              <Sparkles size={16} /> Small styles. Endless possibilities.
+            </p>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
   );
-};
-
-export default Navbar;
+}

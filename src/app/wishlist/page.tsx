@@ -42,23 +42,26 @@ export default function WishlistPage() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-20 text-center space-y-5">
-        <div className="w-20 h-20 rounded-3xl bg-[#EFECE6] text-stone-800 flex items-center justify-center mx-auto shadow-inner border border-stone-200">
+        <div className="w-20 h-20 rounded-3xl bg-[#eaf2eb] text-stone-800 flex items-center justify-center mx-auto shadow-none border border-stone-200">
           <Heart className="w-10 h-10" />
         </div>
-        <h1 className="text-3xl font-black text-stone-900">Your Saved Atelier Outfits</h1>
+        <h1 className="text-3xl font-medium text-stone-900">
+          Your little favourites
+        </h1>
         <p className="text-stone-600 text-sm max-w-md mx-auto leading-relaxed">
-          Please sign in to view your saved wishlist garments and move them directly to your shopping bag.
+          Please sign in to view your saved wishlist garments and move them
+          directly to your shopping bag.
         </p>
         <div className="pt-2 flex justify-center gap-3">
           <Link
             href="/login"
-            className="px-8 py-3.5 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-extrabold text-xs shadow-card transition-all"
+            className="px-8 py-3.5 rounded-2xl bg-[#287e6d] hover:bg-[#1e6255] text-white font-semibold text-xs shadow-sm transition-all"
           >
-            Sign In to Atelier
+            Sign in
           </Link>
           <Link
             href="/products"
-            className="px-6 py-3.5 rounded-2xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-[#EFECE6] transition-all"
+            className="px-6 py-3.5 rounded-2xl border border-stone-300 text-stone-800 font-bold text-xs hover:bg-[#eaf2eb] transition-all"
           >
             Browse Collection
           </Link>
@@ -70,8 +73,10 @@ export default function WishlistPage() {
   if (loading && items.length === 0) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-24 text-center">
-        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-stone-900 border-t-transparent mb-4" />
-        <p className="text-stone-600 font-bold text-xs tracking-wider uppercase">Loading saved outfits...</p>
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-[#287e6d] border-t-transparent mb-4" />
+        <p className="text-stone-600 font-bold text-xs tracking-wider uppercase">
+          Loading saved outfits...
+        </p>
       </div>
     );
   }
@@ -79,17 +84,20 @@ export default function WishlistPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-24 text-center space-y-4">
-        <div className="w-20 h-20 rounded-3xl bg-[#EFECE6] text-stone-700 flex items-center justify-center mx-auto shadow-inner border border-stone-200">
+        <div className="w-20 h-20 rounded-3xl bg-[#eaf2eb] text-stone-700 flex items-center justify-center mx-auto shadow-none border border-stone-200">
           <Heart className="w-10 h-10" />
         </div>
-        <h1 className="text-3xl font-black text-stone-900">Your Wishlist is Empty</h1>
+        <h1 className="text-3xl font-medium text-stone-900">
+          Your Wishlist is Empty
+        </h1>
         <p className="text-stone-600 text-sm max-w-md mx-auto leading-relaxed">
-          Bookmark outfits you love while browsing to purchase later, reserve for birthdays, or check back for deals!
+          Bookmark outfits you love while browsing to purchase later, reserve
+          for birthdays, or check back for deals!
         </p>
         <div className="pt-4">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-extrabold text-xs shadow-card transition-all hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#287e6d] hover:bg-[#1e6255] text-white font-semibold text-xs shadow-sm transition-all hover:-translate-y-0.5"
           >
             <ShoppingBag className="w-4 h-4" />
             <span>Explore 2026 Collection</span>
@@ -107,9 +115,13 @@ export default function WishlistPage() {
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-stone-600 mb-1">
             <Sparkles className="w-3.5 h-3.5 text-amber-600" /> Saved By You
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">Saved Wishlist</h1>
+          <h1 className="text-3xl sm:text-4xl font-medium text-stone-900 tracking-tight">
+            Saved Wishlist
+          </h1>
           <p className="text-xs sm:text-sm text-stone-600 mt-1">
-            You have <span className="font-extrabold text-stone-900">{items.length}</span> outfit(s) saved
+            You have{" "}
+            <span className="font-semibold text-stone-900">{items.length}</span>{" "}
+            outfit(s) saved
           </p>
         </div>
 
@@ -126,8 +138,11 @@ export default function WishlistPage() {
         {items.map((item) => {
           const p = item.product;
           const isMoving = movingId === p.id;
-          const primaryImg = p.image || "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=400";
-          const hasDiscount = !!p.discountPercentage && p.discountPercentage > 0;
+          const primaryImg =
+            p.image ||
+            "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80&w=400";
+          const hasDiscount =
+            !!p.discountPercentage && p.discountPercentage > 0;
 
           return (
             <div
@@ -135,7 +150,7 @@ export default function WishlistPage() {
               className="bg-white rounded-3xl border border-stone-200 hover:border-stone-400 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden relative card-3d"
             >
               {/* Image & Remove */}
-              <div className="relative aspect-4/5 bg-[#EFECE6] overflow-hidden">
+              <div className="relative aspect-4/5 bg-[#eaf2eb] overflow-hidden">
                 <Link href={`/products/${p.slug}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -154,7 +169,7 @@ export default function WishlistPage() {
                 </button>
 
                 {hasDiscount && (
-                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-stone-900 text-white shadow-md">
+                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#287e6d] text-white shadow-md">
                     {p.discountPercentage}% OFF
                   </span>
                 )}
@@ -163,12 +178,12 @@ export default function WishlistPage() {
               {/* Details & CTA */}
               <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <div className="text-[10px] uppercase tracking-wider font-extrabold text-stone-500 mb-1">
+                  <div className="text-[10px] uppercase tracking-wider font-semibold text-stone-500 mb-1">
                     {p.brand || "Aarti Collection"}
                   </div>
                   <Link
                     href={`/products/${p.slug}`}
-                    className="font-extrabold text-stone-900 hover:text-stone-700 transition-colors line-clamp-1 text-sm block"
+                    className="font-semibold text-stone-900 hover:text-stone-700 transition-colors line-clamp-1 text-sm block"
                   >
                     {p.name}
                   </Link>
@@ -180,7 +195,7 @@ export default function WishlistPage() {
                   </div>
 
                   <div className="mt-3 flex items-baseline gap-2">
-                    <span className="text-base font-black text-stone-900">
+                    <span className="text-base font-medium text-stone-900">
                       ₹{p.priceRange.min}
                     </span>
                     {p.compareAtPrice && (
@@ -196,15 +211,15 @@ export default function WishlistPage() {
                   <button
                     disabled={!p.hasStock || isMoving}
                     onClick={() => handleMove(p.id)}
-                    className="w-full py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 disabled:bg-stone-200 disabled:text-stone-400 text-white font-extrabold text-xs shadow-card transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 px-4 rounded-xl bg-[#287e6d] hover:bg-[#1e6255] disabled:bg-stone-200 disabled:text-stone-400 text-white font-semibold text-xs shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ShoppingCart className="w-3.5 h-3.5" />
                     <span>
                       {isMoving
                         ? "Moving to Bag..."
                         : !p.hasStock
-                        ? "Out of Stock"
-                        : "Move to Shopping Bag"}
+                          ? "Out of Stock"
+                          : "Move to Shopping Bag"}
                     </span>
                   </button>
                 </div>

@@ -4,7 +4,17 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { User as UserIcon, Mail, Lock, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  User as UserIcon,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  ArrowRight,
+} from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -54,7 +64,9 @@ export default function RegisterPage() {
     try {
       setLoading(true);
       await register(name.trim(), email.trim(), password);
-      setSuccessMsg("Account created successfully! Taking you to your profile...");
+      setSuccessMsg(
+        "Account created successfully! Taking you to your profile...",
+      );
       setTimeout(() => {
         router.push("/profile");
       }, 800);
@@ -69,7 +81,7 @@ export default function RegisterPage() {
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-stone-200 p-8 sm:p-10">
         <div className="text-center mb-8">
-          <span className="inline-block px-3 py-1 rounded-full bg-[#EFECE6] text-stone-800 text-xs font-semibold mb-3 border border-stone-200">
+          <span className="inline-block px-3 py-1 rounded-full bg-[#eaf2eb] text-stone-800 text-xs font-semibold mb-3 border border-stone-200">
             Join Aarti Collection
           </span>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
@@ -99,7 +111,10 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name */}
           <div>
-            <label htmlFor="name" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="name"
+              className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2"
+            >
               Full Name
             </label>
             <div className="relative">
@@ -111,14 +126,17 @@ export default function RegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ramesh Patel"
                 required
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FFFFFF]"
               />
             </div>
           </div>
 
           {/* Email Address */}
           <div>
-            <label htmlFor="email" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="email"
+              className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2"
+            >
               Email Address
             </label>
             <div className="relative">
@@ -131,14 +149,17 @@ export default function RegisterPage() {
                 placeholder="name@example.com"
                 required
                 autoComplete="email"
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FFFFFF]"
               />
             </div>
           </div>
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="password"
+              className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2"
+            >
               Password (min. 6 chars)
             </label>
             <div className="relative">
@@ -150,7 +171,7 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-11 pr-11 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
+                className="w-full pl-11 pr-11 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FFFFFF]"
               />
               <button
                 type="button"
@@ -158,14 +179,21 @@ export default function RegisterPage() {
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1 cursor-pointer"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
           </div>
 
           {/* Confirm Password */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2"
+            >
               Confirm Password
             </label>
             <div className="relative">
@@ -177,7 +205,7 @@ export default function RegisterPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FFFFFF]"
               />
             </div>
           </div>
@@ -187,7 +215,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full py-3.5 px-4 bg-[#287e6d] hover:bg-[#1e6255] text-white rounded-xl font-medium text-sm shadow-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <>
@@ -207,7 +235,10 @@ export default function RegisterPage() {
         {/* Switch to Login */}
         <div className="text-center mt-6 text-sm text-stone-600">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-stone-900 hover:text-stone-700 hover:underline">
+          <Link
+            href="/login"
+            className="font-semibold text-stone-900 hover:text-stone-700 hover:underline"
+          >
             Sign In
           </Link>
         </div>

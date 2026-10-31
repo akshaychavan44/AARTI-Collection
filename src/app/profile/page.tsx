@@ -82,7 +82,7 @@ export default function ProfilePage() {
     <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
-          My Account Profile
+          Your little corner
         </h1>
         <p className="text-sm text-stone-600 mt-1">
           Manage your personal details and account settings.
@@ -107,7 +107,7 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left Profile Card */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-24 h-24 rounded-full bg-stone-900 flex items-center justify-center text-white text-3xl font-bold shadow-card mb-4">
+          <div className="w-24 h-24 rounded-full bg-[#287e6d] flex items-center justify-center text-white text-3xl font-bold shadow-sm mb-4">
             {user.name.charAt(0).toUpperCase()}
           </div>
           <h2 className="text-lg font-bold text-stone-900">{user.name}</h2>
@@ -133,7 +133,7 @@ export default function ProfilePage() {
 
             <Link
               href="/account/orders"
-              className="w-full py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-card"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#287e6d] hover:bg-[#1e6255] text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
               <Package className="w-4 h-4 text-stone-300" />
               View My Orders
@@ -153,13 +153,17 @@ export default function ProfilePage() {
         <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm">
           <div className="flex items-center justify-between pb-6 border-b border-stone-100 mb-6">
             <div>
-              <h3 className="font-bold text-stone-900 text-base">Account Information</h3>
-              <p className="text-xs text-stone-500">View and update your personal details.</p>
+              <h3 className="font-bold text-stone-900 text-base">
+                Account Information
+              </h3>
+              <p className="text-xs text-stone-500">
+                View and update your personal details.
+              </p>
             </div>
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-200 hover:bg-[#EFECE6] text-stone-700 text-xs font-semibold transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-200 hover:bg-[#eaf2eb] text-stone-700 text-xs font-semibold transition-colors cursor-pointer"
               >
                 <Edit2 className="w-3.5 h-3.5 text-stone-500" />
                 Edit Name
@@ -191,11 +195,11 @@ export default function ProfilePage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 transition-all bg-[#FAF9F6]"
+                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 transition-all bg-[#FFFFFF]"
                   />
                 </div>
               ) : (
-                <div className="p-3.5 rounded-xl bg-[#FAF9F6] text-stone-900 text-sm font-medium border border-stone-200">
+                <div className="p-3.5 rounded-xl bg-[#FFFFFF] text-stone-900 text-sm font-medium border border-stone-200">
                   {user.name}
                 </div>
               )}
@@ -206,22 +210,23 @@ export default function ProfilePage() {
               <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
                 Email Address (Primary)
               </label>
-              <div className="p-3.5 rounded-xl bg-[#FAF9F6] text-stone-600 text-sm font-medium border border-stone-200 flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-[#FFFFFF] text-stone-600 text-sm font-medium border border-stone-200 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <Mail className="w-4 h-4 text-stone-400" />
                   <span>{user.email}</span>
                 </div>
-                <span className="text-[11px] font-semibold text-stone-400">Verified</span>
+                <span className="text-[11px] font-semibold text-stone-400">
+                  Verified
+                </span>
               </div>
             </div>
-
 
             {isEditing && (
               <div className="pt-2">
                 <button
                   type="submit"
                   disabled={saving}
-                  className="py-3 px-6 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all flex items-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="py-3 px-6 bg-[#287e6d] hover:bg-[#1e6255] text-white rounded-xl font-medium text-sm shadow-sm transition-all flex items-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   {saving ? (
                     <>

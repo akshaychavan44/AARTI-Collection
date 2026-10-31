@@ -3,7 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api";
-import { Mail, Loader2, AlertCircle, CheckCircle2, ArrowLeft, KeyRound } from "lucide-react";
+import {
+  Mail,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  ArrowLeft,
+  KeyRound,
+} from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -25,10 +32,16 @@ export default function ForgotPasswordPage() {
 
     try {
       setLoading(true);
-      const res = await api.post<{ message: string; resetToken?: string }>("/auth/forgot-password", {
-        email: email.trim(),
-      });
-      setMessage(res.message || "If an account with this email exists, password reset instructions have been sent.");
+      const res = await api.post<{ message: string; resetToken?: string }>(
+        "/auth/forgot-password",
+        {
+          email: email.trim(),
+        },
+      );
+      setMessage(
+        res.message ||
+          "If an account with this email exists, password reset instructions have been sent.",
+      );
       if (res.data && (res as any).resetToken) {
         setDevToken((res as any).resetToken);
       }
@@ -43,14 +56,15 @@ export default function ForgotPasswordPage() {
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-stone-200 p-8 sm:p-10">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] text-stone-800 flex items-center justify-center mx-auto mb-3 border border-stone-200">
+          <div className="w-12 h-12 rounded-2xl bg-[#eaf2eb] text-stone-800 flex items-center justify-center mx-auto mb-3 border border-stone-200">
             <KeyRound className="w-6 h-6" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
             Reset Password
           </h1>
           <p className="text-sm text-stone-600 mt-2">
-            Enter the email associated with your account and we&apos;ll send you a password reset link.
+            Enter the email associated with your account and we&apos;ll send you
+            a password reset link.
           </p>
         </div>
 
@@ -70,7 +84,9 @@ export default function ForgotPasswordPage() {
               <div>{message}</div>
               {devToken && (
                 <div className="mt-3 p-3 bg-white rounded-lg border border-emerald-300 text-xs font-mono break-all text-stone-800">
-                  <div className="font-sans font-bold text-emerald-700 mb-1">Development Reset Token:</div>
+                  <div className="font-sans font-bold text-emerald-700 mb-1">
+                    Development Reset Token:
+                  </div>
                   {devToken}
                   <div className="mt-2">
                     <Link
@@ -88,7 +104,10 @@ export default function ForgotPasswordPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="email"
+              className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2"
+            >
               Registered Email Address
             </label>
             <div className="relative">
@@ -100,7 +119,7 @@ export default function ForgotPasswordPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 required
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FAF9F6]"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#287e6d]/10 focus:border-[#287e6d] text-sm text-stone-900 placeholder:text-stone-400 transition-all bg-[#FFFFFF]"
               />
             </div>
           </div>
@@ -108,7 +127,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-medium text-sm shadow-card transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full py-3.5 px-4 bg-[#287e6d] hover:bg-[#1e6255] text-white rounded-xl font-medium text-sm shadow-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? (
               <>
